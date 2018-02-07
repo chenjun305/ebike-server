@@ -123,5 +123,6 @@ CREATE TABLE `payment_order` (
   `create_time` datetime NOT NULL COMMENT '订单创建时间',
   `update_time` datetime NOT NULL COMMENT '订单状态更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `sn` (`sn`)
-) ENGINE=InnoDB AUTO_INCREMENT=1095 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='订单'
+  UNIQUE KEY `sn` (`sn`),
+  KEY `uid_idx` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='支付订单';
