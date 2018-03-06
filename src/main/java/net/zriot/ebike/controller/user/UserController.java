@@ -30,7 +30,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public MessageDto login() {
         User user = new User();
         user.setId(1);
@@ -47,7 +47,7 @@ public class UserController {
         return MessageDto.responseSuccess(data);
     }
 
-    @RequestMapping("/get")
+    @PostMapping("/get")
     public MessageDto get() {
         User user = new User();
         user.setId(1);
