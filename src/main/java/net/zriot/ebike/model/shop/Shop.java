@@ -17,10 +17,12 @@ public class Shop implements Serializable {
     private String name;
     private String tel;
     private String address;
+    private String openTime;
     private String description;
     private String latitude;
     private String longitude;
     private String geohash;
+    private int batteryAvailable;
     private byte status;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
@@ -114,5 +116,21 @@ public class Shop implements Serializable {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(String openTime) {
+        this.openTime = openTime;
+    }
+
+    public int getBatteryAvailable() {
+        return batteryAvailable;
+    }
+
+    public void setBatteryAvailable(int batteryAvailable) {
+        this.batteryAvailable = batteryAvailable;
     }
 }

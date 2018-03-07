@@ -60,4 +60,18 @@ public class UserController {
         data.put("user", user);
         return MessageDto.responseSuccess(data);
     }
+
+    @PostMapping("/update")
+    public MessageDto update() {
+        User user = new User();
+        user.setId(1);
+        user.setUid("aaabbbccc");
+        user.setTel("13829780305");
+        user.setIsReal((byte)0);
+        user.setMoney(12345);
+        user.setStatus((byte)1);
+        Map<String, Object> data = new HashMap<>();
+        data.put("user", user);
+        return MessageDto.responseSuccess(data);
+    }
 }

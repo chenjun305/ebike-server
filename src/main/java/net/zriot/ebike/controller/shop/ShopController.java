@@ -25,9 +25,11 @@ public class ShopController {
             shop.setName("Ebike Shop NO." + i);
             shop.setTel("13829780305");
             shop.setAddress("NO 1, tianhe raod, Guangzhou");
+            shop.setOpenTime("9:00 - 18:00");
             shop.setDescription("Very Good Shop");
             shop.setLatitude("23.13958429918658");
             shop.setLongitude("113.3377031609416");
+            shop.setBatteryAvailable(12);
             shop.setStatus((byte)1);
             shops.add(shop);
         }
