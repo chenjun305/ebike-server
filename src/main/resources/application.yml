@@ -1,3 +1,7 @@
+server:
+  port: ${server_port:8081}
+  servlet:
+    context-path: ${context_path:/customer}
 spring:
   jmx:
     enabled: false
@@ -31,4 +35,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: true
+
+
 
