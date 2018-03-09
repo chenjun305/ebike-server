@@ -23,6 +23,18 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
+  data:
+     redis:
+        database: 0
+        host: ${redis_host:localhost}
+        port: ${redis_port:6379}
+        password: ${redis_password:}
+        timeout: 0
+        pool:
+          max-idle: 8
+          min-idle: 0
+          max-active: 8
+          max-wait: -1
 
   jpa:
     database: MYSQL
