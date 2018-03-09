@@ -1,6 +1,6 @@
 package net.zriot.ebike.common.constant;
 
-public class ErrorConstants {
-    public static final int FAIL = 0;
-    public static final int SUCC = 1;
+public interface ErrorConstants {
+    int FAIL = 0;
+    int SUCC = 1;
 }

@@ -2,6 +2,7 @@ package net.zriot.ebike.model.user;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +19,8 @@ public class User implements Serializable {
     private byte isReal;
     private String realName;
     private byte gender;
-    private long money;
+    private BigDecimal money;
+    private String currency;
     private String address;
     private byte status;
     private LocalDateTime createTime;
@@ -91,12 +93,20 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-    public long getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
-    public void setMoney(long money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getAddress() {

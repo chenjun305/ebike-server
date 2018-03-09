@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,8 @@ public class UserController {
         user.setUid("aaabbbccc");
         user.setTel("13829780305");
         user.setIsReal((byte)0);
-        user.setMoney(12345);
+        user.setMoney(new BigDecimal(9999.80));
+        user.setCurrency("USD");
         user.setStatus((byte)1);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
@@ -54,7 +56,8 @@ public class UserController {
         user.setUid("aaabbbccc");
         user.setTel("13829780305");
         user.setIsReal((byte)0);
-        user.setMoney(12345);
+        user.setMoney(new BigDecimal(8888.90));
+        user.setCurrency("USD");
         user.setStatus((byte)1);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
@@ -68,7 +71,8 @@ public class UserController {
         user.setUid("aaabbbccc");
         user.setTel("13829780305");
         user.setIsReal((byte)0);
-        user.setMoney(12345);
+        user.setMoney(new BigDecimal(9999.80));
+        user.setCurrency("USD");
         user.setStatus((byte)1);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);

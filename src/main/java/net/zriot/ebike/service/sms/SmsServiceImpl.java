@@ -1,5 +1,6 @@
 package net.zriot.ebike.service.sms;
 
+import net.zriot.ebike.common.util.Utils;
 import net.zriot.ebike.service.sms.operator.TencentSmsOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,8 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public boolean sendPin(String phoneNumber) {
-        boolean result = smsOperator.send(phoneNumber, "1234");
+        String pin = Utils.randomString(4, (byte)0B001);
+        boolean result = smsOperator.send(phoneNumber, pin);
         return result;
     }
 }
