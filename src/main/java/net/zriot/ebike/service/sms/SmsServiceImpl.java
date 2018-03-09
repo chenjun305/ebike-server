@@ -24,4 +24,17 @@ public class SmsServiceImpl implements SmsService {
         boolean result = smsOperator.send(phoneNumber, pin);
         return result;
     }
+
+    @Override
+    public boolean isPinValid(String phoneNumber, String pin) {
+        String cachedPin = StringCacheService.get(Constants.cache_prefix_sms_pin + phoneNumber);
+        if (Strings.isNullOrEmpty(cachedPin) || !cachedPin.equals(pin)) {
+            return false;
+        }
+        // delete after verify sms pin
+        StringCacheService.del(Constants.cache_prefix_sms_pin + phoneNumber);
+        return true;
+    }
+
+
 }

@@ -24,6 +24,10 @@ public class StringCacheService {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
+    public static boolean del(String key) {
+        return stringRedisTemplate.delete(key);
+    }
+
     public static boolean hasKey(String key) {
         return stringRedisTemplate.hasKey(key);
     }

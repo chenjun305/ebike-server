@@ -1,5 +1,6 @@
 package net.zriot.ebike.controller.user;
 
+import net.zriot.ebike.common.cache.StringCacheService;
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.model.user.User;
@@ -32,7 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public MessageDto login() {
+    public MessageDto login(String tel, String pin) {
+        System.out.println(tel+pin);
+        if (! smsService.isPinValid(tel, pin)) {
+            return new MessageDto(ErrorConstants.SMS_PIN_INVALID, "sms pin invalid");
+
+        }
         User user = new User();
         user.setId(1);
         user.setUid("aaabbbccc");
