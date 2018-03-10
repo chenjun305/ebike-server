@@ -1,10 +1,17 @@
 package net.zriot.ebike.controller.user;
 
+import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.cache.StringCacheService;
 import net.zriot.ebike.common.constant.ErrorConstants;
+import net.zriot.ebike.common.enums.Auth;
+import net.zriot.ebike.common.exception.GException;
+import net.zriot.ebike.common.util.AuthUtil;
+import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.model.user.User;
 import net.zriot.ebike.service.sms.SmsService;
+import net.zriot.ebike.service.user.UserService;
+import org.apache.http.auth.AUTH;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +27,9 @@ public class UserController {
 
     @Autowired
     SmsService smsService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/pin")
     public MessageDto pin(String tel) {
@@ -39,32 +49,27 @@ public class UserController {
             return new MessageDto(ErrorConstants.SMS_PIN_INVALID, "sms pin invalid");
 
         }
-        User user = new User();
-        user.setId(1);
-        user.setUid("aaabbbccc");
-        user.setTel("13829780305");
-        user.setIsReal((byte)0);
-        user.setMoney(new BigDecimal(9999.80));
-        user.setCurrency("USD");
-        user.setStatus((byte)1);
+        User user = userService.login(tel);
+
+        String uid = user.getUid();
+        String signMat = AuthUtil.buildSignMaterial(uid);
+        String token = AuthUtil.buildToken(uid, signMat);
+
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
-        data.put("uid", "xxxxxx");
-        data.put("signMat", "sisnss");
-        data.put("token", "tollll");
+
+        data.put("uid", uid);
+        data.put("signMat",signMat);
+        data.put("token", token);
         return MessageDto.responseSuccess(data);
     }
 
     @PostMapping("/get")
-    public MessageDto get() {
-        User user = new User();
-        user.setId(1);
-        user.setUid("aaabbbccc");
-        user.setTel("13829780305");
-        user.setIsReal((byte)0);
-        user.setMoney(new BigDecimal(8888.90));
-        user.setCurrency("USD");
-        user.setStatus((byte)1);
+    @AuthRequire(Auth.LOGIN)
+    public MessageDto get(AuthParams params) throws GException {
+        String uid = params.getUid();
+        User user = userService.getUserByUid(uid);
+
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         return MessageDto.responseSuccess(data);
@@ -73,7 +78,7 @@ public class UserController {
     @PostMapping("/update")
     public MessageDto update() {
         User user = new User();
-        user.setId(1);
+        user.setId(1L);
         user.setUid("aaabbbccc");
         user.setTel("13829780305");
         user.setIsReal((byte)0);
