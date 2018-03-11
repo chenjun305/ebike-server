@@ -63,16 +63,17 @@ CREATE TABLE `ebike` (
   `uid` varchar(32) DEFAULT NULL COMMENT '用户ID',
   `buy_time` DATETIME DEFAULT NULL COMMENT '购买时间',
   `is_membership` tinyint(2) unsigned DEFAULT '0' COMMENT '是否参加会员',
-  `membership` int(5) unsigned DEFAULT '0' COMMENT '会员费',
-  `month_fee` int(5) unsigned DEFAULT '0' COMMENT '包月费',
-  `month_start_time` datetime DEFAULT NULL COMMENT '包月开始时间',
-  `month_end_time` datetime DEFAULT NULL COMMENT '包月结束时间',
-  `battery_id` int(11) unsigned DEFAULT NULL COMMENT '电池ID',
+  `membership` DECIMAL(8,2) DEFAULT NULL COMMENT '会员费',
+  `month_fee` DECIMAL(8,2) DEFAULT NULL COMMENT '包月费',
+  `month_start_date` DATE DEFAULT NULL COMMENT '包月开始时间',
+  `month_end_date` DATE DEFAULT NULL COMMENT '包月结束时间',
+  `battery_sn` VARCHAR(64) DEFAULT NULL COMMENT '电池sn',
   `status` tinyint(1) DEFAULT '1' COMMENT '车辆状态: 0无效 1正常，用户使用中 2 销售中 3 在仓库',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `sn_idx` (`sn`),
+  UNIQUE KEY `battery_sn_idx` (`battery_sn`),
   KEY `uid_idx` (`uid`),
   KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电单车表';
@@ -98,7 +99,7 @@ CREATE TABLE `battery` (
   `name` varchar(32) DEFAULT NULL COMMENT '名称',
   `note` varchar(128) DEFAULT NULL COMMENT '备注信息',
   `shop_id` int(11) unsigned DEFAULT NULL COMMENT '商店ID',
-  `ebike_id` int(11) unsigned DEFAULT NULL COMMENT '电单车ID',
+  `ebike_sn` VARCHAR(64) DEFAULT NULL COMMENT '电单车sn',
   `uid` varchar(32) DEFAULT NULL COMMENT '用户ID',
   `battery` int(5) unsigned DEFAULT '0' COMMENT '电量',
   `status` tinyint(1) DEFAULT '1' COMMENT '车辆状态: 0无效 1正常，用户使用中 2 门店-充满 3 门店-充电中 4 仓库',
@@ -106,9 +107,9 @@ CREATE TABLE `battery` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `sn_idx` (`sn`),
+  UNIQUE KEY `ebike_sn_idx` (`ebike_sn`),
   KEY `uid_idx` (`uid`),
-  KEY `shop_idx` (`shop_id`),
-  KEY `ebike_idx` (`ebike_id`)
+  KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池表';
 
 CREATE TABLE `payment_order` (

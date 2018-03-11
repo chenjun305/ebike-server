@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -12,31 +13,31 @@ import java.time.LocalDateTime;
 public class EBike {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String sn;
     private String name;
     private String note;
-    private int shopId;
+    private Long shopId;
     private String uid;
     private LocalDateTime buyTime;
-    private byte isMembership;
-    private int membership;
-    private int monthFee;
+    private Byte isMembership;
+    private BigDecimal membership;
+    private BigDecimal monthFee;
     private LocalDate monthStartDate;
     private LocalDate monthEndDate;
-    private int batteryId;
-    private int status;
+    private String batterySn;
+    private Byte status;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
     public EBike() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,11 +65,11 @@ public class EBike {
         this.note = note;
     }
 
-    public int getShopId() {
+    public Long getShopId() {
         return shopId;
     }
 
-    public void setShopId(int shopId) {
+    public void setShopId(Long shopId) {
         this.shopId = shopId;
     }
 
@@ -96,22 +97,6 @@ public class EBike {
         this.isMembership = isMembership;
     }
 
-    public int getMembership() {
-        return membership;
-    }
-
-    public void setMembership(int membership) {
-        this.membership = membership;
-    }
-
-    public int getMonthFee() {
-        return monthFee;
-    }
-
-    public void setMonthFee(int monthFee) {
-        this.monthFee = monthFee;
-    }
-
     public LocalDate getMonthStartDate() {
         return monthStartDate;
     }
@@ -128,19 +113,39 @@ public class EBike {
         this.monthEndDate = monthEndDate;
     }
 
-    public int getBatteryId() {
-        return batteryId;
+    public void setIsMembership(Byte isMembership) {
+        this.isMembership = isMembership;
     }
 
-    public void setBatteryId(int batteryId) {
-        this.batteryId = batteryId;
+    public BigDecimal getMembership() {
+        return membership;
     }
 
-    public int getStatus() {
+    public void setMembership(BigDecimal membership) {
+        this.membership = membership;
+    }
+
+    public BigDecimal getMonthFee() {
+        return monthFee;
+    }
+
+    public void setMonthFee(BigDecimal monthFee) {
+        this.monthFee = monthFee;
+    }
+
+    public String getBatterySn() {
+        return batterySn;
+    }
+
+    public void setBatterySn(String batterySn) {
+        this.batterySn = batterySn;
+    }
+
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
