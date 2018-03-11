@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Shop implements Serializable {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     private String name;
     private String tel;
@@ -22,19 +22,19 @@ public class Shop implements Serializable {
     private String latitude;
     private String longitude;
     private String geohash;
-    private int batteryAvailable;
-    private byte status;
+    private Integer batteryAvailable;
+    private Byte status;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
     public Shop() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -94,11 +94,11 @@ public class Shop implements Serializable {
         this.geohash = geohash;
     }
 
-    public byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
@@ -126,11 +126,11 @@ public class Shop implements Serializable {
         this.openTime = openTime;
     }
 
-    public int getBatteryAvailable() {
+    public Integer getBatteryAvailable() {
         return batteryAvailable;
     }
 
-    public void setBatteryAvailable(int batteryAvailable) {
+    public void setBatteryAvailable(Integer batteryAvailable) {
         this.batteryAvailable = batteryAvailable;
     }
 }
