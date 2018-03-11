@@ -1,7 +1,9 @@
 package net.zriot.ebike.service.user;
 
 
+import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.enums.Gender;
+import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.model.user.User;
 import net.zriot.ebike.pojo.request.user.UserUpdateParams;
@@ -58,5 +60,13 @@ public class UserServiceImpl implements UserService {
         // need save ?
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public User minusMoney(String uid, BigDecimal fee) throws GException {
+        User user = userRepository.findOneByUid(uid);
+        BigDecimal money = user.getMoney();
+        user.setMoney(money.subtract(fee));
+        return userRepository.save(user);
     }
 }

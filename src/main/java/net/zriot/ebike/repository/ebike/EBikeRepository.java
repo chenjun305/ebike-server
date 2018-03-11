@@ -14,4 +14,5 @@ import java.util.List;
 @Transactional
 public interface EBikeRepository extends JpaRepository<EBike, Long> {
     List<EBike> findAllByUid(String uid);
+    EBike findOneBySn(String sn);
 }

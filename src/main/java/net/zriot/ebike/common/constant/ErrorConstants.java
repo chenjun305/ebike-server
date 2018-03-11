@@ -42,6 +42,11 @@ public class ErrorConstants {
     public static final int USER_CREATE_FAIL = 201;//用户创建失败！
 
     public static final int SMS_PIN_INVALID = 101;
+    public static final int NOT_EXIST_EBIKE = 301;
+    public static final int ALREADY_MEMBERSHIP = 302;
+    public static final int NO_MEMBERSHIP = 303;
+    public static final int ALREADY_RENEW = 304;
+    public static final int LACK_MONEY = 900;
 
     static Map<Integer, String> map = new HashMap<Integer, String>();
 
