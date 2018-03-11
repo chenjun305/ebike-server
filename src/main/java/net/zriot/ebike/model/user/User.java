@@ -1,5 +1,7 @@
 package net.zriot.ebike.model.user;
 
+import net.zriot.ebike.common.enums.Gender;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,13 +19,13 @@ public class User implements Serializable {
     private String tel;
     private String avatar;
     private String nickname;
-    private byte isReal;
+    private Byte isReal;
     private String realName;
-    private byte gender;
+    private Byte gender;
     private BigDecimal money;
     private String currency;
     private String address;
-    private byte status;
+    private Byte status;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
@@ -70,11 +72,11 @@ public class User implements Serializable {
         this.nickname = nickname;
     }
 
-    public byte getIsReal() {
+    public Byte getIsReal() {
         return isReal;
     }
 
-    public void setIsReal(byte isReal) {
+    public void setIsReal(Byte isReal) {
         this.isReal = isReal;
     }
 
@@ -86,11 +88,11 @@ public class User implements Serializable {
         this.realName = realName;
     }
 
-    public byte getGender() {
+    public Byte getGender() {
         return gender;
     }
 
-    public void setGender(byte gender) {
+    public void setGender(Byte gender) {
         this.gender = gender;
     }
 
@@ -118,11 +120,11 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 

@@ -4,9 +4,11 @@ import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.cache.StringCacheService;
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.enums.Auth;
+import net.zriot.ebike.common.enums.Gender;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.AuthUtil;
 import net.zriot.ebike.pojo.request.AuthParams;
+import net.zriot.ebike.pojo.request.user.UserUpdateParams;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.model.user.User;
 import net.zriot.ebike.service.sms.SmsService;
@@ -76,15 +78,13 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public MessageDto update() {
-        User user = new User();
-        user.setId(1L);
-        user.setUid("aaabbbccc");
-        user.setTel("13829780305");
-        user.setIsReal((byte)0);
-        user.setMoney(new BigDecimal(9999.80));
-        user.setCurrency("USD");
-        user.setStatus((byte)1);
+    @AuthRequire(Auth.LOGIN)
+    public MessageDto update(UserUpdateParams params, AuthParams authParams) throws GException {
+        Byte gender = params.getGender();
+        if (gender != null && Gender.getType(gender) == null) {
+            throw new GException(ErrorConstants.ERR_PARAMS);
+        }
+        User user = userService.updateByUid(authParams.getUid(), params);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         return MessageDto.responseSuccess(data);
