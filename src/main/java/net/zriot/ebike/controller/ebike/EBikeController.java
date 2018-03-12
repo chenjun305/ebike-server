@@ -1,9 +1,9 @@
 package net.zriot.ebike.controller.ebike;
 
 import net.zriot.ebike.common.annotation.AuthRequire;
-import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.exception.GException;
+import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.model.ebike.EBike;
 import net.zriot.ebike.model.user.User;
 import net.zriot.ebike.pojo.request.AuthParams;
@@ -63,7 +63,8 @@ public class EBikeController {
             return new MessageDto(ErrorConstants.NOT_EXIST_EBIKE, "Not Exist EBike");
         }
         if (ebike.getIsMembership() == 1) {
-            return new MessageDto(ErrorConstants.ALREADY_MEMBERSHIP, "Already Membership");
+            throw new GException(ErrorConstants.ALREADY_MEMBERSHIP);
+            //return new MessageDto(ErrorConstants.ALREADY_MEMBERSHIP, "Already Membership");
         }
         user = userService.minusMoney(uid, membership.add(monthFee));
 

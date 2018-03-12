@@ -1,0 +1,51 @@
+package ${package};
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+import net.zriot.ebike.common.exception.GException;
+import net.zriot.ebike.common.log.LogHelp;
+
+// generate by common/tools/ErrorCodeCreater
+
+public class ErrorConstants {
+${data}
+	
+	static Map<Integer, String> map = new HashMap<Integer, String>();
+	
+	public static String getDesc(int code) {
+		if (map.size() == 0) {
+			Document document = null;
+			Element root = null;
+			String ERR_CODE_URL = System.getenv("err_code");
+			if (ERR_CODE_URL == null) {
+            	ERR_CODE_URL = "/Users/yueqi/zriot/ebike-server/err_code.xml";
+            }
+			SAXReader reader = new SAXReader();
+			try {
+				document = reader.read(new File(ERR_CODE_URL));
+			} catch (DocumentException e) {
+				GException ge = new GException(ERR_FILE_NOT_FOUND, ERR_CODE_URL + " not found!", e);
+				LogHelp.doLogAppErr(ge);
+			}
+			root = document.getRootElement();
+			@SuppressWarnings("unchecked")
+			List<Element> errs = root.elements("err");
+			for (Element e : errs) {
+				map.put(Integer.parseInt(e.attributeValue("id")), e.attributeValue("description"));
+			}
+		}
+		
+		if (!map.containsKey(code)) {
+			return map.get(ErrorConstants.FAIL);
+		}
+		return map.get(code);
+	}
+}

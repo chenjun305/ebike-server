@@ -27,32 +27,30 @@
 	<err id="23" description="Illegal UID Info！" name="ILLEGAL_UID"/>
 
 	<!-- 用户 -->
-	<err id="200" description="User Not Found！" name="USER_NOT_FOUND"/>
-	<err id="201" description="User Creation Failed！" name="USER_CREATE_FAIL"/>
-	<err id="202" description="Not Support Money Det Type！" name="NOT_SUPPORT_MONEY_DET_TYPE"/>
-	<err id="203" description="Need Money to Open Lock！" name="LACK_MONEY_OPEN_LOCK"/>
-	<err id="204" description="Update User Info Fail！" name="UPDATE_USER_INFO_FAIL"/>
-	<err id="205" description="Illegal Avatar Image Format！" name="ILLEGAL_AVATAR_FORMAT"/>
-	<err id="206" description="Nickname Too Long！" name="NICK_NAME_TOO_LONG"/>
-	<err id="207" description="Authentication Fail！" name="AUTHENTICATION_FAIL"/>
-	<err id="208" description="Authentication Repeat！" name="AUTHENTICATION_REPEATE"/>
-	<err id="209" description="Authentication Succed Already！" name="AUTHENTICATION_SUCCED_ALREADY"/>
+	<err id="100" description="User Not Found！" name="USER_NOT_FOUND"/>
+	<err id="101" description="User Creation Failed！" name="USER_CREATE_FAIL"/>
+	<err id="102" description="Not Support Money Det Type！" name="NOT_SUPPORT_MONEY_DET_TYPE"/>
+	<err id="103" description="Lack Money！" name="LACK_MONEY"/>
+	<err id="104" description="Update User Info Fail！" name="UPDATE_USER_INFO_FAIL"/>
+	<err id="105" description="Illegal Avatar Image Format！" name="ILLEGAL_AVATAR_FORMAT"/>
+	<err id="106" description="Nickname Too Long！" name="NICK_NAME_TOO_LONG"/>
+	<err id="107" description="Authentication Fail！" name="AUTHENTICATION_FAIL"/>
+	<err id="108" description="Authentication Repeat！" name="AUTHENTICATION_REPEATE"/>
+	<err id="109" description="Authentication Succed Already！" name="AUTHENTICATION_SUCCED_ALREADY"/>
 	
-	<!-- 锁 -->
-	<err id="100" description="Lock Not Found！" name="LOCK_NOT_FOUND"/>
-	<err id="101" description="Lock Already Open！" name="LOCK_IS_OPEND"/>
-	<err id="102" description="Lock Already Closed！" name="LOCK_IS_CLOSED"/>
-	<err id="103" description="Lock Lack History！" name="LOCK_LACK_HISTORY"/>
-	<err id="104" description="No Deposit！" name="NO_DEPOSIT"/>
-	<err id="105" description="No Membership！" name="NO_MEMBERSHIP"/>
+	<!-- EBIKE -->
+	<err id="200" description="Not Exist EBike！" name="NOT_EXIST_EBIKE"/>
+	<err id="201" description="Already Membership！" name="ALREADY_MEMBERSHIP"/>
+	<err id="202" description="No Membership！" name="NO_MEMBERSHIP"/>
+	<err id="203" description="Already renew！" name="ALREADY_RENEW"/>
+
 	
 
-	<!--短信-->
-	<err id="300" description="Get PIN Code Too Fast！" name="ERR_CAPTCHA_GET_TOO_FAST"/>
-	<err id="301" description="Verification Code Error！" name="ERR_CAPTCHA_INVALID"/>
+	<!--SMS-->
+	<err id="300" description="Get PIN Code Too Fast！" name="GET_PIN_TOO_FAST"/>
+	<err id="301" description="SMS Pin Invalid！" name="SMS_PIN_INVALID"/>
 
-	<!--<err id="300" description="短信内容为空！" name="ERR_CAPTCHA_GET_TOO_FAST"/>-->
-	
+
 	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>
 	<err id="601" description="Exist Unpaid Order！" name="EXIST_UNPAID_ORDER"/>
 	<err id="602" description="No Unpaid Order！" name="NO_UNPAID_ORDER"/>
