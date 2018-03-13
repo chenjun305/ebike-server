@@ -2,7 +2,9 @@ package net.zriot.ebike.service.ebike;
 
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.exception.GException;
+import net.zriot.ebike.model.battery.Battery;
 import net.zriot.ebike.model.ebike.EBike;
+import net.zriot.ebike.pojo.request.battery.ChangeBatteryParams;
 import net.zriot.ebike.pojo.request.ebike.JoinMembershipParams;
 import net.zriot.ebike.pojo.request.ebike.RenewParams;
 import net.zriot.ebike.repository.ebike.EBikeRepository;
@@ -55,5 +57,12 @@ public class EBikeServiceImpl implements EBikeService {
         ebike.setUpdateTime(LocalDateTime.now());
         ebike = eBikeRepository.save(ebike);
         return ebike;
+    }
+
+    @Override
+    public EBike changeToBattery(EBike eBike, Battery battery) {
+        eBike.setBatterySn(battery.getSn());
+        eBike.setUpdateTime(LocalDateTime.now());
+        return eBikeRepository.save(eBike);
     }
 }

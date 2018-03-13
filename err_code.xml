@@ -25,6 +25,9 @@
 	<err id="21" description="Lack Token Params！" name="LACK_PARAMS_TOKEN"/>
 	<err id="22" description="Illegal Token Params！" name="ILLEGAL_TOKEN"/>
 	<err id="23" description="Illegal UID Info！" name="ILLEGAL_UID"/>
+	<!--SMS-->
+	<err id="24" description="Get PIN Code Too Fast！" name="GET_PIN_TOO_FAST"/>
+	<err id="25" description="SMS Pin Invalid！" name="SMS_PIN_INVALID"/>
 
 	<!-- 用户 -->
 	<err id="100" description="User Not Found！" name="USER_NOT_FOUND"/>
@@ -43,12 +46,13 @@
 	<err id="201" description="Already Membership！" name="ALREADY_MEMBERSHIP"/>
 	<err id="202" description="No Membership！" name="NO_MEMBERSHIP"/>
 	<err id="203" description="Already renew！" name="ALREADY_RENEW"/>
+	<err id="204" description="Please return old battery first！" name="NOT_RETURN_OLD_BATTERY"/>
+	<err id="205" description="Need renew month fee" name="NEED_RENEW_MONTH_FEE"/>
+	<err id="206" description="Not Your EBike" name="NOT_YOUR_EBIKE"/>
 
-	
-
-	<!--SMS-->
-	<err id="300" description="Get PIN Code Too Fast！" name="GET_PIN_TOO_FAST"/>
-	<err id="301" description="SMS Pin Invalid！" name="SMS_PIN_INVALID"/>
+	<!--Battery-->
+	<err id="300" description="Not Exist Battery！" name="NOT_EXIST_BATTERY"/>
+	<err id="301" description="Not Returned Battery！" name="NOT_RETURNED_BATTERY"/>
 
 
 	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>
