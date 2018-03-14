@@ -11,3 +11,7 @@
 * 排好序后取出相应value值拼接
 * 拼接后的字符串后再拼接signMat的值
 * 将得到的字符串算出其32位MD5值就是sign的值
+
+### 服务器部署
+* 配置数据库连接,err_code.xml文件路径等到env_app文件
+* deploy-ebike.sh start|stop|... ebike-server.xxx
