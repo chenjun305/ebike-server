@@ -112,6 +112,62 @@ CREATE TABLE `battery` (
   KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池表';
 
+CREATE TABLE `order_membership` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
+  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0' COMMENT '金额',
+  `currency` varchar(8) NOT NULL DEFAULT 'USD' COMMENT '货币类型',
+  `ebike_sn` VARCHAR(64) NOT NULL COMMENT '电单车sn',
+  `uid` varchar(32) NOT NULL COMMENT '用户uid',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态 0未支付 1已支付',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单状态更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn` (`sn`),
+  KEY `ebike_sn_idx` (`ebike_sn`),
+  KEY `uid_idx` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='加入会员订单';
+
+CREATE TABLE `order_month_pay` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
+  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0' COMMENT '金额',
+  `currency` varchar(8) NOT NULL DEFAULT 'USD' COMMENT '货币类型',
+  `ebike_sn` VARCHAR(64) NOT NULL COMMENT '电单车sn',
+  `uid` varchar(32) NOT NULL COMMENT '用户uid',
+  `start_date` DATE DEFAULT NULL COMMENT '包月开始时间',
+  `end_date` DATE DEFAULT NULL COMMENT '包月结束时间',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态 0未支付 1已支付',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单状态更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn` (`sn`),
+  KEY `ebike_sn_idx` (`ebike_sn`),
+  KEY `uid_idx` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='包月订单';
+
+CREATE TABLE `order_change_battery` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
+  `ebike_sn` VARCHAR(64) NOT NULL COMMENT '电单车sn',
+  `old_battery_sn` VARCHAR(64) DEFAULT NULL COMMENT '旧电池sn',
+  `new_battery_sn` VARCHAR(64) DEFAULT NULL COMMENT '新电池sn',
+  `staff_uid` VARCHAR(32) DEFAULT NULL COMMENT '店员uid',
+  `shop_id` INT(11) DEFAULT '0' COMMENT '门店ID',
+  `uid` varchar(32) NOT NULL COMMENT '用户uid',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态 0未完成 1已完成',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单状态更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn` (`sn`),
+  KEY `ebike_sn_idx` (`ebike_sn`),
+  KEY `old_battery_sn_idx` (`old_battery_sn`),
+  KEY `new_battery_sn_idx` (`new_battery_sn`),
+  KEY `staff_uid_idx` (`staff_uid`),
+  KEY `shop_id_idx` (`shop_id`),
+  KEY `uid_idx` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='更换电池订单';
+
 CREATE TABLE `payment_order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
   `uid` varchar(32) NOT NULL DEFAULT '' COMMENT '用户uid',
