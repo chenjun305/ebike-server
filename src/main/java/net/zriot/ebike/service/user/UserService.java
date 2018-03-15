@@ -10,5 +10,5 @@ public interface UserService {
     User login(String tel);
     User getUserByUid(String uid);
     User updateByUid(String uid, UserUpdateParams params);
-    User minusMoney(String uid, BigDecimal fee) throws GException;
+    User minusMoney(User user, BigDecimal fee);
 }

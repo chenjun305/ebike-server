@@ -15,4 +15,6 @@ public class RenewParams {
 
     @NotNull
     private BigDecimal monthFee;
+
+    private String currency;
 }

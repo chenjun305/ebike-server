@@ -16,4 +16,6 @@ public class JoinMembershipParams {
     private BigDecimal membership;
     @NotNull
     private BigDecimal monthFee;
+
+    private String currency;
 }

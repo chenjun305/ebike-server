@@ -32,19 +32,14 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
-    public EBike joinMembership(JoinMembershipParams params) throws GException {
-        EBike ebike = eBikeRepository.findOneBySn(params.getEbikeSn());
-        if (ebike == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
-        }
-        ebike.setMembership(params.getMembership());
-        ebike.setMonthFee(params.getMonthFee());
-        ebike.setIsMembership((byte)1);
-        ebike.setMonthStartDate(LocalDate.now());
-        ebike.setMonthEndDate(LocalDate.now().plusMonths(1));
-        ebike.setUpdateTime(LocalDateTime.now());
-        ebike = eBikeRepository.save(ebike);
-        return ebike;
+    public EBike joinMembership(EBike eBike, JoinMembershipParams params) {
+        eBike.setMembership(params.getMembership());
+        eBike.setIsMembership((byte)1);
+        eBike.setMonthFee(params.getMonthFee());
+        eBike.setMonthStartDate(LocalDate.now());
+        eBike.setMonthEndDate(LocalDate.now().plusMonths(1));
+        eBike.setUpdateTime(LocalDateTime.now());
+        return eBikeRepository.save(eBike);
     }
 
     @Override

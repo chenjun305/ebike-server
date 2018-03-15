@@ -55,16 +55,15 @@ public class UserServiceImpl implements UserService {
             user.setNickname(params.getNickname());
         }
         user.setUpdateTime(LocalDateTime.now());
-        // need save ?
         userRepository.save(user);
         return user;
     }
 
     @Override
-    public User minusMoney(String uid, BigDecimal fee) throws GException {
-        User user = userRepository.findOneByUid(uid);
+    public User minusMoney(User user, BigDecimal fee) {
         BigDecimal money = user.getMoney();
         user.setMoney(money.subtract(fee));
+        user.setUpdateTime(LocalDateTime.now());
         return userRepository.save(user);
     }
 }

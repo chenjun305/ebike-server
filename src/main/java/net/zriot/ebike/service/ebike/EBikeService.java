@@ -14,7 +14,7 @@ import java.util.List;
 public interface EBikeService {
     List<EBike> findAllByUid(String uid);
     EBike findOneBySn(String sn);
-    EBike joinMembership(JoinMembershipParams params) throws GException;
+    EBike joinMembership(EBike eBike, JoinMembershipParams params);
     EBike renew(RenewParams params);
     EBike changeToBattery(EBike eBike, Battery battery);
 }
