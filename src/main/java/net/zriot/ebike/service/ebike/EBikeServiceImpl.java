@@ -2,9 +2,8 @@ package net.zriot.ebike.service.ebike;
 
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.exception.GException;
-import net.zriot.ebike.model.battery.Battery;
-import net.zriot.ebike.model.ebike.EBike;
-import net.zriot.ebike.pojo.request.battery.ChangeBatteryParams;
+import net.zriot.ebike.entity.battery.Battery;
+import net.zriot.ebike.entity.ebike.EBike;
 import net.zriot.ebike.pojo.request.ebike.JoinMembershipParams;
 import net.zriot.ebike.pojo.request.ebike.RenewParams;
 import net.zriot.ebike.repository.ebike.EBikeRepository;

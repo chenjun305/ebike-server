@@ -1,12 +1,10 @@
-package net.zriot.ebike.model.user;
+package net.zriot.ebike.entity.user;
 
 import lombok.Data;
-import net.zriot.ebike.common.enums.Gender;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity

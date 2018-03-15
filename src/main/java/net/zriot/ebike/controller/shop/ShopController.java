@@ -1,6 +1,6 @@
 package net.zriot.ebike.controller.shop;
 
-import net.zriot.ebike.model.shop.Shop;
+import net.zriot.ebike.entity.shop.Shop;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.service.shop.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

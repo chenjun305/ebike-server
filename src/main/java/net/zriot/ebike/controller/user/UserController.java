@@ -9,7 +9,7 @@ import net.zriot.ebike.common.util.AuthUtil;
 import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.user.UserUpdateParams;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.model.user.User;
+import net.zriot.ebike.entity.user.User;
 import net.zriot.ebike.service.sms.SmsService;
 import net.zriot.ebike.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

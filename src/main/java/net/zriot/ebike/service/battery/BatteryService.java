@@ -1,8 +1,7 @@
 package net.zriot.ebike.service.battery;
 
-import net.zriot.ebike.common.exception.GException;
-import net.zriot.ebike.model.battery.Battery;
-import net.zriot.ebike.model.ebike.EBike;
+import net.zriot.ebike.entity.battery.Battery;
+import net.zriot.ebike.entity.ebike.EBike;
 
 /**
  * Created by ChenJun on 2018/3/12.

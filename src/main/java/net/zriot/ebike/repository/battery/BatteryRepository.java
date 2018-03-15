@@ -1,6 +1,6 @@
 package net.zriot.ebike.repository.battery;
 
-import net.zriot.ebike.model.battery.Battery;
+import net.zriot.ebike.entity.battery.Battery;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

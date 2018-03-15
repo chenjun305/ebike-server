@@ -1,7 +1,7 @@
 package net.zriot.ebike.service.battery;
 
-import net.zriot.ebike.model.battery.Battery;
-import net.zriot.ebike.model.ebike.EBike;
+import net.zriot.ebike.entity.battery.Battery;
+import net.zriot.ebike.entity.ebike.EBike;
 import net.zriot.ebike.repository.battery.BatteryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

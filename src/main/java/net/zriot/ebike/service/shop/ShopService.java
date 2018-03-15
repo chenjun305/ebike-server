@@ -1,6 +1,6 @@
 package net.zriot.ebike.service.shop;
 
-import net.zriot.ebike.model.shop.Shop;
+import net.zriot.ebike.entity.shop.Shop;
 
 import java.util.List;
 

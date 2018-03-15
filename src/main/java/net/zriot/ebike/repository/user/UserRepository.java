@@ -1,6 +1,6 @@
 package net.zriot.ebike.repository.user;
 
-import net.zriot.ebike.model.user.User;
+import net.zriot.ebike.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

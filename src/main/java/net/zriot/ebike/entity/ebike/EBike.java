@@ -1,4 +1,4 @@
-package net.zriot.ebike.model.ebike;
+package net.zriot.ebike.entity.ebike;
 
 import lombok.Data;
 

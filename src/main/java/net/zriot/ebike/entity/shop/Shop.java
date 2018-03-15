@@ -1,4 +1,4 @@
-package net.zriot.ebike.model.battery;
+package net.zriot.ebike.entity.shop;
 
 import lombok.Data;
 
@@ -6,26 +6,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * Created by ChenJun on 2018/3/12.
- */
 @Entity
-@Table(name = "battery")
+@Table(name = "shop")
 @Data
-public class Battery {
+public class Shop implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String sn;
     private String name;
-    private String note;
-    private Long shopId;
-    private String ebikeSn;
-    private String uid;
-    private Integer battery;
+    private String tel;
+    private String address;
+    private String openTime;
+    private String description;
+    private String latitude;
+    private String longitude;
+    private String geohash;
+    private Integer batteryAvailable;
     private Byte status;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

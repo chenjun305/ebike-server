@@ -15,7 +15,7 @@ import net.zriot.ebike.common.util.AES256;
 import net.zriot.ebike.common.util.DateUtils;
 import net.zriot.ebike.common.util.Utils;
 import net.zriot.ebike.helper.UserHelper;
-import net.zriot.ebike.model.user.User;
+import net.zriot.ebike.entity.user.User;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 

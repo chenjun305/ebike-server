@@ -4,7 +4,7 @@ package net.zriot.ebike.service.user;
 import net.zriot.ebike.common.enums.Gender;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.IdGen;
-import net.zriot.ebike.model.user.User;
+import net.zriot.ebike.entity.user.User;
 import net.zriot.ebike.pojo.request.user.UserUpdateParams;
 import net.zriot.ebike.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
