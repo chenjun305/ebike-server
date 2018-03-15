@@ -1,5 +1,6 @@
 package net.zriot.ebike.common.constant;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 public interface Constants {
@@ -14,4 +15,10 @@ public interface Constants {
 
     /**30天的秒数*/
     int DAY30_2_SECOND = 60 * 60 * 24 * 30;
+
+    // App Setting
+    BigDecimal MEMBERSHIP_FEE = new BigDecimal(20.0);
+    BigDecimal MONTH_FEE = new BigDecimal(7.0);
+    String CURRENCY = "USD";
+
 }
