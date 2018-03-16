@@ -21,6 +21,7 @@ public class AppController {
         data.put("membershipFee", Constants.MEMBERSHIP_FEE);
         data.put("monthFee", Constants.MONTH_FEE);
         data.put("currency", Constants.CURRENCY);
+        data.put("currencySymbol", Constants.CURRENCY_SYMBOL);
         data.put("serviceAgreementUrl", "");
         return MessageDto.responseSuccess(data);
     }

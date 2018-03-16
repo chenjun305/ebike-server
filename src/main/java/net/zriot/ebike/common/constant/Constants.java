@@ -20,5 +20,6 @@ public interface Constants {
     BigDecimal MEMBERSHIP_FEE = new BigDecimal(20.0);
     BigDecimal MONTH_FEE = new BigDecimal(7.0);
     String CURRENCY = "USD";
+    String CURRENCY_SYMBOL = "$";
 
 }
