@@ -61,11 +61,11 @@ public class ErrorConstants {
 	public static final int NOT_YOUR_EBIKE = 206;//Not Your EBike
 	public static final int NOT_EXIST_BATTERY = 300;//Not Exist Battery！
 	public static final int NOT_RETURNED_BATTERY = 301;//Not Returned Battery！
-	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！
-	public static final int EXIST_UNPAID_ORDER = 601;//Exist Unpaid Order！
-	public static final int NO_UNPAID_ORDER = 602;//No Unpaid Order！
-	public static final int ERR_PAY_ORDER = 603;//Order Payment Error！
-	public static final int ERR_NO_ORDER = 604;//Order Not Found！
+	public static final int ORDER_PAID_REPEATED = 600;//UserOrder Paid Repeated！
+	public static final int EXIST_UNPAID_ORDER = 601;//Exist Unpaid UserOrder！
+	public static final int NO_UNPAID_ORDER = 602;//No Unpaid UserOrder！
+	public static final int ERR_PAY_ORDER = 603;//UserOrder Payment Error！
+	public static final int ERR_NO_ORDER = 604;//UserOrder Not Found！
 
 	
 	static Map<Integer, String> map = new HashMap<Integer, String>();

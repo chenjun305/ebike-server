@@ -3,11 +3,11 @@ package net.zriot.ebike.controller.ebike;
 import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.constant.Constants;
 import net.zriot.ebike.common.enums.Auth;
+import net.zriot.ebike.common.enums.OrderType;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.entity.ebike.EBike;
-import net.zriot.ebike.entity.order.OrderMembership;
-import net.zriot.ebike.entity.order.OrderMonthPay;
+import net.zriot.ebike.entity.order.UserOrder;
 import net.zriot.ebike.entity.user.User;
 import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.ebike.JoinMembershipParams;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,24 +66,21 @@ public class EBikeController {
         User user = userService.getUserByUid(authParams.getUid());
         BigDecimal money = user.getMoney();
 
-        BigDecimal membership = params.getMembership();
-        BigDecimal monthFee = params.getMonthFee();
-        BigDecimal fee = membership.add(monthFee);
+        BigDecimal fee = params.getMembership().add(params.getMonthFee());
         String currency = params.getCurrency() == null ? Constants.CURRENCY : params.getCurrency();
 
         if (money.compareTo(fee) == -1) {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
+        UserOrder order = orderService.createUserOrder(OrderType.MEMBERSHIP_AND_MONTH_PAY, ebike, new Money(fee, currency));
         ebike = eBikeService.joinMembership(ebike, params);
-        OrderMembership orderMembership = orderService.joinMembership(ebike, new Money(membership, currency));
-        OrderMonthPay orderMonthPay = orderService.renewMonthly(ebike, new Money(monthFee, currency));
         user = userService.minusMoney(user, fee);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
-        data.put("orderSn", orderMembership.getSn());
-        data.put("orderTime", orderMembership.getCreateTime());
+        data.put("orderSn", order.getSn());
+        data.put("orderTime", order.getCreateTime());
         data.put("monthStartDate", ebike.getMonthStartDate());
         data.put("monthEndDate", ebike.getMonthEndDate());
         return MessageDto.responseSuccess(data);
@@ -101,7 +97,7 @@ public class EBikeController {
         if (ebike.getIsMembership() == 0) {
             throw new GException(ErrorConstants.NO_MEMBERSHIP);
         }
-        if (ebike.getMonthEndDate().isAfter(LocalDate.now())) {
+        if (ebike.getMonthEndDate() != null && ebike.getMonthEndDate().isAfter(LocalDate.now())) {
             throw new GException(ErrorConstants.ALREADY_RENEW);
         }
 
@@ -114,14 +110,14 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
+        UserOrder order = orderService.createUserOrder(OrderType.MONTH_PAY, ebike, new Money(monthFee, currency));
         ebike = eBikeService.renew(params);
-        OrderMonthPay orderMonthPay = orderService.renewMonthly(ebike, new Money(monthFee, currency));
         user = userService.minusMoney(user, monthFee);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
-        data.put("orderSn", orderMonthPay.getSn());
-        data.put("orderTime", orderMonthPay.getCreateTime());
+        data.put("orderSn", order.getSn());
+        data.put("orderTime", order.getCreateTime());
         data.put("monthStartDate", ebike.getMonthStartDate());
         data.put("monthEndDate", ebike.getMonthEndDate());
         return MessageDto.responseSuccess(data);

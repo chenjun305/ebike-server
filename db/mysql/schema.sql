@@ -112,25 +112,10 @@ CREATE TABLE `battery` (
   KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池表';
 
-CREATE TABLE `order_membership` (
+CREATE TABLE `user_order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
   `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
-  `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0' COMMENT '金额',
-  `currency` varchar(8) NOT NULL DEFAULT 'USD' COMMENT '货币类型',
-  `ebike_sn` VARCHAR(64) NOT NULL COMMENT '电单车sn',
-  `uid` varchar(32) NOT NULL COMMENT '用户uid',
-  `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态 0未支付 1已支付',
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单状态更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sn` (`sn`),
-  KEY `ebike_sn_idx` (`ebike_sn`),
-  KEY `uid_idx` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='加入会员订单';
-
-CREATE TABLE `order_month_pay` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
+  `type` TINYINT NOT NULL DEFAULT '0' COMMENT '订单类型  1 入会+包月首月  2 包月',
   `amount` DECIMAL(8, 2) NOT NULL DEFAULT '0' COMMENT '金额',
   `currency` varchar(8) NOT NULL DEFAULT 'USD' COMMENT '货币类型',
   `ebike_sn` VARCHAR(64) NOT NULL COMMENT '电单车sn',
@@ -144,7 +129,7 @@ CREATE TABLE `order_month_pay` (
   UNIQUE KEY `sn` (`sn`),
   KEY `ebike_sn_idx` (`ebike_sn`),
   KEY `uid_idx` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='包月订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户订单';
 
 CREATE TABLE `order_change_battery` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
