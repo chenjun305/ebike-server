@@ -75,9 +75,6 @@ public class ErrorConstants {
 			Document document = null;
 			Element root = null;
 			String ERR_CODE_URL = System.getenv("err_code");
-			if (ERR_CODE_URL == null) {
-            	ERR_CODE_URL = "/Users/yueqi/zriot/ebike-server/err_code.xml";
-            }
 			SAXReader reader = new SAXReader();
 			try {
 				document = reader.read(new File(ERR_CODE_URL));

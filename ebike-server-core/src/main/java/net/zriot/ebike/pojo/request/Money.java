@@ -1,4 +1,4 @@
-package net.zriot.ebike.pojo.request.order;
+package net.zriot.ebike.pojo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

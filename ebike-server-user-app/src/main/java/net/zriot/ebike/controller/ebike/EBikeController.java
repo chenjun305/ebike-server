@@ -12,7 +12,7 @@ import net.zriot.ebike.entity.user.User;
 import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.ebike.JoinMembershipParams;
 import net.zriot.ebike.pojo.request.ebike.RenewParams;
-import net.zriot.ebike.pojo.request.order.Money;
+import net.zriot.ebike.pojo.request.Money;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.service.ebike.EBikeService;
 import net.zriot.ebike.service.order.OrderService;
@@ -74,7 +74,7 @@ public class EBikeController {
         }
 
         UserOrder order = orderService.createUserOrder(OrderType.MEMBERSHIP_AND_MONTH_PAY, ebike, new Money(fee, currency));
-        ebike = eBikeService.joinMembership(ebike, params);
+        ebike = eBikeService.joinMembership(ebike);
         user = userService.minusMoney(user, fee);
 
         Map<String, Object> data = new HashMap<>();
@@ -111,7 +111,7 @@ public class EBikeController {
         }
 
         UserOrder order = orderService.createUserOrder(OrderType.MONTH_PAY, ebike, new Money(monthFee, currency));
-        ebike = eBikeService.renew(params);
+        ebike = eBikeService.renew(ebike);
         user = userService.minusMoney(user, monthFee);
 
         Map<String, Object> data = new HashMap<>();

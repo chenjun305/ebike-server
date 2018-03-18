@@ -77,11 +77,21 @@ public class UserController {
     @PostMapping("/update")
     @AuthRequire(Auth.LOGIN)
     public MessageDto update(UserUpdateParams params, AuthParams authParams) throws GException {
+        User user = userService.getUserByUid(authParams.getUid());
         Byte gender = params.getGender();
         if (gender != null && Gender.getType(gender) == null) {
             throw new GException(ErrorConstants.ERR_PARAMS);
         }
-        User user = userService.updateByUid(authParams.getUid(), params);
+        if (params.getGender() != null) {
+            user.setGender(params.getGender());
+        }
+        if (params.getAddress() != null) {
+            user.setAddress(params.getAddress());
+        }
+        if (params.getNickname() != null) {
+            user.setNickname(params.getNickname());
+        }
+        user = userService.update(user);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         return MessageDto.responseSuccess(data);

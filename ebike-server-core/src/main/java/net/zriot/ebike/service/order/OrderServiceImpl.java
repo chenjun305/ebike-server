@@ -4,7 +4,7 @@ import net.zriot.ebike.common.enums.OrderType;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.ebike.EBike;
 import net.zriot.ebike.entity.order.UserOrder;
-import net.zriot.ebike.pojo.request.order.Money;
+import net.zriot.ebike.pojo.request.Money;
 import net.zriot.ebike.repository.order.UserOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

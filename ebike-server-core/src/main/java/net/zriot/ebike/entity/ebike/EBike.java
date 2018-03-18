@@ -21,8 +21,6 @@ public class EBike {
     private String uid;
     private LocalDateTime buyTime;
     private Byte isMembership;
-    private BigDecimal membership;
-    private BigDecimal monthFee;
     private LocalDate monthStartDate;
     private LocalDate monthEndDate;
     private String batterySn;

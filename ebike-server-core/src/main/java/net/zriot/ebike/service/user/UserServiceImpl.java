@@ -5,7 +5,6 @@ import net.zriot.ebike.common.enums.Gender;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.user.User;
-import net.zriot.ebike.pojo.request.user.UserUpdateParams;
 import net.zriot.ebike.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,17 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateByUid(String uid, UserUpdateParams params) {
-        User user = userRepository.findOneByUid(uid);
-        if (params.getGender() != null) {
-            user.setGender(params.getGender());
-        }
-        if (params.getAddress() != null) {
-            user.setAddress(params.getAddress());
-        }
-        if (params.getNickname() != null) {
-            user.setNickname(params.getNickname());
-        }
+    public User update(User user) {
         user.setUpdateTime(LocalDateTime.now());
         userRepository.save(user);
         return user;

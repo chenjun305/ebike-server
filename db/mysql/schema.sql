@@ -63,8 +63,6 @@ CREATE TABLE `ebike` (
   `uid` varchar(32) DEFAULT NULL COMMENT '用户ID',
   `buy_time` DATETIME DEFAULT NULL COMMENT '购买时间',
   `is_membership` tinyint(2) unsigned DEFAULT '0' COMMENT '是否参加会员',
-  `membership` DECIMAL(8,2) DEFAULT NULL COMMENT '会员费',
-  `month_fee` DECIMAL(8,2) DEFAULT NULL COMMENT '包月费',
   `month_start_date` DATE DEFAULT NULL COMMENT '包月开始时间',
   `month_end_date` DATE DEFAULT NULL COMMENT '包月结束时间',
   `battery_sn` VARCHAR(64) DEFAULT NULL COMMENT '电池sn',
