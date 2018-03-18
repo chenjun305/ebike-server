@@ -11,5 +11,22 @@
 
     <artifactId>ebike-server-admin</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.zriot</groupId>
+            <artifactId>ebike-server-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>ebike-server-admin</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
