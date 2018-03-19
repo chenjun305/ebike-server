@@ -1,5 +1,6 @@
 package net.zriot.ebike.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class User implements Serializable {
     private String currency;
     private String address;
     private Byte status;
+
+    @JsonIgnore
     private LocalDateTime createTime;
+    @JsonIgnore
     private LocalDateTime updateTime;
 }

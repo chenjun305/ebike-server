@@ -1,5 +1,6 @@
 package net.zriot.ebike.entity.shop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,6 +25,9 @@ public class Shop implements Serializable {
     private String geohash;
     private Integer batteryAvailable;
     private Byte status;
+
+    @JsonIgnore
     private LocalDateTime createTime;
+    @JsonIgnore
     private LocalDateTime updateTime;
 }
