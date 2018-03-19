@@ -1,7 +1,7 @@
 server:
   port: ${server_port:8081}
   servlet:
-    context-path: ${context_path:/customer}
+    context-path: ${context_path:/user-app}
 spring:
   jmx:
     enabled: false
