@@ -51,7 +51,8 @@ CREATE TABLE `shop_staff` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tel` (`tel`) USING BTREE,
-  UNIQUE KEY `uid_idx` (`uid`)
+  UNIQUE KEY `uid_idx` (`uid`),
+  KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店员表';
 
 CREATE TABLE `ebike` (
