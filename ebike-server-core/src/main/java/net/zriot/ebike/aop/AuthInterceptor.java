@@ -120,7 +120,7 @@ public class AuthInterceptor extends BaseInterceptor {
 
             String sign = signCells[0];
             String check = Utils.getMD5(orginSource.toString());
-            System.out.println("check="+check);
+            System.out.println("right sign="+check);
             System.out.println("sign="+sign);
             if (!check.equals(sign)) {
                 sendErrorMsgByCode(response, ErrorConstants.ERR_SIGN);

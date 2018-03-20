@@ -42,6 +42,7 @@ public class ErrorConstants {
 	public static final int ILLEGAL_UID = 23;//Illegal UID Info！
 	public static final int GET_PIN_TOO_FAST = 24;//Get PIN Code Too Fast！
 	public static final int SMS_PIN_INVALID = 25;//SMS Pin Invalid！
+	public static final int SEND_PIN_FAILED = 26;//Send Pin Failed！
 	public static final int USER_NOT_FOUND = 100;//User Not Found！
 	public static final int USER_CREATE_FAIL = 101;//User Creation Failed！
 	public static final int NOT_SUPPORT_MONEY_DET_TYPE = 102;//Not Support Money Det Type！
@@ -61,11 +62,12 @@ public class ErrorConstants {
 	public static final int NOT_YOUR_EBIKE = 206;//Not Your EBike
 	public static final int NOT_EXIST_BATTERY = 300;//Not Exist Battery！
 	public static final int NOT_RETURNED_BATTERY = 301;//Not Returned Battery！
-	public static final int ORDER_PAID_REPEATED = 600;//UserOrder Paid Repeated！
-	public static final int EXIST_UNPAID_ORDER = 601;//Exist Unpaid UserOrder！
-	public static final int NO_UNPAID_ORDER = 602;//No Unpaid UserOrder！
-	public static final int ERR_PAY_ORDER = 603;//UserOrder Payment Error！
-	public static final int ERR_NO_ORDER = 604;//UserOrder Not Found！
+	public static final int NOT_EXIST_STAFF = 301;//Not Exist Staff！
+	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！
+	public static final int EXIST_UNPAID_ORDER = 601;//Exist Unpaid Order！
+	public static final int NO_UNPAID_ORDER = 602;//No Unpaid Order！
+	public static final int ERR_PAY_ORDER = 603;//Order Payment Error！
+	public static final int ERR_NO_ORDER = 604;//Order Not Found！
 
 	
 	static Map<Integer, String> map = new HashMap<Integer, String>();

@@ -31,22 +31,20 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/pin")
-    public MessageDto pin(String tel) {
+    public MessageDto pin(String tel) throws GException {
         boolean result = smsService.sendPin(tel);
         if (result) {
             return MessageDto.responseSuccess();
         } else {
-            MessageDto message = new MessageDto(ErrorConstants.FAIL, "send failed");
-            return message;
+            throw new GException(ErrorConstants.SEND_PIN_FAILED);
         }
     }
 
     @PostMapping("/login")
-    public MessageDto login(String tel, String pin) {
-        System.out.println(tel+pin);
-        if (! smsService.isPinValid(tel, pin)) {
-            return new MessageDto(ErrorConstants.SMS_PIN_INVALID, "sms pin invalid");
+    public MessageDto login(String tel, String pin) throws GException {
 
+        if (! smsService.isPinValid(tel, pin)) {
+            throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
         User user = userService.login(tel);
 

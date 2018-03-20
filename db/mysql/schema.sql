@@ -36,7 +36,7 @@ CREATE TABLE `shop` (
   KEY `geohash_idx` (`geohash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='门店表';
 
-CREATE TABLE `shop_staff` (
+CREATE TABLE `staff` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
   `uid` varchar(32) NOT NULL COMMENT 'ID',
   `tel` varchar(12) NOT NULL COMMENT '手机号',
@@ -45,9 +45,9 @@ CREATE TABLE `shop_staff` (
   `gender` tinyint(2) DEFAULT '0' COMMENT '性别  1男  2女 0未知',
   `id_card_num` VARCHAR(64) DEFAULT NULL COMMENT 'ID Card Number',
   `id_card_pics` VARCHAR(256) DEFAULT NULL COMMENT 'ID Card 照片',
-  `shop_id` int(11) unsigned NOT NULL COMMENT '所属商店ID',
-  `is_shop_owner` tinyint(1) DEFAULT '0' COMMENT '是否店长:0否 1是',
-  `staff_id` VARCHAR(32) DEFAULT NULL COMMENT '员工编号',
+  `shop_id` int(11) unsigned DEFAULT '0' COMMENT '所属商店ID',
+  `role` tinyint(2) DEFAULT '0' COMMENT '用户角色:0未知 1店长 2店员',
+  `staff_num` VARCHAR(32) DEFAULT NULL COMMENT '员工编号',
   `address` varchar(128) DEFAULT NULL COMMENT '用户地址',
   `status` tinyint(1) DEFAULT '1' COMMENT '用户状态:0禁用 1正常',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -56,7 +56,7 @@ CREATE TABLE `shop_staff` (
   UNIQUE KEY `tel` (`tel`) USING BTREE,
   UNIQUE KEY `uid_idx` (`uid`),
   KEY `shop_idx` (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店员表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作人员表';
 
 CREATE TABLE `ebike` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
