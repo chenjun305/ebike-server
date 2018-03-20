@@ -3,7 +3,9 @@ package net.zriot.ebike.controller;
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.AuthUtil;
+import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.staff.Staff;
+import net.zriot.ebike.pojo.request.staff.StaffParams;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.service.sms.SmsService;
 import net.zriot.ebike.service.staff.StaffService;
@@ -62,6 +64,29 @@ public class StaffController {
         data.put("uid", uid);
         data.put("signMat",signMat);
         data.put("token", token);
+        return MessageDto.responseSuccess(data);
+    }
+
+    @PostMapping("/create")
+    public MessageDto create(StaffParams params) throws GException {
+        Staff staff = staffService.findOneByTel(params.getTel());
+        if (staff != null) {
+            throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
+        }
+        staff = new Staff();
+        staff.setUid(IdGen.uuid());
+        staff.setTel(params.getTel());
+        staff.setRealName(params.getRealName());
+        staff.setGender(params.getGender());
+        staff.setIdCardNum(params.getIdCardNum());
+        staff.setShopId(params.getShopId());
+        staff.setRole(params.getRole());
+        staff.setStaffNum(params.getStaffNum());
+        staff.setAddress(params.getAddress());
+        staff.setStatus((byte)1);
+        Staff newStaff = staffService.create(staff);
+        Map<String, Object> data = new HashMap<>();
+        data.put("staff", newStaff);
         return MessageDto.responseSuccess(data);
     }
 }

@@ -18,4 +18,9 @@ public class StaffServiceImpl implements StaffService {
     public Staff findOneByTel(String tel) {
         return staffRepository.findOneByTel(tel);
     }
+
+    @Override
+    public Staff create(Staff staff) {
+        return staffRepository.save(staff);
+    }
 }

@@ -57,6 +57,7 @@
 
 	<!--staff-->
 	<err id="301" description="Not Exist Staff！" name="NOT_EXIST_STAFF"/>
+	<err id="302" description="Already Exist Staff！" name="ALREADY_EXIST_STAFF"/>
 
 	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>
 	<err id="601" description="Exist Unpaid Order！" name="EXIST_UNPAID_ORDER"/>

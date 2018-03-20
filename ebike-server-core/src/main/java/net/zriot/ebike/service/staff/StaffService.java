@@ -7,4 +7,5 @@ import net.zriot.ebike.entity.staff.Staff;
  */
 public interface StaffService {
     Staff findOneByTel(String tel);
+    Staff create(Staff staff);
 }
