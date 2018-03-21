@@ -10,4 +10,5 @@ import java.util.List;
 public interface ShopService {
     List<Shop> near(Double latitude, Double longitude);
     List<Shop> findAll();
+    Shop create(Shop shop);
 }

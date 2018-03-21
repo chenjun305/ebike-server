@@ -24,4 +24,9 @@ public class ShopServiceImpl implements ShopService {
     public List<Shop> findAll() {
         return shopRepository.findAll();
     }
+
+    @Override
+    public Shop create(Shop shop) {
+        return shopRepository.save(shop);
+    }
 }

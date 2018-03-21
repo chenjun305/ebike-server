@@ -1,6 +1,7 @@
 package net.zriot.ebike.controller.shop;
 
 import net.zriot.ebike.entity.shop.Shop;
+import net.zriot.ebike.pojo.request.ShopParams;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.service.shop.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,21 @@ public class AdminShopController {
     ShopService shopService;
 
     @PostMapping("/create")
-    public MessageDto create() {
-        return MessageDto.responseSuccess();
+    public MessageDto create(ShopParams params) {
+        Shop shop = new Shop();
+        shop.setName(params.getName());
+        shop.setTel(params.getTel());
+        shop.setAddress(params.getAddress());
+        shop.setDescription(params.getDescription());
+        shop.setLatitude(params.getLatitude());
+        shop.setLongitude(params.getLongitude());
+        shop.setOpenTime(params.getOpenTime());
+        shop.setBatteryAvailable(0);
+        shop.setStatus((byte)1);
+        Shop newShop = shopService.create(shop);
+        Map<String, Object> data = new HashMap<>();
+        data.put("shop", newShop);
+        return MessageDto.responseSuccess(data);
     }
 
     @PostMapping("/list")
