@@ -9,6 +9,7 @@ import java.util.List;
  * Created by ChenJun on 2018/3/11.
  */
 public interface EBikeService {
+    List<EBike> findAll();
     List<EBike> findAllByUid(String uid);
     EBike findOneBySn(String sn);
     EBike joinMembership(EBike eBike);

@@ -19,4 +19,9 @@ public class ShopServiceImpl implements ShopService {
     public List<Shop> near(Double latitude, Double longitude) {
         return shopRepository.findAll();
     }
+
+    @Override
+    public List<Shop> findAll() {
+        return shopRepository.findAll();
+    }
 }

@@ -17,6 +17,12 @@ import java.util.List;
 public class EBikeServiceImpl implements EBikeService {
     @Autowired
     EBikeRepository eBikeRepository;
+
+    @Override
+    public List<EBike> findAll() {
+        return eBikeRepository.findAll();
+    }
+
     @Override
     public List<EBike> findAllByUid(String uid) {
         return eBikeRepository.findAllByUid(uid);
