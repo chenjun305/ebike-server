@@ -1,8 +1,8 @@
-package net.zriot.ebike.controller.shop;
+package net.zriot.ebike.controller.ebike;
 
-import net.zriot.ebike.entity.shop.Shop;
+import net.zriot.ebike.entity.ebike.EBike;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.shop.ShopService;
+import net.zriot.ebike.service.ebike.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,22 +16,17 @@ import java.util.Map;
  * Created by ChenJun on 2018/3/20.
  */
 @RestController
-@RequestMapping("/shop")
-public class ShopController {
+@RequestMapping("/ebike")
+public class AdminEBikeController {
 
     @Autowired
-    ShopService shopService;
-
-    @PostMapping("/create")
-    public MessageDto create() {
-        return MessageDto.responseSuccess();
-    }
+    EBikeService eBikeService;
 
     @PostMapping("/list")
     public MessageDto list() {
-        List<Shop> shops = shopService.findAll();
+        List<EBike> ebikes = eBikeService.findAll();
         Map<String, Object> data = new HashMap<>();
-        data.put("shops", shops);
+        data.put("ebikes", ebikes);
         return MessageDto.responseSuccess(data);
     }
 }
