@@ -5,6 +5,8 @@ import net.zriot.ebike.repository.staff.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by ChenJun on 2018/3/19.
  */
@@ -22,5 +24,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public Staff create(Staff staff) {
         return staffRepository.save(staff);
+    }
+
+    @Override
+    public List<Staff> findAll() {
+        return staffRepository.findAll();
     }
 }
