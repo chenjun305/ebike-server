@@ -1,5 +1,6 @@
 package net.zriot.ebike.entity.battery;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,6 +25,8 @@ public class Battery {
     private String uid;
     private Integer battery;
     private Byte status;
+    @JsonIgnore
     private LocalDateTime createTime;
+    @JsonIgnore
     private LocalDateTime updateTime;
 }

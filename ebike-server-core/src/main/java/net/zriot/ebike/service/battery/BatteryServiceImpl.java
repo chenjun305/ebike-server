@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by ChenJun on 2018/3/12.
@@ -27,5 +28,10 @@ public class BatteryServiceImpl implements BatteryService {
         battery.setUid(eBike.getUid());
         battery.setUpdateTime(LocalDateTime.now());
         return batteryRepository.save(battery);
+    }
+
+    @Override
+    public List<Battery> findAll() {
+        return batteryRepository.findAll();
     }
 }
