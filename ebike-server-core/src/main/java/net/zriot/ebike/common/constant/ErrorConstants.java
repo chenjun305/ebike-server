@@ -60,8 +60,10 @@ public class ErrorConstants {
 	public static final int NOT_RETURN_OLD_BATTERY = 204;//Please return old battery first！
 	public static final int NEED_RENEW_MONTH_FEE = 205;//Need renew month fee
 	public static final int NOT_YOUR_EBIKE = 206;//Not Your EBike
+	public static final int ALREADY_SELLED = 207;//Already selled
 	public static final int NOT_EXIST_BATTERY = 300;//Not Exist Battery！
 	public static final int NOT_RETURNED_BATTERY = 301;//Not Returned Battery！
+	public static final int NOT_LEND_BATTERY = 302;//Not Lend Battery！
 	public static final int NOT_EXIST_STAFF = 301;//Not Exist Staff！
 	public static final int ALREADY_EXIST_STAFF = 302;//Already Exist Staff！
 	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！

@@ -5,7 +5,7 @@ import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.AuthUtil;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.staff.Staff;
-import net.zriot.ebike.pojo.request.staff.StaffParams;
+import net.zriot.ebike.pojo.request.StaffParams;
 import net.zriot.ebike.pojo.response.MessageDto;
 import net.zriot.ebike.service.sms.SmsService;
 import net.zriot.ebike.service.staff.StaffService;

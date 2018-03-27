@@ -1,4 +1,4 @@
-package net.zriot.ebike.pojo.request.staff;
+package net.zriot.ebike.pojo.request;
 
 import lombok.Data;
 import net.zriot.ebike.common.annotation.NotNull;

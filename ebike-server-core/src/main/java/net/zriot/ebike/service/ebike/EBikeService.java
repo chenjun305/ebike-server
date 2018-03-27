@@ -15,4 +15,5 @@ public interface EBikeService {
     EBike joinMembership(EBike eBike);
     EBike renew(EBike eBike);
     EBike changeToBattery(EBike eBike, Battery battery);
+    EBike save(EBike eBike);
 }

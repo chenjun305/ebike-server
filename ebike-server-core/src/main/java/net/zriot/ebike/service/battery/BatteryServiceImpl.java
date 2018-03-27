@@ -31,6 +31,11 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
+    public Battery save(Battery battery) {
+        return batteryRepository.save(battery);
+    }
+
+    @Override
     public List<Battery> findAll() {
         return batteryRepository.findAll();
     }

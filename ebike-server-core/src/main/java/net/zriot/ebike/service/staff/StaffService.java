@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface StaffService {
     Staff findOneByTel(String tel);
+    Staff findOneByUid(String uid);
     Staff create(Staff staff);
     List<Staff> findAll();
 }

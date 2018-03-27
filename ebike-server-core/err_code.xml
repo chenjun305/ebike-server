@@ -50,10 +50,12 @@
 	<err id="204" description="Please return old battery first！" name="NOT_RETURN_OLD_BATTERY"/>
 	<err id="205" description="Need renew month fee" name="NEED_RENEW_MONTH_FEE"/>
 	<err id="206" description="Not Your EBike" name="NOT_YOUR_EBIKE"/>
+	<err id="207" description="Already selled" name="ALREADY_SELLED"/>
 
 	<!--Battery-->
 	<err id="300" description="Not Exist Battery！" name="NOT_EXIST_BATTERY"/>
 	<err id="301" description="Not Returned Battery！" name="NOT_RETURNED_BATTERY"/>
+	<err id="302" description="Not Lend Battery！" name="NOT_LEND_BATTERY"/>
 
 	<!--staff-->
 	<err id="301" description="Not Exist Staff！" name="NOT_EXIST_STAFF"/>

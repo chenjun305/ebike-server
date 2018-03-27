@@ -56,4 +56,10 @@ public class EBikeServiceImpl implements EBikeService {
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
     }
+
+    @Override
+    public EBike save(EBike eBike) {
+        eBike.setUpdateTime(LocalDateTime.now());
+        return eBikeRepository.save(eBike);
+    }
 }

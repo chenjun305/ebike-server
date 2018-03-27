@@ -5,6 +5,7 @@ import net.zriot.ebike.common.enums.Gender;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.user.User;
+import net.zriot.ebike.pojo.request.Money;
 import net.zriot.ebike.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,16 +44,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByTel(String tel) {
+        return userRepository.findOneByTel(tel);
+    }
+
+    @Override
     public User update(User user) {
         user.setUpdateTime(LocalDateTime.now());
         userRepository.save(user);
         return user;
     }
 
+
     @Override
     public User minusMoney(User user, BigDecimal fee) {
         BigDecimal money = user.getMoney();
         user.setMoney(money.subtract(fee));
+        user.setUpdateTime(LocalDateTime.now());
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User addMoney(User user, Money money) {
+        user.setMoney(user.getMoney().add(money.getAmount()));
         user.setUpdateTime(LocalDateTime.now());
         return userRepository.save(user);
     }

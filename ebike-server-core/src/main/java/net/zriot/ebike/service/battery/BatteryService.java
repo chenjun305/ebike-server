@@ -11,5 +11,6 @@ import java.util.List;
 public interface BatteryService {
     Battery findOneBySn(String sn);
     Battery changeToEBike(Battery battery, EBike eBike);
+    Battery save(Battery battery);
     List<Battery> findAll();
 }

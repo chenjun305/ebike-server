@@ -12,4 +12,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface StaffRepository extends JpaRepository<Staff, Long> {
     Staff findOneByTel(String tel);
+    Staff findOneByUid(String uid);
 }
