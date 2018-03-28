@@ -1,9 +1,9 @@
 package net.zriot.ebike.controller.shop;
 
-import net.zriot.ebike.entity.shop.Shop;
+import net.zriot.ebike.entity.Shop;
 import net.zriot.ebike.pojo.request.ShopParams;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.shop.ShopService;
+import net.zriot.ebike.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

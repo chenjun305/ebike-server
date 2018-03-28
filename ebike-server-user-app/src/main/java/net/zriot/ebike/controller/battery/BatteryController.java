@@ -4,15 +4,18 @@ import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.constant.ErrorConstants;
 import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.exception.GException;
-import net.zriot.ebike.entity.battery.Battery;
-import net.zriot.ebike.entity.ebike.EBike;
-import net.zriot.ebike.entity.user.User;
+import net.zriot.ebike.common.util.IdGen;
+import net.zriot.ebike.entity.Battery;
+import net.zriot.ebike.entity.EBike;
+import net.zriot.ebike.entity.LendBattery;
+import net.zriot.ebike.entity.User;
 import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.battery.ChangeBatteryParams;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.battery.BatteryService;
-import net.zriot.ebike.service.ebike.EBikeService;
-import net.zriot.ebike.service.user.UserService;
+import net.zriot.ebike.service.LendBatteryService;
+import net.zriot.ebike.service.BatteryService;
+import net.zriot.ebike.service.EBikeService;
+import net.zriot.ebike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,9 @@ public class BatteryController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    LendBatteryService lendBatteryService;
+
     @PostMapping("/change")
     @AuthRequire(Auth.LOGIN)
     public MessageDto change(ChangeBatteryParams params, AuthParams authParams) throws GException {
@@ -52,12 +58,10 @@ public class BatteryController {
         if (eBike.getIsMembership() == 0) {
             throw new GException(ErrorConstants.NO_MEMBERSHIP);
         }
-        if (eBike.getMonthEndDate() == null || LocalDate.now().isAfter(eBike.getMonthEndDate())) {
+        if (eBike.getExpireDate() == null || LocalDate.now().isAfter(eBike.getExpireDate())) {
             throw new GException(ErrorConstants.NEED_RENEW_MONTH_FEE);
         }
-        if (eBike.getBatterySn() != null) {
-            throw new GException(ErrorConstants.NOT_RETURN_OLD_BATTERY);
-        }
+
         // check for battery
         Battery battery = batteryService.findOneBySn(params.getBatterySn());
         if (battery == null) {
@@ -66,14 +70,25 @@ public class BatteryController {
         if (battery.getEbikeSn() != null) {
             throw new GException(ErrorConstants.NOT_RETURNED_BATTERY);
         }
-        eBikeService.changeToBattery(eBike, battery);
+
+        LendBattery lendBattery = new LendBattery();
+        lendBattery.setSn(IdGen.genOrderSn());
+        lendBattery.setBatterySn(battery.getSn());
+        lendBattery.setEbikeSn(eBike.getSn());
+        lendBattery.setLendTime(LocalDateTime.now());
+        lendBattery.setUid(uid);
+        lendBattery.setLendShopId(battery.getShopId());
+        lendBattery.setStatus((byte)0);
+        lendBattery = lendBatteryService.save(lendBattery);
+
         batteryService.changeToEBike(battery, eBike);
+
         Map<String, Object> data = new HashMap<>();
         data.put("paidAmount", 0);
         data.put("balance", user.getMoney());
-        data.put("orderSn", "2018030600001");
+        data.put("orderSn", lendBattery.getSn());
         data.put("orderTime", LocalDateTime.now());
-        data.put("expireDate", eBike.getMonthEndDate());
+        data.put("expireDate", eBike.getExpireDate());
         return MessageDto.responseSuccess(data);
     }
 }

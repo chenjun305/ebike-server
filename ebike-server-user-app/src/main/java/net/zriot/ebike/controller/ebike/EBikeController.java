@@ -6,17 +6,17 @@ import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.enums.OrderType;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.constant.ErrorConstants;
-import net.zriot.ebike.entity.ebike.EBike;
-import net.zriot.ebike.entity.order.UserOrder;
-import net.zriot.ebike.entity.user.User;
+import net.zriot.ebike.entity.EBike;
+import net.zriot.ebike.entity.OrderMembership;
+import net.zriot.ebike.entity.User;
 import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.ebike.JoinMembershipParams;
 import net.zriot.ebike.pojo.request.ebike.RenewParams;
 import net.zriot.ebike.pojo.request.Money;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.ebike.EBikeService;
-import net.zriot.ebike.service.order.OrderService;
-import net.zriot.ebike.service.user.UserService;
+import net.zriot.ebike.service.EBikeService;
+import net.zriot.ebike.service.OrderService;
+import net.zriot.ebike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,7 +73,7 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        UserOrder order = orderService.createUserOrder(OrderType.MEMBERSHIP_AND_MONTH_PAY, ebike, new Money(fee, currency));
+        OrderMembership order = orderService.createUserOrder(OrderType.MEMBERSHIP_AND_MONTH_PAY, ebike, new Money(fee, currency));
         ebike = eBikeService.joinMembership(ebike);
         user = userService.minusMoney(user, fee);
 
@@ -81,8 +81,7 @@ public class EBikeController {
         data.put("balance", user.getMoney());
         data.put("orderSn", order.getSn());
         data.put("orderTime", order.getCreateTime());
-        data.put("monthStartDate", ebike.getMonthStartDate());
-        data.put("monthEndDate", ebike.getMonthEndDate());
+        data.put("expireDate", ebike.getExpireDate());
         return MessageDto.responseSuccess(data);
     }
 
@@ -97,7 +96,7 @@ public class EBikeController {
         if (ebike.getIsMembership() == 0) {
             throw new GException(ErrorConstants.NO_MEMBERSHIP);
         }
-        if (ebike.getMonthEndDate() != null && ebike.getMonthEndDate().isAfter(LocalDate.now())) {
+        if (ebike.getExpireDate() != null && ebike.getExpireDate().isAfter(LocalDate.now())) {
             throw new GException(ErrorConstants.ALREADY_RENEW);
         }
 
@@ -110,7 +109,7 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        UserOrder order = orderService.createUserOrder(OrderType.MONTH_PAY, ebike, new Money(monthFee, currency));
+        OrderMembership order = orderService.createUserOrder(OrderType.MONTH_PAY, ebike, new Money(monthFee, currency));
         ebike = eBikeService.renew(ebike);
         user = userService.minusMoney(user, monthFee);
 
@@ -118,8 +117,7 @@ public class EBikeController {
         data.put("balance", user.getMoney());
         data.put("orderSn", order.getSn());
         data.put("orderTime", order.getCreateTime());
-        data.put("monthStartDate", ebike.getMonthStartDate());
-        data.put("monthEndDate", ebike.getMonthEndDate());
+        data.put("expireDate", ebike.getExpireDate());
         return MessageDto.responseSuccess(data);
     }
 

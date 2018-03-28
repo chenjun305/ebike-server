@@ -1,15 +1,17 @@
 package net.zriot.ebike.repository;
 
-import net.zriot.ebike.entity.LendBattery;
+import net.zriot.ebike.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by ChenJun on 2018/3/27.
+ * Created by ChenJun on 2018/3/10.
  */
+
 @Repository
 @Transactional
-public interface LendBatteryRepository extends JpaRepository<LendBattery, Long> {
-    LendBattery findOneByBatterySnAndStatus(String batterySn, Byte status);
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findOneByTel(String tel);
+    User findOneByUid(String uid);
 }

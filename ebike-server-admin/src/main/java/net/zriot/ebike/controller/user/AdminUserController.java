@@ -1,10 +1,9 @@
 package net.zriot.ebike.controller.user;
 
-import net.zriot.ebike.entity.user.User;
+import net.zriot.ebike.entity.User;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.user.UserService;
+import net.zriot.ebike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

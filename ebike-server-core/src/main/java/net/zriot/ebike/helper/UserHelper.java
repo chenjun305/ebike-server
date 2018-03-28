@@ -1,7 +1,7 @@
 package net.zriot.ebike.helper;
 
-import net.zriot.ebike.entity.user.User;
-import net.zriot.ebike.service.user.UserService;
+import net.zriot.ebike.entity.User;
+import net.zriot.ebike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.google.common.cache.Cache;

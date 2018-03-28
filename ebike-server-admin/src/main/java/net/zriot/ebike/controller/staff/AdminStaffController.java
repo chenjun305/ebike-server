@@ -1,8 +1,8 @@
 package net.zriot.ebike.controller.staff;
 
-import net.zriot.ebike.entity.staff.Staff;
+import net.zriot.ebike.entity.Staff;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.staff.StaffService;
+import net.zriot.ebike.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

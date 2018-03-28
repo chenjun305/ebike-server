@@ -1,8 +1,8 @@
 package net.zriot.ebike.controller.ebike;
 
-import net.zriot.ebike.entity.ebike.EBike;
+import net.zriot.ebike.entity.EBike;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.ebike.EBikeService;
+import net.zriot.ebike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
