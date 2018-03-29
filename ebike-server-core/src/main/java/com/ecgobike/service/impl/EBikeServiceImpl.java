@@ -1,8 +1,11 @@
 package com.ecgobike.service.impl;
 
+import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.*;
 import com.ecgobike.repository.EBikeRepository;
+import com.ecgobike.repository.OrderMembershipRepository;
 import com.ecgobike.repository.OrderSellEBikeRepository;
 import com.ecgobike.repository.ProductEBikeRepository;
 import com.ecgobike.service.EBikeService;
@@ -28,6 +31,9 @@ public class EBikeServiceImpl implements EBikeService {
     @Autowired
     OrderSellEBikeRepository orderSellEBikeRepository;
 
+    @Autowired
+    OrderMembershipRepository orderMembershipRepository;
+
     @Override
     public List<EBike> findAll() {
         return eBikeRepository.findAll();
@@ -49,18 +55,46 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
-    public EBike joinMembership(EBike eBike) {
+    public OrderMembership joinMembership(EBike eBike) {
         eBike.setIsMembership((byte)1);
         eBike.setExpireDate(LocalDate.now().plusMonths(1));
         eBike.setUpdateTime(LocalDateTime.now());
-        return eBikeRepository.save(eBike);
+        eBikeRepository.save(eBike);
+
+        OrderMembership order = new OrderMembership();
+        order.setSn(IdGen.genOrderSn());
+        order.setType(OrderType.MEMBERSHIP_AND_MONTH_PAY.get());
+        order.setPrice(Constants.MEMBERSHIP_FEE.add(Constants.MONTH_FEE));
+        order.setCurrency(Constants.CURRENCY);
+        order.setEbikeSn(eBike.getSn());
+        order.setUid(eBike.getUid());
+        order.setStartDate(LocalDate.now());
+        order.setEndDate(LocalDate.now().plusMonths(1));
+        order.setStatus((byte)1);
+        order.setCreateTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
+        return orderMembershipRepository.save(order);
     }
 
     @Override
-    public EBike renew(EBike eBike) {
+    public OrderMembership renew(EBike eBike) {
         eBike.setExpireDate(LocalDate.now().plusMonths(1));
         eBike.setUpdateTime(LocalDateTime.now());
-        return eBikeRepository.save(eBike);
+        eBikeRepository.save(eBike);
+
+        OrderMembership order = new OrderMembership();
+        order.setSn(IdGen.genOrderSn());
+        order.setType(OrderType.MONTH_PAY.get());
+        order.setPrice(Constants.MONTH_FEE);
+        order.setCurrency(Constants.CURRENCY);
+        order.setEbikeSn(eBike.getSn());
+        order.setUid(eBike.getUid());
+        order.setStartDate(LocalDate.now());
+        order.setEndDate(LocalDate.now().plusMonths(1));
+        order.setStatus((byte)1);
+        order.setCreateTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
+        return orderMembershipRepository.save(order);
     }
 
     @Override

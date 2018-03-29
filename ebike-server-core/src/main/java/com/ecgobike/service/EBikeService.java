@@ -12,8 +12,8 @@ public interface EBikeService {
     List<EBike> findAllByUid(String uid);
     List<ProductEBike> findAllProducts();
     EBike findOneBySn(String sn);
-    EBike joinMembership(EBike eBike);
-    EBike renew(EBike eBike);
+    OrderMembership joinMembership(EBike eBike);
+    OrderMembership renew(EBike eBike);
     EBike save(EBike eBike);
     OrderSellEBike sell(Staff staff, User user, EBike eBike);
 }

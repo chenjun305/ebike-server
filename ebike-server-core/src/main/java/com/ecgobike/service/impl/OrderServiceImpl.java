@@ -22,27 +22,7 @@ import java.time.LocalDateTime;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    OrderMembershipRepository userOrderRepository;
-
-    @Autowired
     OrderTopupRepository orderTopupRepository;
-
-    @Override
-    public OrderMembership createUserOrder(OrderType type, EBike eBike, Money fee) {
-        OrderMembership order = new OrderMembership();
-        order.setSn(IdGen.genOrderSn());
-        order.setType(type.get());
-        order.setPrice(fee.getAmount());
-        order.setCurrency(fee.getCurrency());
-        order.setEbikeSn(eBike.getSn());
-        order.setUid(eBike.getUid());
-        order.setStartDate(LocalDate.now());
-        order.setEndDate(LocalDate.now().plusMonths(1));
-        order.setStatus((byte)1);
-        order.setCreateTime(LocalDateTime.now());
-        order.setUpdateTime(LocalDateTime.now());
-        return userOrderRepository.save(order);
-    }
 
     @Override
     public OrderTopup createTopupOrder(String staffUid, String uid, Money money) {

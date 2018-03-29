@@ -52,7 +52,7 @@ public class EBikeController {
 
     @PostMapping("/join")
     @AuthRequire(Auth.USER)
-    public MessageDto join(JoinMembershipParams params, AuthParams authParams) throws GException {
+    public MessageDto join(JoinMembershipParams params) throws GException {
         // check ebike
         EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());
         if (ebike == null) {
@@ -63,31 +63,27 @@ public class EBikeController {
         }
 
         // check user money
-        User user = userService.getUserByUid(authParams.getUid());
+        User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
 
-        BigDecimal fee = params.getMembership().add(params.getMonthFee());
-        String currency = params.getCurrency() == null ? Constants.CURRENCY : params.getCurrency();
+        BigDecimal fee = Constants.MEMBERSHIP_FEE.add(Constants.MONTH_FEE);
 
         if (money.compareTo(fee) == -1) {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        OrderMembership order = orderService.createUserOrder(OrderType.MEMBERSHIP_AND_MONTH_PAY, ebike, new Money(fee, currency));
-        ebike = eBikeService.joinMembership(ebike);
+        OrderMembership order = eBikeService.joinMembership(ebike);
         user = userService.minusMoney(user, fee);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
-        data.put("orderSn", order.getSn());
-        data.put("orderTime", order.getCreateTime());
-        data.put("expireDate", ebike.getExpireDate());
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 
     @PostMapping("/renew")
     @AuthRequire(Auth.USER)
-    public MessageDto renew(RenewParams params, AuthParams authParams) throws GException {
+    public MessageDto renew(RenewParams params) throws GException {
         // check ebike
         EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());
         if (ebike == null) {
@@ -101,23 +97,19 @@ public class EBikeController {
         }
 
         // check user money
-        BigDecimal monthFee = params.getMonthFee();
-        String currency = params.getCurrency() == null ? Constants.CURRENCY : params.getCurrency();
-        User user = userService.getUserByUid(authParams.getUid());
+
+        User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
-        if (money.compareTo(monthFee) == -1) {
+        if (money.compareTo(Constants.MONTH_FEE) == -1) {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        OrderMembership order = orderService.createUserOrder(OrderType.MONTH_PAY, ebike, new Money(monthFee, currency));
-        ebike = eBikeService.renew(ebike);
-        user = userService.minusMoney(user, monthFee);
+        OrderMembership order = eBikeService.renew(ebike);
+        user = userService.minusMoney(user, Constants.MONTH_FEE);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
-        data.put("orderSn", order.getSn());
-        data.put("orderTime", order.getCreateTime());
-        data.put("expireDate", ebike.getExpireDate());
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 
