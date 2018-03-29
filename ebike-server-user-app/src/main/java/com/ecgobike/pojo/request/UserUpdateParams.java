@@ -1,4 +1,4 @@
-package com.ecgobike.pojo.request.user;
+package com.ecgobike.pojo.request;
 
 import lombok.Data;
 

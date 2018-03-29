@@ -1,10 +1,10 @@
-package com.ecgobike.controller.user;
+package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Gender;
 import com.ecgobike.pojo.request.AuthParams;
-import com.ecgobike.pojo.request.user.UserUpdateParams;
+import com.ecgobike.pojo.request.UserUpdateParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.sms.SmsService;
 import com.ecgobike.common.enums.Auth;

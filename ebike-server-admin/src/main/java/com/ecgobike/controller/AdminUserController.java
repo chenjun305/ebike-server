@@ -1,4 +1,4 @@
-package com.ecgobike.controller.user;
+package com.ecgobike.controller;
 
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.entity.User;

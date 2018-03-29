@@ -1,9 +1,10 @@
-package com.ecgobike.controller.battery;
+package com.ecgobike.controller;
 
-import com.ecgobike.service.BatteryService;
-import com.ecgobike.entity.Battery;
+import com.ecgobike.entity.EBike;
 import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,21 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by ChenJun on 2018/3/21.
+ * Created by ChenJun on 2018/3/20.
  */
 @RestController
-@RequestMapping("/battery")
-public class AdminBatteryController {
+@RequestMapping("/ebike")
+public class AdminEBikeController {
 
     @Autowired
-    BatteryService batteryService;
+    EBikeService eBikeService;
 
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public MessageDto list() {
-        List<Battery> batteries = batteryService.findAll();
+        List<EBike> ebikes = eBikeService.findAll();
         Map<String, Object> data = new HashMap<>();
-        data.put("batteries", batteries);
-
+        data.put("ebikes", ebikes);
         return MessageDto.responseSuccess(data);
     }
 }

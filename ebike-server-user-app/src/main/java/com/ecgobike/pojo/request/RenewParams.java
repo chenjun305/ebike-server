@@ -1,4 +1,4 @@
-package com.ecgobike.pojo.request.ebike;
+package com.ecgobike.pojo.request;
 
 import com.ecgobike.common.annotation.NotNull;
 import lombok.Data;

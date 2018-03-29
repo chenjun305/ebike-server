@@ -1,4 +1,4 @@
-package com.ecgobike.controller.shop;
+package com.ecgobike.controller;
 
 import com.ecgobike.entity.Shop;
 import com.ecgobike.pojo.request.ShopParams;

@@ -1,4 +1,4 @@
-package com.ecgobike.controller.battery;
+package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
@@ -8,7 +8,7 @@ import com.ecgobike.entity.Battery;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.LendBattery;
 import com.ecgobike.entity.User;
-import com.ecgobike.pojo.request.battery.LendBatteryParams;
+import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;

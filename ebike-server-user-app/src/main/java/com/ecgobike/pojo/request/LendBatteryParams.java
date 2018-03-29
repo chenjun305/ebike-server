@@ -1,4 +1,4 @@
-package com.ecgobike.pojo.request.battery;
+package com.ecgobike.pojo.request;
 
 import com.ecgobike.common.annotation.NotNull;
 import com.ecgobike.pojo.request.AuthParams;

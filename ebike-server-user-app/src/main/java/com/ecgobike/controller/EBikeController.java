@@ -1,8 +1,8 @@
-package com.ecgobike.controller.ebike;
+package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.pojo.request.AuthParams;
-import com.ecgobike.pojo.request.ebike.JoinMembershipParams;
+import com.ecgobike.pojo.request.JoinMembershipParams;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.OrderType;
@@ -11,7 +11,7 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.OrderMembership;
 import com.ecgobike.entity.User;
-import com.ecgobike.pojo.request.ebike.RenewParams;
+import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;

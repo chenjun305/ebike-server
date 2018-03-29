@@ -1,4 +1,4 @@
-package com.ecgobike.controller.app;
+package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.pojo.response.MessageDto;
