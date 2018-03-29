@@ -1,16 +1,16 @@
 package net.zriot.ebike.controller;
 
+import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.constant.ErrorConstants;
+import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.OrderSellEBike;
 import net.zriot.ebike.entity.EBike;
 import net.zriot.ebike.entity.Staff;
 import net.zriot.ebike.entity.User;
-import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.SellBikeParams;
 import net.zriot.ebike.pojo.response.MessageDto;
-import net.zriot.ebike.service.OrderSellEBikeService;
 import net.zriot.ebike.service.EBikeService;
 import net.zriot.ebike.service.StaffService;
 import net.zriot.ebike.service.UserService;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/ebike")
-public class EBikeController {
+public class ShopEBikeController {
 
     @Autowired
     EBikeService eBikeService;
@@ -39,10 +38,8 @@ public class EBikeController {
     @Autowired
     StaffService staffService;
 
-    @Autowired
-    OrderSellEBikeService orderSellEBikeService;
-
     @RequestMapping("/info")
+    @AuthRequire(Auth.STAFF)
     public MessageDto info(String ebikeSn) throws GException {
         EBike eBike = eBikeService.findOneBySn(ebikeSn);
         if (eBike == null) {
@@ -54,7 +51,8 @@ public class EBikeController {
     }
 
     @PostMapping("/sell")
-    public MessageDto sell(SellBikeParams params, AuthParams authParams) throws GException {
+    @AuthRequire(Auth.STAFF)
+    public MessageDto sell(SellBikeParams params) throws GException {
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
         if (eBike == null) {
             throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
@@ -62,7 +60,7 @@ public class EBikeController {
         if (eBike.getUid() != null) {
             throw  new GException(ErrorConstants.ALREADY_SELLED);
         }
-        Staff staff = staffService.findOneByUid(authParams.getUid());
+        Staff staff = staffService.findOneByUid(params.getUid());
         if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
@@ -78,20 +76,7 @@ public class EBikeController {
         user.setAddress(params.getAddress());
         user = userService.update(user);
 
-        OrderSellEBike order = new OrderSellEBike();
-        order.setSn(IdGen.genOrderSn());
-        order.setEbikeSn(eBike.getSn());
-        order.setUid(user.getUid());
-        order.setStaffUid(authParams.getUid());
-        order.setShopId(staff.getShopId());
-        order.setPrice(new BigDecimal(100));
-        order.setCurrency("USD");
-        order.setStatus((byte)1);
-        orderSellEBikeService.save(order);
-
-        eBike.setUid(user.getUid());
-        eBikeService.save(eBike);
-
+        OrderSellEBike order = eBikeService.sell(staff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
         data.put("order", order);

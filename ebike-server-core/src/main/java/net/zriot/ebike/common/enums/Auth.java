@@ -5,7 +5,8 @@ package net.zriot.ebike.common.enums;
  */
 public enum Auth {
     NULL(0),
-    LOGIN(1);
+    USER(1),
+    STAFF(2);
 
     public int auth;
 

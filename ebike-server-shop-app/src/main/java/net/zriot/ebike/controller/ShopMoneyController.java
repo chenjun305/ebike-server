@@ -1,28 +1,40 @@
 package net.zriot.ebike.controller;
 
+import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.constant.ErrorConstants;
+import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.exception.GException;
+import net.zriot.ebike.entity.OrderTopup;
 import net.zriot.ebike.entity.User;
+import net.zriot.ebike.pojo.request.AuthParams;
 import net.zriot.ebike.pojo.request.Money;
 import net.zriot.ebike.pojo.request.TopupParams;
 import net.zriot.ebike.pojo.response.MessageDto;
+import net.zriot.ebike.service.OrderService;
 import net.zriot.ebike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ChenJun on 2018/3/27.
  */
 @RestController
 @RequestMapping("/money")
-public class MoneyController {
+public class ShopMoneyController {
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    OrderService orderService;
+
     @PostMapping("/topup")
+    @AuthRequire(Auth.STAFF)
     public MessageDto topup(TopupParams params) throws GException {
         User user = userService.getUserByTel(params.getTel());
         if (user == null) {
@@ -32,7 +44,9 @@ public class MoneyController {
         String currency = params.getCurrency() == null ? "USD" : params.getCurrency();
         Money money = new Money(params.getAmount(), currency);
         userService.addMoney(user, money);
-        return MessageDto.responseSuccess();
-
+        OrderTopup orderTopup = orderService.createTopupOrder(params.getUid(), user.getUid(), money);
+        Map<String, Object> data = new HashMap<>();
+        data.put("order", orderTopup);
+        return MessageDto.responseSuccess(data);
     }
 }

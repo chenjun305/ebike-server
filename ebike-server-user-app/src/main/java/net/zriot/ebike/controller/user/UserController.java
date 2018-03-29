@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/get")
-    @AuthRequire(Auth.LOGIN)
+    @AuthRequire(Auth.USER)
     public MessageDto get(AuthParams params) throws GException {
         String uid = params.getUid();
         User user = userService.getUserByUid(uid);
@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    @AuthRequire(Auth.LOGIN)
+    @AuthRequire(Auth.USER)
     public MessageDto update(UserUpdateParams params, AuthParams authParams) throws GException {
         User user = userService.getUserByUid(authParams.getUid());
         Byte gender = params.getGender();

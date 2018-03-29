@@ -1,11 +1,15 @@
 package net.zriot.ebike.service.impl;
 
-import net.zriot.ebike.entity.EBike;
+import net.zriot.ebike.common.util.IdGen;
+import net.zriot.ebike.entity.*;
 import net.zriot.ebike.repository.EBikeRepository;
+import net.zriot.ebike.repository.OrderSellEBikeRepository;
+import net.zriot.ebike.repository.ProductEBikeRepository;
 import net.zriot.ebike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +22,12 @@ public class EBikeServiceImpl implements EBikeService {
     @Autowired
     EBikeRepository eBikeRepository;
 
+    @Autowired
+    ProductEBikeRepository productEBikeRepository;
+
+    @Autowired
+    OrderSellEBikeRepository orderSellEBikeRepository;
+
     @Override
     public List<EBike> findAll() {
         return eBikeRepository.findAll();
@@ -26,6 +36,11 @@ public class EBikeServiceImpl implements EBikeService {
     @Override
     public List<EBike> findAllByUid(String uid) {
         return eBikeRepository.findAllByUid(uid);
+    }
+
+    @Override
+    public List<ProductEBike> findAllProducts() {
+        return productEBikeRepository.findAll();
     }
 
     @Override
@@ -52,5 +67,25 @@ public class EBikeServiceImpl implements EBikeService {
     public EBike save(EBike eBike) {
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
+    }
+
+    @Override
+    public OrderSellEBike sell(Staff staff, User user, EBike eBike) {
+        OrderSellEBike order = new OrderSellEBike();
+        order.setSn(IdGen.genOrderSn());
+        order.setEbikeSn(eBike.getSn());
+        order.setUid(user.getUid());
+        order.setStaffUid(staff.getUid());
+        order.setShopId(staff.getShopId());
+        order.setPrice(new BigDecimal(100));
+        order.setCurrency("USD");
+        order.setStatus((byte)1);
+        orderSellEBikeRepository.save(order);
+
+        eBike.setUid(user.getUid());
+        eBike.setStatus((byte)1);
+        eBike.setUpdateTime(LocalDateTime.now());
+        eBikeRepository.save(eBike);
+        return order;
     }
 }

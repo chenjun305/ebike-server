@@ -4,8 +4,10 @@ import net.zriot.ebike.common.enums.OrderType;
 import net.zriot.ebike.common.util.IdGen;
 import net.zriot.ebike.entity.EBike;
 import net.zriot.ebike.entity.OrderMembership;
+import net.zriot.ebike.entity.OrderTopup;
 import net.zriot.ebike.pojo.request.Money;
 import net.zriot.ebike.repository.OrderMembershipRepository;
+import net.zriot.ebike.repository.OrderTopupRepository;
 import net.zriot.ebike.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderMembershipRepository userOrderRepository;
+
+    @Autowired
+    OrderTopupRepository orderTopupRepository;
 
     @Override
     public OrderMembership createUserOrder(OrderType type, EBike eBike, Money fee) {
@@ -38,4 +43,20 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime(LocalDateTime.now());
         return userOrderRepository.save(order);
     }
+
+    @Override
+    public OrderTopup createTopupOrder(String staffUid, String uid, Money money) {
+        OrderTopup orderTopup = new OrderTopup();
+        orderTopup.setSn(IdGen.genOrderSn());
+        orderTopup.setType((byte)1);
+        orderTopup.setStaffUid(staffUid);
+        orderTopup.setUid(uid);
+        orderTopup.setAmount(money.getAmount());
+        orderTopup.setCurrency(money.getCurrency());
+        orderTopup.setStatus((byte)1);
+
+        return orderTopupRepository.save(orderTopup);
+    }
+
+
 }

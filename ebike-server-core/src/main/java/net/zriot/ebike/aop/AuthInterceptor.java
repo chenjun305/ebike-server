@@ -14,6 +14,8 @@ import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.util.AES256;
 import net.zriot.ebike.common.util.DateUtils;
 import net.zriot.ebike.common.util.Utils;
+import net.zriot.ebike.entity.Staff;
+import net.zriot.ebike.helper.StaffHelper;
 import net.zriot.ebike.helper.UserHelper;
 import net.zriot.ebike.entity.User;
 import org.springframework.web.method.HandlerMethod;
@@ -52,85 +54,93 @@ public class AuthInterceptor extends BaseInterceptor {
             return true;
         }
 
-        if (auth == Auth.LOGIN) {
-            Map<String, String[]> map = request.getParameterMap();
-            String[] uidCells = map.get("uid");
-            String[] tokenCells = map.get("token");
-            String[] signCells = map.get("sign");
-            if (!Utils.notNull(uidCells) || !Utils.notNull(tokenCells) || !Utils.notNull(signCells)) {
-                sendErrorMsgByCode(response, ErrorConstants.LACK_PARAMS_CHECK_SIGN);
+        Map<String, String[]> map = request.getParameterMap();
+        String[] uidCells = map.get("uid");
+        String[] tokenCells = map.get("token");
+        String[] signCells = map.get("sign");
+        if (!Utils.notNull(uidCells) || !Utils.notNull(tokenCells) || !Utils.notNull(signCells)) {
+            sendErrorMsgByCode(response, ErrorConstants.LACK_PARAMS_CHECK_SIGN);
+            return false;
+        }
+
+        String token = tokenCells[0];
+        if (Strings.isNullOrEmpty(token)) {
+            sendErrorMsgByCode(response, ErrorConstants.LACK_PARAMS_TOKEN);
+            return false;
+        }
+
+        try {
+            token = AES256.decrypt(token, Constants.TOKEN_SALT);
+        } catch (Exception e1) {
+            sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_TOKEN);
+            return false;
+        }
+        String[] tCells = token.split("[|]");
+        if (tCells == null || tCells.length != 3) {
+            sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_TOKEN);
+            return false;
+        }
+
+        String tokenUid = tCells[0];
+        String time = tCells[1];
+        try{
+            Integer loginTime = Integer.parseInt(time);
+            if (loginTime + Constants.DAY30_2_SECOND < DateUtils.getNow()) {// 登录时间已经过期
+                sendErrorMsgByCode(response, ErrorConstants.LOGIN_OVERDUE);
                 return false;
             }
+        }catch (Exception e) {
+            sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_PARAMS_CHECK_SIGN);
+            return false;
+        }
 
-            String token = tokenCells[0];
-            if (Strings.isNullOrEmpty(token)) {
-                sendErrorMsgByCode(response, ErrorConstants.LACK_PARAMS_TOKEN);
-                return false;
+        String tokenSignMat = tCells[2];
+        String uid = uidCells[0];
+        if (!tokenUid.equals(uid)) {// uid检测非法
+            sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_UID);
+            return false;
+        }
+
+
+        TreeMap<String, String> checkMap = new TreeMap<>();
+        for (Map.Entry<String, String[]> entry : map.entrySet()) {
+            String key = entry.getKey();
+            if ("sign".equals(key) || "token".equals(key)) {
+                continue;
             }
+            String value = entry.getValue()[0];
+            checkMap.put(key, value);
+        }
 
-            try {
-                token = AES256.decrypt(token, Constants.TOKEN_SALT);
-            } catch (Exception e1) {
-                sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_TOKEN);
-                return false;
-            }
-            String[] tCells = token.split("[|]");
-            if (tCells == null || tCells.length != 3) {
-                sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_TOKEN);
-                return false;
-            }
+        StringBuffer orginSource = new StringBuffer();
+        for (Map.Entry<String, String> entry : checkMap.entrySet()) {
+            String value = entry.getValue();
+            orginSource.append(value);
+        }
+        orginSource.append(tokenSignMat);
 
-            String tokenUid = tCells[0];
-            String time = tCells[1];
-            try{
-                Integer loginTime = Integer.parseInt(time);
-                if (loginTime + Constants.DAY30_2_SECOND < DateUtils.getNow()) {// 登录时间已经过期
-                    sendErrorMsgByCode(response, ErrorConstants.LOGIN_OVERDUE);
-                    return false;
-                }
-            }catch (Exception e) {
-                sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_PARAMS_CHECK_SIGN);
-                return false;
-            }
+        String sign = signCells[0];
+        String check = Utils.getMD5(orginSource.toString());
+        System.out.println("right sign="+check);
+        System.out.println("sign="+sign);
+        if (!check.equals(sign)) {
+            sendErrorMsgByCode(response, ErrorConstants.ERR_SIGN);
+            return false;
+        }
 
-            String tokenSignMat = tCells[2];
-            String uid = uidCells[0];
-            if (!tokenUid.equals(uid)) {// uid检测非法
-                sendErrorMsgByCode(response, ErrorConstants.ILLEGAL_UID);
-                return false;
-            }
-
-
-            TreeMap<String, String> checkMap = new TreeMap<>();
-            for (Map.Entry<String, String[]> entry : map.entrySet()) {
-                String key = entry.getKey();
-                if ("sign".equals(key) || "token".equals(key)) {
-                    continue;
-                }
-                String value = entry.getValue()[0];
-                checkMap.put(key, value);
-            }
-
-            StringBuffer orginSource = new StringBuffer();
-            for (Map.Entry<String, String> entry : checkMap.entrySet()) {
-                String value = entry.getValue();
-                orginSource.append(value);
-            }
-            orginSource.append(tokenSignMat);
-
-            String sign = signCells[0];
-            String check = Utils.getMD5(orginSource.toString());
-            System.out.println("right sign="+check);
-            System.out.println("sign="+sign);
-            if (!check.equals(sign)) {
-                sendErrorMsgByCode(response, ErrorConstants.ERR_SIGN);
-                return false;
-            }
-
+        if (auth == Auth.USER) {
             // 检测用户是否存在
             User user = UserHelper.findUserByUid(uid);
             if (user == null) {
                 sendErrorMsgByCode(response, ErrorConstants.USER_NOT_FOUND);
+                return false;
+            }
+            return true;
+        } else if (auth == Auth.STAFF) {
+            // check if staff exist
+            Staff staff = StaffHelper.findStaffByUid(uid);
+            if (staff == null) {
+                sendErrorMsgByCode(response, ErrorConstants.NOT_EXIST_STAFF);
                 return false;
             }
             return true;

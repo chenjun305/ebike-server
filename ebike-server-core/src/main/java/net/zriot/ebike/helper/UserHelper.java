@@ -23,7 +23,7 @@ public class UserHelper {
     }
 
     /**
-     * 警告:此cache中的userMain只能用作获取不变数据，不能用作获取动态数据，比如用户金额，必须通过service获取
+     * 警告:此cache中的user只能用作获取不变数据，不能用作获取动态数据，比如用户金额，必须通过service获取
      */
     private static Cache<String, User> userCache = CacheBuilder.newBuilder().expireAfterAccess(10 * 60, TimeUnit.SECONDS).maximumSize(500).build();
 

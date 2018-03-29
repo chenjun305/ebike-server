@@ -9,7 +9,7 @@ import net.zriot.ebike.common.annotation.StringLength;
  * Created by ChenJun on 2018/3/20.
  */
 @Data
-public class StaffParams {
+public class StaffParams extends AuthParams {
     @StringLength(Min = 10, Max = 11)
     private String tel;
 

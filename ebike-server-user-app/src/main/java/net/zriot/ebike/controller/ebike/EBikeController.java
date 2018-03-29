@@ -42,7 +42,7 @@ public class EBikeController {
     OrderService orderService;
 
     @PostMapping("/list")
-    @AuthRequire(Auth.LOGIN)
+    @AuthRequire(Auth.USER)
     public MessageDto list(AuthParams authParams) {
         List<EBike> ebikes =  eBikeService.findAllByUid(authParams.getUid());
         Map<String, Object> data = new HashMap<>();
@@ -51,7 +51,7 @@ public class EBikeController {
     }
 
     @PostMapping("/join")
-    @AuthRequire(Auth.LOGIN)
+    @AuthRequire(Auth.USER)
     public MessageDto join(JoinMembershipParams params, AuthParams authParams) throws GException {
         // check ebike
         EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());
@@ -86,7 +86,7 @@ public class EBikeController {
     }
 
     @PostMapping("/renew")
-    @AuthRequire(Auth.LOGIN)
+    @AuthRequire(Auth.USER)
     public MessageDto renew(RenewParams params, AuthParams authParams) throws GException {
         // check ebike
         EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());

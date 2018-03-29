@@ -1,7 +1,7 @@
 package net.zriot.ebike.service;
 
-import net.zriot.ebike.entity.Battery;
-import net.zriot.ebike.entity.EBike;
+import net.zriot.ebike.common.exception.GException;
+import net.zriot.ebike.entity.*;
 
 import java.util.List;
 
@@ -10,7 +10,8 @@ import java.util.List;
  */
 public interface BatteryService {
     Battery findOneBySn(String sn);
-    Battery changeToEBike(Battery battery, EBike eBike);
-    Battery save(Battery battery);
     List<Battery> findAll();
+    List<ProductBattery> findAllProducts();
+    LendBattery lend(EBike eBike, Battery battery);
+    LendBattery returnBattery(Staff staff, Battery battery) throws GException;
 }

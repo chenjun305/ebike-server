@@ -7,7 +7,7 @@ import net.zriot.ebike.common.annotation.NotNull;
  * Created by ChenJun on 2018/3/26.
  */
 @Data
-public class SellBikeParams {
+public class SellBikeParams extends AuthParams {
     @NotNull
     private String ebikeSn;
     @NotNull

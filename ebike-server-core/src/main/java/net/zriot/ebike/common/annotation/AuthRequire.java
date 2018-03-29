@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AuthRequire {
-    Auth value() default Auth.LOGIN;
+    Auth value() default Auth.USER;
 }

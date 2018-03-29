@@ -1,6 +1,8 @@
 package net.zriot.ebike.controller;
 
+import net.zriot.ebike.common.annotation.AuthRequire;
 import net.zriot.ebike.common.constant.ErrorConstants;
+import net.zriot.ebike.common.enums.Auth;
 import net.zriot.ebike.common.exception.GException;
 import net.zriot.ebike.common.util.AuthUtil;
 import net.zriot.ebike.common.util.IdGen;
@@ -22,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/staff")
-public class StaffController {
+public class ShopStaffController {
     @Autowired
     SmsService smsService;
 
@@ -68,6 +70,7 @@ public class StaffController {
     }
 
     @PostMapping("/create")
+    @AuthRequire(Auth.STAFF)
     public MessageDto create(StaffParams params) throws GException {
         Staff staff = staffService.findOneByTel(params.getTel());
         if (staff != null) {
