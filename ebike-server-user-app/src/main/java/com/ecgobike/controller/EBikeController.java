@@ -15,7 +15,6 @@ import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
-import com.ecgobike.service.OrderService;
 import com.ecgobike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,9 +36,6 @@ public class EBikeController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    OrderService orderService;
 
     @PostMapping("/list")
     @AuthRequire(Auth.USER)
