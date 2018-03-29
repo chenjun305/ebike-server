@@ -1,5 +1,6 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.entity.ProductBattery;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.pojo.response.MessageDto;
@@ -26,6 +27,15 @@ public class AdminBatteryController {
         List<Battery> batteries = batteryService.findAll();
         Map<String, Object> data = new HashMap<>();
         data.put("batteries", batteries);
+
+        return MessageDto.responseSuccess(data);
+    }
+
+    @RequestMapping("/product/list")
+    public MessageDto productList() {
+        List<ProductBattery> batteryProducts = batteryService.findAllProducts();
+        Map<String, Object> data = new HashMap<>();
+        data.put("batteryProducts", batteryProducts);
 
         return MessageDto.responseSuccess(data);
     }
