@@ -16,4 +16,5 @@ public interface EBikeService {
     OrderMembership renew(EBike eBike);
     EBike save(EBike eBike);
     OrderSellEBike sell(Staff staff, User user, EBike eBike);
+    List<OrderSellEBike> findAllSall();
 }

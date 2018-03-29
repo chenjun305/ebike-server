@@ -122,4 +122,9 @@ public class EBikeServiceImpl implements EBikeService {
         eBikeRepository.save(eBike);
         return order;
     }
+
+    @Override
+    public List<OrderSellEBike> findAllSall() {
+        return orderSellEBikeRepository.findAll();
+    }
 }

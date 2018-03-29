@@ -1,11 +1,11 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.entity.EBike;
+import com.ecgobike.entity.OrderSellEBike;
 import com.ecgobike.entity.ProductEBike;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +36,14 @@ public class AdminEBikeController {
         List<ProductEBike> ebikeProducts = eBikeService.findAllProducts();
         Map<String, Object> data = new HashMap<>();
         data.put("ebikeProducts", ebikeProducts);
+        return MessageDto.responseSuccess(data);
+    }
+
+    @RequestMapping("/sale/list")
+    public MessageDto sellList() {
+        List<OrderSellEBike> saleList = eBikeService.findAllSall();
+        Map<String, Object> data = new HashMap<>();
+        data.put("saleList", saleList);
         return MessageDto.responseSuccess(data);
     }
 }
