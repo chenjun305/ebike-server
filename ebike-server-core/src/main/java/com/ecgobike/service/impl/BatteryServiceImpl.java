@@ -9,6 +9,8 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.repository.BatteryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -80,4 +82,10 @@ public class BatteryServiceImpl implements BatteryService {
         lendBattery.setUpdateTime(LocalDateTime.now());
         return lendBatteryRepository.save(lendBattery);
     }
+
+    @Override
+    public Page<LendBattery> findAllLendHistory(Pageable pageable) {
+        return lendBatteryRepository.findAll(pageable);
+    }
+
 }

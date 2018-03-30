@@ -1,10 +1,15 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.entity.LendBattery;
 import com.ecgobike.entity.ProductBattery;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.pojo.response.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +41,17 @@ public class AdminBatteryController {
         List<ProductBattery> batteryProducts = batteryService.findAllProducts();
         Map<String, Object> data = new HashMap<>();
         data.put("batteryProducts", batteryProducts);
+
+        return MessageDto.responseSuccess(data);
+    }
+
+    @RequestMapping("/lend/list")
+    public MessageDto lendList(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable) {
+        Page<LendBattery> lendHistory = batteryService.findAllLendHistory(pageable);
+        Map<String, Object> data = new HashMap<>();
+        data.put("lendHistory", lendHistory);
 
         return MessageDto.responseSuccess(data);
     }

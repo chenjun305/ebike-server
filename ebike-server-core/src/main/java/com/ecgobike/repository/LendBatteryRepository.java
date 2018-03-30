@@ -11,5 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface LendBatteryRepository extends JpaRepository<LendBattery, Long> {
+
     LendBattery findOneByBatterySnAndStatus(String batterySn, Byte status);
 }
