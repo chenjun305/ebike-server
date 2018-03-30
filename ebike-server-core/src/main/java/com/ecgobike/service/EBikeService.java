@@ -1,5 +1,6 @@
 package com.ecgobike.service;
 
+import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +15,8 @@ public interface EBikeService {
     List<EBike> findAllByUid(String uid);
     Page<ProductEBike> findAllProducts(Pageable pageable);
     EBike findOneBySn(String sn);
-    OrderMembership joinMembership(EBike eBike);
-    OrderMembership renew(EBike eBike);
+    OrderMembership joinMembership(String ebikeSn) throws GException;
+    OrderMembership renew(String ebikeSn) throws GException;
     EBike save(EBike eBike);
     OrderSellEBike sell(Staff staff, User user, EBike eBike);
     Page<OrderSellEBike> findAllSall(Pageable pageable);

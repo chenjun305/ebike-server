@@ -47,15 +47,6 @@ public class EBikeController {
     @PostMapping("/join")
     @AuthRequire(Auth.USER)
     public MessageDto join(JoinParams params) throws GException {
-        // check ebike
-        EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());
-        if (ebike == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
-        }
-        if (ebike.getIsMembership() == 1) {
-            throw new GException(ErrorConstants.ALREADY_MEMBERSHIP);
-        }
-
         // check user money
         User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
@@ -66,7 +57,7 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        OrderMembership order = eBikeService.joinMembership(ebike);
+        OrderMembership order = eBikeService.joinMembership(params.getEbikeSn());
         user = userService.minusMoney(user, fee);
 
         Map<String, Object> data = new HashMap<>();
@@ -78,27 +69,14 @@ public class EBikeController {
     @PostMapping("/renew")
     @AuthRequire(Auth.USER)
     public MessageDto renew(RenewParams params) throws GException {
-        // check ebike
-        EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());
-        if (ebike == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
-        }
-        if (ebike.getIsMembership() == 0) {
-            throw new GException(ErrorConstants.NO_MEMBERSHIP);
-        }
-        if (ebike.getExpireDate() != null && ebike.getExpireDate().isAfter(LocalDate.now())) {
-            throw new GException(ErrorConstants.ALREADY_RENEW);
-        }
-
         // check user money
-
         User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
         if (money.compareTo(Constants.MONTH_FEE) == -1) {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        OrderMembership order = eBikeService.renew(ebike);
+        OrderMembership order = eBikeService.renew(params.getEbikeSn());
         user = userService.minusMoney(user, Constants.MONTH_FEE);
 
         Map<String, Object> data = new HashMap<>();

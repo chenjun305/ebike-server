@@ -1,7 +1,9 @@
 package com.ecgobike.service.impl;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.OrderType;
+import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.*;
 import com.ecgobike.repository.EBikeRepository;
@@ -57,37 +59,49 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
-    public OrderMembership joinMembership(EBike eBike) {
+    public OrderMembership joinMembership(String ebikeSn) throws GException {
+        // check ebike
+        EBike eBike = eBikeRepository.findOneBySn(ebikeSn);
+        if (eBike == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
+        }
+        if (eBike.getIsMembership() == 1) {
+            throw new GException(ErrorConstants.ALREADY_MEMBERSHIP);
+        }
+
         eBike.setIsMembership((byte)1);
         eBike.setExpireDate(LocalDate.now().plusMonths(1));
         eBike.setUpdateTime(LocalDateTime.now());
         eBikeRepository.save(eBike);
-
-        OrderMembership order = new OrderMembership();
-        order.setSn(IdGen.genOrderSn());
-        order.setType(OrderType.MEMBERSHIP_AND_MONTH_PAY.get());
-        order.setPrice(Constants.MEMBERSHIP_FEE.add(Constants.MONTH_FEE));
-        order.setCurrency(Constants.CURRENCY);
-        order.setEbikeSn(eBike.getSn());
-        order.setUid(eBike.getUid());
-        order.setStartDate(LocalDate.now());
-        order.setEndDate(LocalDate.now().plusMonths(1));
-        order.setStatus((byte)1);
-        order.setCreateTime(LocalDateTime.now());
-        order.setUpdateTime(LocalDateTime.now());
-        return orderMembershipRepository.save(order);
+        return createMembershipOrder(OrderType.MEMBERSHIP_AND_MONTH_PAY, eBike);
     }
 
     @Override
-    public OrderMembership renew(EBike eBike) {
-        eBike.setExpireDate(LocalDate.now().plusMonths(1));
-        eBike.setUpdateTime(LocalDateTime.now());
-        eBikeRepository.save(eBike);
+    public OrderMembership renew(String ebikeSn) throws GException {
+        // check ebike
+        EBike eBike = eBikeRepository.findOneBySn(ebikeSn);
+        if (eBike == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
+        }
+        if (eBike.getIsMembership() == 0) {
+            throw new GException(ErrorConstants.NO_MEMBERSHIP);
+        }
+        if (eBike.getExpireDate() != null && eBike.getExpireDate().isAfter(LocalDate.now())) {
+            throw new GException(ErrorConstants.ALREADY_RENEW);
+        }
 
+        return createMembershipOrder(OrderType.MONTH_PAY, eBike);
+    }
+
+    protected OrderMembership createMembershipOrder(OrderType type, EBike eBike) {
         OrderMembership order = new OrderMembership();
         order.setSn(IdGen.genOrderSn());
-        order.setType(OrderType.MONTH_PAY.get());
-        order.setPrice(Constants.MONTH_FEE);
+        order.setType(type.get());
+        if (type == OrderType.MEMBERSHIP_AND_MONTH_PAY) {
+            order.setPrice(Constants.MEMBERSHIP_FEE.add(Constants.MONTH_FEE));
+        } else {
+            order.setPrice(Constants.MONTH_FEE);
+        }
         order.setCurrency(Constants.CURRENCY);
         order.setEbikeSn(eBike.getSn());
         order.setUid(eBike.getUid());
