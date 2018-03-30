@@ -2,17 +2,15 @@ package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.pojo.request.AuthParams;
-import com.ecgobike.pojo.request.JoinMembershipParams;
+import com.ecgobike.pojo.request.JoinParams;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.enums.Auth;
-import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.OrderMembership;
 import com.ecgobike.entity.User;
 import com.ecgobike.pojo.request.RenewParams;
-import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
 import com.ecgobike.service.UserService;
@@ -48,7 +46,7 @@ public class EBikeController {
 
     @PostMapping("/join")
     @AuthRequire(Auth.USER)
-    public MessageDto join(JoinMembershipParams params) throws GException {
+    public MessageDto join(JoinParams params) throws GException {
         // check ebike
         EBike ebike = eBikeService.findOneBySn(params.getEbikeSn());
         if (ebike == null) {

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * Created by ChenJun on 2018/3/11.
  */
 @Data
-public class JoinMembershipParams extends AuthParams {
+public class JoinParams extends AuthParams {
     @NotNull
     private String ebikeSn;
 }
