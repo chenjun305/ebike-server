@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * Created by ChenJun on 2018/3/16.
  */
 @Entity
-@Table(name = "order")
+@Table(name = "payment_order")
 @Data
 public class Order implements Serializable {
     @Id

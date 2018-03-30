@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by ChenJun on 2018/3/15.
@@ -39,6 +40,8 @@ public class OrderServiceImpl implements OrderService {
         order.setStaffUid(staff.getUid());
         order.setShopId(staff.getShopId());
         order.setStatus(1);
+        order.setCreateTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
         return orderRepository.save(order);
     }
 
@@ -62,6 +65,8 @@ public class OrderServiceImpl implements OrderService {
         order.setStartDate(LocalDate.now());
         order.setEndDate(LocalDate.now().plusMonths(1));
         order.setStatus(1);
+        order.setCreateTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
         return orderRepository.save(order);
     }
 
@@ -79,6 +84,8 @@ public class OrderServiceImpl implements OrderService {
         order.setStaffUid(staff.getUid());
         order.setShopId(staff.getShopId());
         order.setStatus(1);
+        order.setCreateTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
         return orderRepository.save(order);
     }
 

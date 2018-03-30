@@ -134,7 +134,7 @@ CREATE TABLE `battery` (
   KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池表';
 
-CREATE TABLE `order` (
+CREATE TABLE `payment_order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
   `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
   `type` TINYINT NOT NULL COMMENT '订单类型 1卖车 2店员为用户充值 3店员为用户加入会员 4店员为用户更新包月 5用户加入会员 6用户更新包月 ',
