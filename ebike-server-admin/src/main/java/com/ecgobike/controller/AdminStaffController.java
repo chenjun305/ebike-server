@@ -4,6 +4,10 @@ import com.ecgobike.service.StaffService;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.response.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,9 +26,12 @@ public class AdminStaffController {
     StaffService staffService;
 
     @RequestMapping("/list")
-    public MessageDto list() {
+    public MessageDto list(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable
+    ) {
         Map<String, Object> data = new HashMap<>();
-        List<Staff> staffs = staffService.findAll();
+        Page<Staff> staffs = staffService.findAll(pageable);
         data.put("staffs", staffs);
         return MessageDto.responseSuccess(data);
     }

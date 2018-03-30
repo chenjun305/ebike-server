@@ -1,6 +1,8 @@
 package com.ecgobike.service;
 
 import com.ecgobike.entity.Staff;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,5 +13,5 @@ public interface StaffService {
     Staff findOneByTel(String tel);
     Staff findOneByUid(String uid);
     Staff create(Staff staff);
-    List<Staff> findAll();
+    Page<Staff> findAll(Pageable pageable);
 }

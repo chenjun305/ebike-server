@@ -4,6 +4,8 @@ import com.ecgobike.entity.Staff;
 import com.ecgobike.repository.StaffRepository;
 import com.ecgobike.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Staff> findAll() {
-        return staffRepository.findAll();
+    public Page<Staff> findAll(Pageable pageable) {
+        return staffRepository.findAll(pageable);
     }
 }

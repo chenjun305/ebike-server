@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface BatteryService {
     Battery findOneBySn(String sn);
-    List<Battery> findAll();
-    List<ProductBattery> findAllProducts();
+    Page<Battery> findAll(Pageable pageable);
+    Page<ProductBattery> findAllProducts(Pageable pageable);
     LendBattery lend(EBike eBike, Battery battery);
     LendBattery returnBattery(Staff staff, Battery battery) throws GException;
     Page<LendBattery> findAllLendHistory(Pageable pageable);

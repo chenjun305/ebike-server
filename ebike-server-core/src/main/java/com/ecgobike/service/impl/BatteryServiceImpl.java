@@ -36,13 +36,13 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
-    public List<Battery> findAll() {
-        return batteryRepository.findAll();
+    public Page<Battery> findAll(Pageable pageable) {
+        return batteryRepository.findAll(pageable);
     }
 
     @Override
-    public List<ProductBattery> findAllProducts() {
-        return productBatteryRepository.findAll();
+    public Page<ProductBattery> findAllProducts(Pageable pageable) {
+        return productBatteryRepository.findAll(pageable);
     }
 
     @Override

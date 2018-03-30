@@ -28,8 +28,11 @@ public class AdminBatteryController {
     BatteryService batteryService;
 
     @RequestMapping("/list")
-    public MessageDto list() {
-        List<Battery> batteries = batteryService.findAll();
+    public MessageDto list(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable
+    ) {
+        Page<Battery> batteries = batteryService.findAll(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("batteries", batteries);
 
@@ -37,8 +40,11 @@ public class AdminBatteryController {
     }
 
     @RequestMapping("/product/list")
-    public MessageDto productList() {
-        List<ProductBattery> batteryProducts = batteryService.findAllProducts();
+    public MessageDto productList(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable
+    ) {
+        Page<ProductBattery> batteryProducts = batteryService.findAllProducts(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("batteryProducts", batteryProducts);
 
@@ -48,7 +54,8 @@ public class AdminBatteryController {
     @RequestMapping("/lend/list")
     public MessageDto lendList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
-                    Pageable pageable) {
+                    Pageable pageable
+    ) {
         Page<LendBattery> lendHistory = batteryService.findAllLendHistory(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("lendHistory", lendHistory);

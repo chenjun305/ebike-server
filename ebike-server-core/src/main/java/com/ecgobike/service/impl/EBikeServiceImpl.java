@@ -10,6 +10,8 @@ import com.ecgobike.repository.OrderSellEBikeRepository;
 import com.ecgobike.repository.ProductEBikeRepository;
 import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,8 +37,8 @@ public class EBikeServiceImpl implements EBikeService {
     OrderMembershipRepository orderMembershipRepository;
 
     @Override
-    public List<EBike> findAll() {
-        return eBikeRepository.findAll();
+    public Page<EBike> findAll(Pageable pageable) {
+        return eBikeRepository.findAll(pageable);
     }
 
     @Override
@@ -45,8 +47,8 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
-    public List<ProductEBike> findAllProducts() {
-        return productEBikeRepository.findAll();
+    public Page<ProductEBike> findAllProducts(Pageable pageable) {
+        return productEBikeRepository.findAll(pageable);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
-    public List<OrderSellEBike> findAllSall() {
-        return orderSellEBikeRepository.findAll();
+    public Page<OrderSellEBike> findAllSall(Pageable pageable) {
+        return orderSellEBikeRepository.findAll(pageable);
     }
 }
