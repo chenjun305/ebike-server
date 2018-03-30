@@ -3,11 +3,13 @@ package com.ecgobike.controller;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
-import com.ecgobike.entity.OrderTopup;
+import com.ecgobike.entity.Order;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.request.TopupParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.OrderService;
+import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.User;
@@ -30,6 +32,9 @@ public class ShopMoneyController {
     UserService userService;
 
     @Autowired
+    StaffService staffService;
+
+    @Autowired
     OrderService orderService;
 
     @PostMapping("/topup")
@@ -40,12 +45,15 @@ public class ShopMoneyController {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
         }
 
+        Staff staff = staffService.findOneByUid(params.getUid());
+
         String currency = params.getCurrency() == null ? "USD" : params.getCurrency();
         Money money = new Money(params.getAmount(), currency);
-        userService.addMoney(user, money);
-        OrderTopup orderTopup = orderService.createTopupOrder(params.getUid(), user.getUid(), money);
+        user = userService.addMoney(user, money);
+
+        Order order = orderService.createTopupOrder(staff, user, money);
         Map<String, Object> data = new HashMap<>();
-        data.put("order", orderTopup);
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 }

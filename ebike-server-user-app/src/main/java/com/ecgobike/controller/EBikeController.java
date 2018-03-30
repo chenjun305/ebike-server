@@ -1,6 +1,7 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.JoinParams;
 import com.ecgobike.common.annotation.AuthRequire;
@@ -8,11 +9,12 @@ import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.OrderMembership;
+import com.ecgobike.entity.Order;
 import com.ecgobike.entity.User;
 import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
+import com.ecgobike.service.OrderService;
 import com.ecgobike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,9 @@ public class EBikeController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OrderService orderService;
 
     @PostMapping("/list")
     @AuthRequire(Auth.USER)
@@ -57,11 +61,13 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        OrderMembership order = eBikeService.joinMembership(params.getEbikeSn());
+        EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         user = userService.minusMoney(user, fee);
+        Order order = orderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, user, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
+        data.put("ebike", eBike);
         data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
@@ -76,11 +82,13 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        OrderMembership order = eBikeService.renew(params.getEbikeSn());
+        EBike eBike = eBikeService.renew(params.getEbikeSn());
         user = userService.minusMoney(user, Constants.MONTH_FEE);
+        Order order = orderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, user, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
+        data.put("ebike", eBike);
         data.put("order", order);
         return MessageDto.responseSuccess(data);
     }

@@ -5,10 +5,11 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.OrderSellEBike;
+import com.ecgobike.entity.Order;
 import com.ecgobike.pojo.request.SellBikeParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
+import com.ecgobike.service.OrderService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.common.enums.Auth;
@@ -37,6 +38,9 @@ public class ShopEBikeController {
 
     @Autowired
     StaffService staffService;
+
+    @Autowired
+    OrderService orderService;
 
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
@@ -76,7 +80,8 @@ public class ShopEBikeController {
         user.setAddress(params.getAddress());
         user = userService.update(user);
 
-        OrderSellEBike order = eBikeService.sell(staff, user, eBike);
+        eBike = eBikeService.sell(user, eBike);
+        Order order = orderService.createSellOrder(staff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
         data.put("order", order);

@@ -6,6 +6,9 @@ import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,10 +29,13 @@ public class ShopProductController {
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto list(){
+    public MessageDto list(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable
+    ){
         Map<String, Object> data = new HashMap<>();
-        data.put("ebikeProducts", eBikeService.findAllProducts());
-        data.put("batteryProducts", batteryService.findAllProducts());
+        data.put("ebikeProducts", eBikeService.findAllProducts(pageable));
+        data.put("batteryProducts", batteryService.findAllProducts(pageable));
         return MessageDto.responseSuccess(data);
     }
 }
