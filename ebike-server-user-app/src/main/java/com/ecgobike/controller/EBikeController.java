@@ -63,7 +63,7 @@ public class EBikeController {
 
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         user = userService.minusMoney(user, fee);
-        Order order = orderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, user, null);
+        Order order = orderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
@@ -84,7 +84,7 @@ public class EBikeController {
 
         EBike eBike = eBikeService.renew(params.getEbikeSn());
         user = userService.minusMoney(user, Constants.MONTH_FEE);
-        Order order = orderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, user, null);
+        Order order = orderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());

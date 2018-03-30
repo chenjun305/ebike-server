@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface OrderService {
     Order createTopupOrder(Staff staff, User user, Money money);
-    Order createMembershipOrder(OrderType type, EBike eBike, User user, Staff staff);
+    Order createMembershipOrder(OrderType type, EBike eBike, Staff staff);
     Order createSellOrder(Staff staff, User user, EBike eBike);
     Page<Order> findAllSall(Pageable pageable);
 }

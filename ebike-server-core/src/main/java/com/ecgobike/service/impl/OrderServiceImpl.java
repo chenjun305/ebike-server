@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createMembershipOrder(OrderType type, EBike eBike, User user, Staff staff) {
+    public Order createMembershipOrder(OrderType type, EBike eBike, Staff staff) {
         Order order = new Order();
         order.setSn(IdGen.genOrderSn());
         order.setType(type.get());
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setCurrency(Constants.CURRENCY);
         order.setEbikeSn(eBike.getSn());
-        order.setUid(user.getUid());
+        order.setUid(eBike.getUid());
         if (type == OrderType.STAFF_JOIN_MEMBERSHIP || type == OrderType.STAFF_RENEW_MONTHLY) {
             order.setStaffUid(staff.getUid());
             order.setShopId(staff.getShopId());

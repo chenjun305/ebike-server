@@ -1,11 +1,15 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.Order;
+import com.ecgobike.pojo.request.JoinParams;
+import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.request.SellBikeParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,6 +89,32 @@ public class ShopEBikeController {
         Order order = orderService.createSellOrder(staff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
+        data.put("order", order);
+        return MessageDto.responseSuccess(data);
+    }
+
+    @PostMapping("/join")
+    @AuthRequire(Auth.USER)
+    public MessageDto join(JoinParams params) throws GException {
+        Staff staff = staffService.findOneByUid(params.getUid());
+        EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
+        Order order = orderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("ebike", eBike);
+        data.put("order", order);
+        return MessageDto.responseSuccess(data);
+    }
+
+    @PostMapping("/renew")
+    @AuthRequire(Auth.USER)
+    public MessageDto renew(RenewParams params) throws GException {
+        Staff staff = staffService.findOneByUid(params.getUid());
+        EBike eBike = eBikeService.renew(params.getEbikeSn());
+        Order order = orderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("ebike", eBike);
         data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
