@@ -5,12 +5,15 @@ import com.ecgobike.pojo.request.ShopParams;
 import com.ecgobike.service.ShopService;
 import com.ecgobike.pojo.response.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,8 +45,11 @@ public class AdminShopController {
     }
 
     @PostMapping("/list")
-    public MessageDto list() {
-        List<Shop> shops = shopService.findAll();
+    public MessageDto list(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable
+    ) {
+        Page<Shop> shops = shopService.findAll(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("shops", shops);
         return MessageDto.responseSuccess(data);

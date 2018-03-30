@@ -1,6 +1,8 @@
 package com.ecgobike.service;
 
 import com.ecgobike.entity.Shop;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -9,6 +11,6 @@ import java.util.List;
  */
 public interface ShopService {
     List<Shop> near(Double latitude, Double longitude);
-    List<Shop> findAll();
+    Page<Shop> findAll(Pageable pageable);
     Shop create(Shop shop);
 }

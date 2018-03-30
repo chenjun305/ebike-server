@@ -4,6 +4,8 @@ import com.ecgobike.entity.Shop;
 import com.ecgobike.repository.ShopRepository;
 import com.ecgobike.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> findAll() {
-        return shopRepository.findAll();
+    public Page<Shop> findAll(Pageable pageable) {
+        return shopRepository.findAll(pageable);
     }
 
     @Override
