@@ -16,7 +16,12 @@ public class EBike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String sn;
-    private Long productId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEBike productEBike;
+    //private Long productId;
     private Long shopId;
     private String uid;
     private Byte isMembership;
