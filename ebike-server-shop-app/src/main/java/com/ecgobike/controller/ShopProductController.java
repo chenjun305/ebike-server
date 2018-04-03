@@ -29,13 +29,10 @@ public class ShopProductController {
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto list(
-            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
-                    Pageable pageable
-    ){
+    public MessageDto list(){
         Map<String, Object> data = new HashMap<>();
-        data.put("ebikeProducts", eBikeService.findAllProducts(pageable));
-        data.put("batteryProducts", batteryService.findAllProducts(pageable));
+        data.put("ebikeProducts", eBikeService.findAllProducts());
+        data.put("batteryProducts", batteryService.findAllProducts());
         return MessageDto.responseSuccess(data);
     }
 }

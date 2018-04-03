@@ -9,12 +9,12 @@ import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.Order;
+import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.User;
 import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
-import com.ecgobike.service.OrderService;
+import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class EBikeController {
     UserService userService;
 
     @Autowired
-    OrderService orderService;
+    PaymentOrderService paymentOrderService;
 
     @PostMapping("/list")
     @AuthRequire(Auth.USER)
@@ -63,12 +63,12 @@ public class EBikeController {
 
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         user = userService.minusMoney(user, fee);
-        Order order = orderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, null);
+        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
         data.put("ebike", eBike);
-        data.put("order", order);
+        data.put("paymentOrder", paymentOrder);
         return MessageDto.responseSuccess(data);
     }
 
@@ -84,12 +84,12 @@ public class EBikeController {
 
         EBike eBike = eBikeService.renew(params.getEbikeSn());
         user = userService.minusMoney(user, Constants.MONTH_FEE);
-        Order order = orderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, null);
+        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
         data.put("ebike", eBike);
-        data.put("order", order);
+        data.put("paymentOrder", paymentOrder);
         return MessageDto.responseSuccess(data);
     }
 

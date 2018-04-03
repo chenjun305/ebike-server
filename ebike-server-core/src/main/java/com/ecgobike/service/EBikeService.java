@@ -14,6 +14,7 @@ public interface EBikeService {
     Page<EBike> findAll(Pageable pageable);
     List<EBike> findAllByUid(String uid);
     Page<ProductEBike> findAllProducts(Pageable pageable);
+    List<ProductEBike> findAllProducts();
     EBike findOneBySn(String sn);
     EBike joinMembership(String ebikeSn) throws GException;
     EBike renew(String ebikeSn) throws GException;

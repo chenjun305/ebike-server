@@ -4,7 +4,7 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
 import com.ecgobike.repository.EBikeRepository;
-import com.ecgobike.repository.OrderRepository;
+import com.ecgobike.repository.PaymentOrderRepository;
 import com.ecgobike.repository.ProductEBikeRepository;
 import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class EBikeServiceImpl implements EBikeService {
     ProductEBikeRepository productEBikeRepository;
 
     @Autowired
-    OrderRepository orderRepository;
+    PaymentOrderRepository paymentOrderRepository;
 
     @Override
     public Page<EBike> findAll(Pageable pageable) {
@@ -46,6 +46,11 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
+    public List<ProductEBike> findAllProducts() {
+        return productEBikeRepository.findAll();
+    }
+
+    @Override
     public EBike findOneBySn(String sn) {
         return eBikeRepository.findOneBySn(sn);
     }
@@ -57,7 +62,7 @@ public class EBikeServiceImpl implements EBikeService {
         if (eBike == null) {
             throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
         }
-        if (eBike.getIsMembership() == 1) {
+        if (eBike.getIsMembership() != null && eBike.getIsMembership() == 1) {
             throw new GException(ErrorConstants.ALREADY_MEMBERSHIP);
         }
 
@@ -74,7 +79,7 @@ public class EBikeServiceImpl implements EBikeService {
         if (eBike == null) {
             throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
         }
-        if (eBike.getIsMembership() == 0) {
+        if (eBike.getIsMembership() == null || eBike.getIsMembership() == 0) {
             throw new GException(ErrorConstants.NO_MEMBERSHIP);
         }
         if (eBike.getExpireDate() != null && eBike.getExpireDate().isAfter(LocalDate.now())) {

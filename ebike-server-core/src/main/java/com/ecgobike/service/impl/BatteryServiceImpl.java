@@ -46,6 +46,11 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
+    public List<ProductBattery> findAllProducts() {
+        return productBatteryRepository.findAll();
+    }
+
+    @Override
     public LendBattery lend(EBike eBike, Battery battery) {
         battery.setShopId(null);
         battery.setEbikeSn(eBike.getSn());

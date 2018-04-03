@@ -3,12 +3,12 @@ package com.ecgobike.controller;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
-import com.ecgobike.entity.Order;
+import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.request.TopupParams;
 import com.ecgobike.pojo.response.MessageDto;
-import com.ecgobike.service.OrderService;
+import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.common.enums.Auth;
@@ -35,7 +35,7 @@ public class ShopMoneyController {
     StaffService staffService;
 
     @Autowired
-    OrderService orderService;
+    PaymentOrderService paymentOrderService;
 
     @PostMapping("/topup")
     @AuthRequire(Auth.STAFF)
@@ -51,9 +51,9 @@ public class ShopMoneyController {
         Money money = new Money(params.getAmount(), currency);
         user = userService.addMoney(user, money);
 
-        Order order = orderService.createTopupOrder(staff, user, money);
+        PaymentOrder paymentOrder = paymentOrderService.createTopupOrder(staff, user, money);
         Map<String, Object> data = new HashMap<>();
-        data.put("order", order);
+        data.put("paymentOrder", paymentOrder);
         return MessageDto.responseSuccess(data);
     }
 }

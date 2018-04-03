@@ -1,11 +1,11 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.Order;
+import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.ProductEBike;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
-import com.ecgobike.service.OrderService;
+import com.ecgobike.service.PaymentOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,7 @@ public class AdminEBikeController {
     EBikeService eBikeService;
 
     @Autowired
-    OrderService orderService;
+    PaymentOrderService paymentOrderService;
 
     @RequestMapping("/list")
     public MessageDto list(
@@ -57,7 +57,7 @@ public class AdminEBikeController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
-        Page<Order> saleList = orderService.findAllSall(pageable);
+        Page<PaymentOrder> saleList = paymentOrderService.findAllSall(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("saleList", saleList);
         return MessageDto.responseSuccess(data);

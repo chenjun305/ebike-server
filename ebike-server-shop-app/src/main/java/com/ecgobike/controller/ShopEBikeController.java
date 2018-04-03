@@ -1,19 +1,18 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
-import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.Order;
+import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.pojo.request.JoinParams;
 import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.request.SellBikeParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
-import com.ecgobike.service.OrderService;
+import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.common.enums.Auth;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ public class ShopEBikeController {
     StaffService staffService;
 
     @Autowired
-    OrderService orderService;
+    PaymentOrderService paymentOrderService;
 
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
@@ -86,36 +84,36 @@ public class ShopEBikeController {
         user = userService.update(user);
 
         eBike = eBikeService.sell(user, eBike);
-        Order order = orderService.createSellOrder(staff, user, eBike);
+        PaymentOrder paymentOrder = paymentOrderService.createSellOrder(staff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("order", order);
+        data.put("paymentOrder", paymentOrder);
         return MessageDto.responseSuccess(data);
     }
 
     @PostMapping("/join")
-    @AuthRequire(Auth.USER)
+    @AuthRequire(Auth.STAFF)
     public MessageDto join(JoinParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
-        Order order = orderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff);
+        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff);
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
-        data.put("order", order);
+        data.put("paymentOrder", paymentOrder);
         return MessageDto.responseSuccess(data);
     }
 
     @PostMapping("/renew")
-    @AuthRequire(Auth.USER)
+    @AuthRequire(Auth.STAFF)
     public MessageDto renew(RenewParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.renew(params.getEbikeSn());
-        Order order = orderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff);
+        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff);
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
-        data.put("order", order);
+        data.put("paymentOrder", paymentOrder);
         return MessageDto.responseSuccess(data);
     }
 }
