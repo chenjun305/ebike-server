@@ -5,6 +5,7 @@ import com.ecgobike.entity.ProductBattery;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.service.LendBatteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,9 @@ public class AdminBatteryController {
 
     @Autowired
     BatteryService batteryService;
+
+    @Autowired
+    LendBatteryService lendBatteryService;
 
     @RequestMapping("/list")
     public MessageDto list(
@@ -56,7 +60,7 @@ public class AdminBatteryController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
-        Page<LendBattery> lendHistory = batteryService.findAllLendHistory(pageable);
+        Page<LendBattery> lendHistory = lendBatteryService.findAllLendHistory(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("lendHistory", lendHistory);
 
