@@ -15,7 +15,6 @@ public interface BatteryService {
     Page<Battery> findAll(Pageable pageable);
     Page<ProductBattery> findAllProducts(Pageable pageable);
     List<ProductBattery> findAllProducts();
-    LendBattery lend(EBike eBike, Battery battery);
-    LendBattery returnBattery(Staff staff, Battery battery) throws GException;
-    Page<LendBattery> findAllLendHistory(Pageable pageable);
+    Battery lend(EBike eBike, Battery battery);
+    Battery returnBattery(Staff staff, String batterySn) throws GException;
 }

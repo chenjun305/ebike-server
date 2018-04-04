@@ -27,9 +27,6 @@ public class BatteryServiceImpl implements BatteryService {
     @Autowired
     ProductBatteryRepository productBatteryRepository;
 
-    @Autowired
-    LendBatteryRepository lendBatteryRepository;
-
     @Override
     public Battery findOneBySn(String sn) {
         return batteryRepository.findOneBySn(sn);
@@ -51,46 +48,25 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
-    public LendBattery lend(EBike eBike, Battery battery) {
+    public Battery lend(EBike eBike, Battery battery) {
         battery.setShopId(null);
         battery.setEbikeSn(eBike.getSn());
         battery.setUpdateTime(LocalDateTime.now());
-        batteryRepository.save(battery);
-
-        LendBattery lendBattery = new LendBattery();
-        lendBattery.setSn(IdGen.genOrderSn());
-        lendBattery.setBatterySn(battery.getSn());
-        lendBattery.setEbikeSn(eBike.getSn());
-        lendBattery.setLendTime(LocalDateTime.now());
-        lendBattery.setUid(eBike.getUid());
-        lendBattery.setLendShopId(battery.getShopId());
-        lendBattery.setStatus((byte)0);
-        return lendBatteryRepository.save(lendBattery);
+        return batteryRepository.save(battery);
     }
 
     @Override
-    public LendBattery returnBattery(Staff staff, Battery battery) throws GException {
-        battery.setEbikeSn(null);
-        // TODO set right shopID
-        battery.setShopId(staff.getShopId());
-        battery.setUpdateTime(LocalDateTime.now());
-        batteryRepository.save(battery);
-
-        LendBattery lendBattery = lendBatteryRepository.findOneByBatterySnAndStatus(battery.getSn(), (byte)0);;
-        if (lendBattery == null) {
+    public Battery returnBattery(Staff staff, String batterySn) throws GException {
+        Battery battery = batteryRepository.findOneBySn(batterySn);
+        if (battery == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
+        }
+        if (battery.getEbikeSn() == null) {
             throw new GException(ErrorConstants.NOT_LEND_BATTERY);
         }
-        lendBattery.setReturnTime(LocalDateTime.now());
-        lendBattery.setReturnShopId(staff.getShopId());
-        lendBattery.setReturnStaffUid(staff.getUid());
-        lendBattery.setStatus((byte)1);
-        lendBattery.setUpdateTime(LocalDateTime.now());
-        return lendBatteryRepository.save(lendBattery);
+        battery.setEbikeSn(null);
+        battery.setShopId(staff.getShopId());
+        battery.setUpdateTime(LocalDateTime.now());
+        return batteryRepository.save(battery);
     }
-
-    @Override
-    public Page<LendBattery> findAllLendHistory(Pageable pageable) {
-        return lendBatteryRepository.findAll(pageable);
-    }
-
 }

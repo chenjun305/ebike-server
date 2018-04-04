@@ -98,4 +98,21 @@ public class EBikeServiceImpl implements EBikeService {
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
     }
+
+    @Override
+    public EBike canLendBattery(String ebikeSn) throws GException {
+        EBike eBike = eBikeRepository.findOneBySn(ebikeSn);
+        // check for ebike
+        if (eBike == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
+        }
+
+        if (eBike.getIsMembership() == null || eBike.getIsMembership() == 0) {
+            throw new GException(ErrorConstants.NO_MEMBERSHIP);
+        }
+        if (eBike.getExpireDate() == null || LocalDate.now().isAfter(eBike.getExpireDate())) {
+            throw new GException(ErrorConstants.NEED_RENEW_MONTH_FEE);
+        }
+        return eBike;
+    }
 }

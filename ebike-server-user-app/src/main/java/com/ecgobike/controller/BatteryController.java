@@ -12,6 +12,7 @@ import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;
+import com.ecgobike.service.LendBatteryService;
 import com.ecgobike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,24 +36,15 @@ public class BatteryController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    LendBatteryService lendBatteryService;
+
     @PostMapping("/lend")
     @AuthRequire(Auth.USER)
     public MessageDto lend(LendBatteryParams params) throws GException {
-        String uid = params.getUid();
-        User user = userService.getUserByUid(uid);
-        EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
-        // check for ebike
-        if (eBike == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
-        }
-        if (!eBike.getUid().equals(uid)) {
+        EBike eBike = eBikeService.canLendBattery(params.getEbikeSn());
+        if (eBike.getUid() == null || !eBike.getUid().equals(params.getUid())) {
             throw new GException(ErrorConstants.NOT_YOUR_EBIKE);
-        }
-        if (eBike.getIsMembership() == 0) {
-            throw new GException(ErrorConstants.NO_MEMBERSHIP);
-        }
-        if (eBike.getExpireDate() == null || LocalDate.now().isAfter(eBike.getExpireDate())) {
-            throw new GException(ErrorConstants.NEED_RENEW_MONTH_FEE);
         }
 
         // check for battery
@@ -64,13 +56,12 @@ public class BatteryController {
             throw new GException(ErrorConstants.NOT_RETURNED_BATTERY);
         }
 
-        LendBattery lendBattery = batteryService.lend(eBike, battery);
+        LendBattery lendBattery = lendBatteryService.lend(eBike, battery, null);
+        batteryService.lend(eBike, battery);
 
         Map<String, Object> data = new HashMap<>();
         data.put("paidAmount", 0);
-        data.put("balance", user.getMoney());
-        data.put("orderSn", lendBattery.getSn());
-        data.put("orderTime", lendBattery.getCreateTime());
+        data.put("lendBattery", lendBattery);
         data.put("expireDate", eBike.getExpireDate());
         return MessageDto.responseSuccess(data);
     }

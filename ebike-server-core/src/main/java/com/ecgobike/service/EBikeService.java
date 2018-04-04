@@ -19,4 +19,5 @@ public interface EBikeService {
     EBike joinMembership(String ebikeSn) throws GException;
     EBike renew(String ebikeSn) throws GException;
     EBike sell(User user, EBike eBike);
+    EBike canLendBattery(String ebikeSn) throws GException;
 }
