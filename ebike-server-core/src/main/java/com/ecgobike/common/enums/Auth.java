@@ -10,7 +10,7 @@ public enum Auth {
 
     public int auth;
 
-    private Auth(int auth) {
+    Auth(int auth) {
         this.auth = auth;
     }
 

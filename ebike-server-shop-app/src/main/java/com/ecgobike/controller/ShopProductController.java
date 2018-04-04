@@ -2,17 +2,13 @@ package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.enums.Auth;
-import com.ecgobike.entity.ProductBattery;
-import com.ecgobike.entity.ProductEBike;
+import com.ecgobike.common.enums.ProductType;
+import com.ecgobike.entity.Product;
 import com.ecgobike.pojo.response.BatteryProductVO;
 import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.pojo.response.MessageDto;
-import com.ecgobike.service.BatteryService;
-import com.ecgobike.service.EBikeService;
+import com.ecgobike.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,9 +25,7 @@ import java.util.Map;
 public class ShopProductController {
 
     @Autowired
-    BatteryService batteryService;
-    @Autowired
-    EBikeService eBikeService;
+    ProductService productService;
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
@@ -39,23 +33,26 @@ public class ShopProductController {
         Map<String, Object> data = new HashMap<>();
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         List<BatteryProductVO> batteryProducts = new ArrayList<>();
-        for (ProductEBike productEBike : eBikeService.findAllProducts()) {
-            EBikeProductVO eBikeProductVO = new EBikeProductVO();
-            eBikeProductVO.setProductId(productEBike.getId());
-            eBikeProductVO.setModel(productEBike.getModel());
-            eBikeProductVO.setColor(productEBike.getColor());
-            eBikeProductVO.setIconUrl(productEBike.getIconUrl());
-            eBikeProductVO.setSellNum(25);
-            eBikeProductVO.setStockNum(88);
-            ebikeProducts.add(eBikeProductVO);
-        }
-        for (ProductBattery productBattery : batteryService.findAllProducts()) {
-            BatteryProductVO batteryProductVO = new BatteryProductVO();
-            batteryProductVO.setProductId(productBattery.getId());
-            batteryProductVO.setType(productBattery.getModel());
-            batteryProductVO.setIconUrl(productBattery.getIconUrl());
-            batteryProductVO.setStockNum(77);
-            batteryProducts.add(batteryProductVO);
+        List<Product> productList = productService.findAllProducts();
+        for (Product product : productList) {
+            if (product.getType() == ProductType.EBIKE) {
+                EBikeProductVO eBikeProductVO = new EBikeProductVO();
+                eBikeProductVO.setProductId(product.getId());
+                eBikeProductVO.setModel(product.getModel());
+                eBikeProductVO.setColor(product.getColor());
+                eBikeProductVO.setIconUrl(product.getIconUrl());
+                eBikeProductVO.setSellNum(25);
+                eBikeProductVO.setStockNum(88);
+                ebikeProducts.add(eBikeProductVO);
+            } else if (product.getType() == ProductType.BATTERY) {
+                BatteryProductVO batteryProductVO = new BatteryProductVO();
+                batteryProductVO.setProductId(product.getId());
+                batteryProductVO.setType(product.getModel());
+                batteryProductVO.setIconUrl(product.getIconUrl());
+                batteryProductVO.setStockNum(77);
+                batteryProducts.add(batteryProductVO);
+            }
+
         }
         data.put("ebikeProducts", ebikeProducts);
         data.put("batteryProducts", batteryProducts);

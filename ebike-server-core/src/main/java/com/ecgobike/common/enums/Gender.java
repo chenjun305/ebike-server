@@ -10,7 +10,7 @@ public enum Gender {
 
     private byte type;
 
-    private Gender(byte type) {
+    Gender(byte type) {
         this.type = type;
     }
 

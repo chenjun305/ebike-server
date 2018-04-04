@@ -5,7 +5,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
 import com.ecgobike.repository.EBikeRepository;
 import com.ecgobike.repository.PaymentOrderRepository;
-import com.ecgobike.repository.ProductEBikeRepository;
+import com.ecgobike.repository.ProductRepository;
 import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,9 +25,6 @@ public class EBikeServiceImpl implements EBikeService {
     EBikeRepository eBikeRepository;
 
     @Autowired
-    ProductEBikeRepository productEBikeRepository;
-
-    @Autowired
     PaymentOrderRepository paymentOrderRepository;
 
     @Override
@@ -38,16 +35,6 @@ public class EBikeServiceImpl implements EBikeService {
     @Override
     public List<EBike> findAllByUid(String uid) {
         return eBikeRepository.findAllByUid(uid);
-    }
-
-    @Override
-    public Page<ProductEBike> findAllProducts(Pageable pageable) {
-        return productEBikeRepository.findAll(pageable);
-    }
-
-    @Override
-    public List<ProductEBike> findAllProducts() {
-        return productEBikeRepository.findAll();
     }
 
     @Override

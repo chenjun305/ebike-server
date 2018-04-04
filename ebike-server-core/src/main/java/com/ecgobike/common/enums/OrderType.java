@@ -21,7 +21,7 @@ public enum OrderType {
 
     private int type;
 
-    private OrderType(int type) {
+    OrderType(int type) {
         this.type = type;
     }
 

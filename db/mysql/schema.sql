@@ -58,24 +58,12 @@ CREATE TABLE `staff` (
   KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作人员表';
 
-CREATE TABLE `product_ebike` (
+CREATE TABLE `product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
-  `name` varchar(32) NOT NULL COMMENT '车辆名称',
+  `type` TINYINT NOT NULL DEFAULT '1' COMMENT '类型 1电单车 2电池',
+  `name` varchar(32) NOT NULL COMMENT '名称',
   `price` DECIMAL(8, 2) NOT NULL DEFAULT '0' COMMENT '金额',
   `currency` varchar(8) NOT NULL DEFAULT 'USD' COMMENT '货币类型',
-  `icon_url` varchar(512) DEFAULT NULL COMMENT '图片地址',
-  `model` varchar(32) DEFAULT NULL COMMENT '车辆型号',
-  `color` varchar(32) DEFAULT NULL COMMENT '颜色',
-  `desc` varchar(1024) DEFAULT NULL COMMENT '车辆详细描述',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态: 0无效 1正常',
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电单车产品表';
-
-CREATE TABLE `product_battery` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
-  `name` varchar(32) NOT NULL COMMENT '名称',
   `icon_url` varchar(512) DEFAULT NULL COMMENT '图片地址',
   `model` varchar(32) DEFAULT NULL COMMENT '型号',
   `color` varchar(32) DEFAULT NULL COMMENT '颜色',
@@ -84,7 +72,7 @@ CREATE TABLE `product_battery` (
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池产品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品表';
 
 CREATE TABLE `ebike` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
@@ -182,3 +170,27 @@ CREATE TABLE `lend_battery` (
   KEY `return_staff_uid_idx` (`return_staff_uid`),
   KEY `return_shop_id_idx` (`return_shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电池借用记录';
+
+CREATE TABLE `purchase_order` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
+  `product_id` INT(11) NOT NULL COMMENT '产品ID',
+  `require_num` INT(11) NOT NULL COMMENT '需求数量',
+  `permit_num` INT(11) COMMENT '审核通过数量',
+  `staff_uid` varchar(32) NOT NULL COMMENT '店员uid',
+  `shop_id` INT(11) NOT NULL COMMENT '门店ID',
+  `permit_uid` VARCHAR(32) COMMENT '批准人',
+  `departure_uid` VARCHAR(32) COMMENT '出库人',
+  `take_over_uid` VARCHAR(32) COMMENT '接收店员',
+  `purchase_time` TIMESTAMP NOT NULL DEFAULT current_timestamp COMMENT '进货时间',
+  `permit_time` TIMESTAMP COMMENT '审核时间',
+  `departure_time` TIMESTAMP COMMENT '出库时间',
+  `take_over_time` TIMESTAMP COMMENT '接收时间',
+  `status` TINYINT NOT NULL DEFAULT '0' COMMENT '状态 1已下单 2已审核 3已出库 4已到店',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单状态更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn` (`sn`),
+  KEY `product_id_idx` (`product_id`),
+  KEY `shop_id_idx` (`shop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='进货订单';

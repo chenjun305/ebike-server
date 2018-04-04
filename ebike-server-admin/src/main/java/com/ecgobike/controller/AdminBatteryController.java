@@ -1,11 +1,15 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.entity.LendBattery;
-import com.ecgobike.entity.ProductBattery;
+import com.ecgobike.entity.Product;
+import com.ecgobike.pojo.response.BatteryProductVO;
+import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.LendBatteryService;
+import com.ecgobike.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,9 @@ public class AdminBatteryController {
     @Autowired
     LendBatteryService lendBatteryService;
 
+    @Autowired
+    ProductService productService;
+
     @RequestMapping("/list")
     public MessageDto list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
@@ -44,11 +52,18 @@ public class AdminBatteryController {
     }
 
     @RequestMapping("/product/list")
-    public MessageDto productList(
-            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
-                    Pageable pageable
-    ) {
-        Page<ProductBattery> batteryProducts = batteryService.findAllProducts(pageable);
+    public MessageDto productList() {
+        List<BatteryProductVO> batteryProducts = new ArrayList<>();
+        List<Product> productList = productService.findByType(ProductType.BATTERY);
+        for (Product product :
+                productList) {
+            BatteryProductVO batteryProductVO = new BatteryProductVO();
+            batteryProductVO.setProductId(product.getId());
+            batteryProductVO.setType(product.getModel());
+            batteryProductVO.setIconUrl(product.getIconUrl());
+            batteryProductVO.setStockNum(77);
+            batteryProducts.add(batteryProductVO);
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("batteryProducts", batteryProducts);
 

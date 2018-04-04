@@ -1,12 +1,9 @@
 package com.ecgobike.service.impl;
 
 import com.ecgobike.entity.*;
-import com.ecgobike.repository.LendBatteryRepository;
-import com.ecgobike.repository.ProductBatteryRepository;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
-import com.ecgobike.common.util.IdGen;
 import com.ecgobike.repository.BatteryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,9 +21,6 @@ public class BatteryServiceImpl implements BatteryService {
     @Autowired
     BatteryRepository batteryRepository;
 
-    @Autowired
-    ProductBatteryRepository productBatteryRepository;
-
     @Override
     public Battery findOneBySn(String sn) {
         return batteryRepository.findOneBySn(sn);
@@ -35,16 +29,6 @@ public class BatteryServiceImpl implements BatteryService {
     @Override
     public Page<Battery> findAll(Pageable pageable) {
         return batteryRepository.findAll(pageable);
-    }
-
-    @Override
-    public Page<ProductBattery> findAllProducts(Pageable pageable) {
-        return productBatteryRepository.findAll(pageable);
-    }
-
-    @Override
-    public List<ProductBattery> findAllProducts() {
-        return productBatteryRepository.findAll();
     }
 
     @Override

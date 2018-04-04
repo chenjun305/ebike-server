@@ -22,7 +22,7 @@ public class Battery {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private ProductBattery productBattery;
+    private Product product;
 //    private Long productId;
     private Long shopId;
     private String ebikeSn;

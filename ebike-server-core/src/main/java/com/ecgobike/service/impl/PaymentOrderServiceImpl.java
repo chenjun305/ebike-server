@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -76,8 +75,8 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
         // TODO
-        paymentOrder.setPrice(eBike.getProductEBike().getPrice());
-        paymentOrder.setCurrency(eBike.getProductEBike().getCurrency());
+        paymentOrder.setPrice(eBike.getProduct().getPrice());
+        paymentOrder.setCurrency(eBike.getProduct().getCurrency());
 
         paymentOrder.setEbikeSn(eBike.getSn());
         paymentOrder.setUid(user.getUid());

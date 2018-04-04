@@ -1,5 +1,6 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.enums.ProductType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -11,14 +12,15 @@ import java.time.LocalDateTime;
  * Created by ChenJun on 2018/3/28.
  */
 @Entity
-@Table(name = "product_ebike")
+@Table(name = "product")
 @Data
-public class ProductEBike {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private ProductType type;
     private String name;
     private BigDecimal price;
     private String currency;
