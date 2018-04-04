@@ -20,7 +20,7 @@ public class EBike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-    //private Long productId;
+
     private Long shopId;
     private String uid;
     private Byte isMembership;
