@@ -27,9 +27,9 @@ public class ErrorCodeCreater {
     private static Document document = null;
     public static Element root = null;
 
-    private static final String packageDir = "net.zriot.ebike.common.constant";
+    private static final String packageDir = "com.ecgobike.common.constant";
 
-    private static String springEnv = getBaseDir() + sep + "src" + sep + "main" + sep + "java" + sep + "net" + sep + "zriot" + sep + "ebike" + sep + "common" + sep + "constant";
+    private static String springEnv = getBaseDir() + sep + "src" + sep + "main" + sep + "java" + sep + "com" + sep + "ecgobike" + sep + "common" + sep + "constant";
 
     private static StringBuffer data = new StringBuffer();
 

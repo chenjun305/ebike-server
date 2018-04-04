@@ -1,13 +1,20 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.ProductType;
+import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Product;
+import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Staff;
+import com.ecgobike.pojo.request.PurchaseParams;
 import com.ecgobike.pojo.response.BatteryProductVO;
 import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.ProductService;
+import com.ecgobike.service.PurchaseOrderService;
+import com.ecgobike.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +33,12 @@ public class ShopProductController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    StaffService staffService;
+
+    @Autowired
+    PurchaseOrderService purchaseOrderService;
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
@@ -56,6 +69,20 @@ public class ShopProductController {
         }
         data.put("ebikeProducts", ebikeProducts);
         data.put("batteryProducts", batteryProducts);
+        return MessageDto.responseSuccess(data);
+    }
+
+    @RequestMapping("/purchase")
+    @AuthRequire(Auth.STAFF)
+    public MessageDto purchase(PurchaseParams params) throws GException {
+        Staff staff = staffService.findOneByUid(params.getUid());
+        Product product = productService.getOne(params.getProductId());
+        if (product == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
+        }
+        PurchaseOrder purchaseOrder = purchaseOrderService.purchase(staff, params.getProductId(), params.getRequireNum());
+        Map<String, Object> data = new HashMap<>();
+        data.put("purchaseOrder", purchaseOrder);
         return MessageDto.responseSuccess(data);
     }
 }

@@ -10,8 +10,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import net.zriot.ebike.common.exception.GException;
-import net.zriot.ebike.common.log.LogHelp;
+import com.ecgobike.common.exception.GException;
+import com.ecgobike.common.log.LogHelp;
 
 // generate by common/tools/ErrorCodeCreater
 

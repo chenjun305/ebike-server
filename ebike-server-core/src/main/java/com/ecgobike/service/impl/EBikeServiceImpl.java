@@ -4,8 +4,6 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
 import com.ecgobike.repository.EBikeRepository;
-import com.ecgobike.repository.PaymentOrderRepository;
-import com.ecgobike.repository.ProductRepository;
 import com.ecgobike.service.EBikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +21,6 @@ import java.util.List;
 public class EBikeServiceImpl implements EBikeService {
     @Autowired
     EBikeRepository eBikeRepository;
-
-    @Autowired
-    PaymentOrderRepository paymentOrderRepository;
 
     @Override
     public Page<EBike> findAll(Pageable pageable) {

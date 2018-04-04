@@ -61,6 +61,9 @@
 	<err id="401" description="Not Exist Staff！" name="NOT_EXIST_STAFF"/>
 	<err id="402" description="Already Exist Staff！" name="ALREADY_EXIST_STAFF"/>
 
+	<!--Product-->
+	<err id="501" description="Not Exist Product！" name="NOT_EXIST_PRODUCT"/>
+
 	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>
 	<err id="601" description="Exist Unpaid Order！" name="EXIST_UNPAID_ORDER"/>
 	<err id="602" description="No Unpaid Order！" name="NO_UNPAID_ORDER"/>

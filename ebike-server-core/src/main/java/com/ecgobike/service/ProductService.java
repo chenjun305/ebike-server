@@ -11,4 +11,5 @@ import java.util.List;
 public interface ProductService {
     List<Product> findAllProducts();
     List<Product> findByType(ProductType type);
+    Product getOne(Long id);
 }
