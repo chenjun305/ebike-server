@@ -68,7 +68,7 @@ public class ErrorConstants {
 	public static final int ALREADY_EXIST_STAFF = 402;//Already Exist Staff！
 	public static final int NOT_EXIST_PRODUCT = 501;//Not Exist Product！
 	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！
-	public static final int EXIST_UNPAID_ORDER = 601;//Exist Unpaid Order！
+	public static final int NOT_EXIST_PURCHASE_ORDER = 601;//Not Exist Purchase Order！
 	public static final int NO_UNPAID_ORDER = 602;//No Unpaid Order！
 	public static final int ERR_PAY_ORDER = 603;//Order Payment Error！
 	public static final int ERR_NO_ORDER = 604;//Order Not Found！

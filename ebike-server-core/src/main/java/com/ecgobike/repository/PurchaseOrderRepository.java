@@ -11,4 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
+    PurchaseOrder findOneBySn(String sn);
 }
