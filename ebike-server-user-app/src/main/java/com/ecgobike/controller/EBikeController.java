@@ -1,6 +1,7 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.constant.MonthNumFee;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.JoinParams;
@@ -55,20 +56,18 @@ public class EBikeController {
         User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
 
-        BigDecimal fee = Constants.MEMBERSHIP_FEE.add(Constants.MONTH_FEE);
-
-        if (money.compareTo(fee) == -1) {
+        if (money.compareTo(Constants.MEMBERSHIP_FEE) == -1) {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
-        user = userService.minusMoney(user, fee);
-        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, null);
+        user = userService.minusMoney(user, Constants.MEMBERSHIP_FEE);
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.USER_JOIN_MEMBERSHIP, eBike, null, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
         data.put("ebike", eBike);
-        data.put("paymentOrder", paymentOrder);
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 
@@ -78,18 +77,22 @@ public class EBikeController {
         // check user money
         User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
-        if (money.compareTo(Constants.MONTH_FEE) == -1) {
+        BigDecimal monthFee = MonthNumFee.getFee(params.getMonthNum());
+        if (monthFee == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_MONTH_NUM_FEE_RULE);
+        }
+        if (money.compareTo(monthFee) == -1) {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
         EBike eBike = eBikeService.renew(params.getEbikeSn());
-        user = userService.minusMoney(user, Constants.MONTH_FEE);
-        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, null);
+        user = userService.minusMoney(user, monthFee);
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, null, params.getMonthNum());
 
         Map<String, Object> data = new HashMap<>();
         data.put("balance", user.getMoney());
         data.put("ebike", eBike);
-        data.put("paymentOrder", paymentOrder);
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 

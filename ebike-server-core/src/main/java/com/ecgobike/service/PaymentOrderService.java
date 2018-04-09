@@ -1,6 +1,7 @@
 package com.ecgobike.service;
 
 import com.ecgobike.common.enums.OrderType;
+import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.Staff;
@@ -14,7 +15,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface PaymentOrderService {
     PaymentOrder createTopupOrder(Staff staff, User user, Money money);
-    PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff);
+    PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff, Integer monthNum) throws GException;
     PaymentOrder createSellOrder(Staff staff, User user, EBike eBike);
     Page<PaymentOrder> findAllSall(Pageable pageable);
 }

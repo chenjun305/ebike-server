@@ -49,7 +49,6 @@ public class EBikeServiceImpl implements EBikeService {
         }
 
         eBike.setIsMembership((byte)1);
-        eBike.setExpireDate(LocalDate.now().plusMonths(1));
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
     }

@@ -1,7 +1,10 @@
 package com.ecgobike.service.impl;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.constant.MonthNumFee;
 import com.ecgobike.common.enums.OrderType;
+import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.PaymentOrder;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -45,14 +49,20 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
-    public PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff) {
+    public PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff, Integer monthNum) throws GException {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(type.get());
         if (type == OrderType.USER_JOIN_MEMBERSHIP || type == OrderType.STAFF_JOIN_MEMBERSHIP) {
-            paymentOrder.setPrice(Constants.MEMBERSHIP_FEE.add(Constants.MONTH_FEE));
+            paymentOrder.setPrice(Constants.MEMBERSHIP_FEE);
         } else if (type == OrderType.USER_RENEW_MONTHLY || type == OrderType.STAFF_RENEW_MONTHLY) {
-            paymentOrder.setPrice(Constants.MONTH_FEE);
+            BigDecimal monthFee = MonthNumFee.getFee(monthNum);
+            if (monthFee == null) {
+                throw new GException(ErrorConstants.NOT_EXIST_MONTH_NUM_FEE_RULE);
+            }
+            paymentOrder.setPrice(monthFee);
+            paymentOrder.setStartDate(LocalDate.now());
+            paymentOrder.setEndDate(LocalDate.now().plusMonths(1));
         }
         paymentOrder.setCurrency(Constants.CURRENCY);
         paymentOrder.setEbikeSn(eBike.getSn());
@@ -61,8 +71,6 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
             paymentOrder.setStaffUid(staff.getUid());
             paymentOrder.setShopId(staff.getShopId());
         }
-        paymentOrder.setStartDate(LocalDate.now());
-        paymentOrder.setEndDate(LocalDate.now().plusMonths(1));
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());
         paymentOrder.setUpdateTime(LocalDateTime.now());

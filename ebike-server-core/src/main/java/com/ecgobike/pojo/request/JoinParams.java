@@ -1,5 +1,6 @@
 package com.ecgobike.pojo.request;
 
+import com.ecgobike.common.annotation.Range;
 import lombok.Data;
 import com.ecgobike.common.annotation.NotNull;
 

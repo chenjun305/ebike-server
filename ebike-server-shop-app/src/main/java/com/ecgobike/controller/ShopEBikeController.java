@@ -96,11 +96,11 @@ public class ShopEBikeController {
     public MessageDto join(JoinParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
-        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff);
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
-        data.put("paymentOrder", paymentOrder);
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 
@@ -109,11 +109,11 @@ public class ShopEBikeController {
     public MessageDto renew(RenewParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.renew(params.getEbikeSn());
-        PaymentOrder paymentOrder = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff);
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
-        data.put("paymentOrder", paymentOrder);
+        data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
 }
