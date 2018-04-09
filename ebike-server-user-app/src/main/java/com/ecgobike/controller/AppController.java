@@ -1,6 +1,7 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.constant.MonthNumFee;
 import com.ecgobike.pojo.response.MessageDto;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,17 +25,7 @@ public class AppController {
         data.put("currency", Constants.CURRENCY);
         data.put("currencySymbol", Constants.CURRENCY_SYMBOL);
         data.put("serviceAgreementUrl", "");
-        Map<Integer, BigDecimal> map = new HashMap<>();
-        map.put(1,  new BigDecimal(0.8));
-        map.put(10, new BigDecimal(7));
-        map.put(15, new BigDecimal(9));
-        map.put(20, new BigDecimal(11));
-        map.put(25, new BigDecimal(13));
-        map.put(30, new BigDecimal(15));
-        map.put(35, new BigDecimal(17));
-        map.put(40, new BigDecimal(19));
-        map.put(50, new BigDecimal(23));
-        data.put("monthFeeMap", map);
+        data.put("monthNumFeeRule", MonthNumFee.getRule());
         return MessageDto.responseSuccess(data);
     }
 }
