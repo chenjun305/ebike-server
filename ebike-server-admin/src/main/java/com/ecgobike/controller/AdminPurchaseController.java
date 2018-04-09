@@ -2,7 +2,6 @@ package com.ecgobike.controller;
 
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.PurchaseOrder;
-import com.ecgobike.pojo.request.PurchaseDepartureParams;
 import com.ecgobike.pojo.request.PurchasePermitParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.PurchaseOrderService;
@@ -56,10 +55,5 @@ public class AdminPurchaseController {
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrder);
         return MessageDto.responseSuccess(data);
-    }
-
-    @PostMapping("/departure")
-    public MessageDto departure(PurchaseDepartureParams params) {
-        return MessageDto.responseSuccess();
     }
 }

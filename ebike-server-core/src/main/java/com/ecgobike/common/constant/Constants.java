@@ -1,6 +1,8 @@
 package com.ecgobike.common.constant;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public interface Constants {
@@ -21,5 +23,4 @@ public interface Constants {
     BigDecimal MONTH_FEE = new BigDecimal(7.0);
     String CURRENCY = "USD";
     String CURRENCY_SYMBOL = "$";
-
 }

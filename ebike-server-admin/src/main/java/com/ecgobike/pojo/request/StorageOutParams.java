@@ -9,7 +9,7 @@ import java.util.List;
  * Created by ChenJun on 2018/4/8.
  */
 @Data
-public class PurchaseDepartureParams {
+public class StorageOutParams {
     @NotNull
     private String purchaseSn;
 

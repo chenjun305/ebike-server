@@ -10,7 +10,7 @@ import java.util.List;
  * Created by ChenJun on 2018/4/8.
  */
 @Data
-public class StoragePutParams {
+public class StorageInParams {
     @Range(Min = 1)
     private Long productId;
 
