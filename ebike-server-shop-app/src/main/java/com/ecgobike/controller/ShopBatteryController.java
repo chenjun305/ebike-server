@@ -72,21 +72,16 @@ public class ShopBatteryController {
         }
 
         // check for battery
-        Battery battery = batteryService.findOneBySn(params.getBatterySn());
-        if (battery == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
-        }
-        if (battery.getEbikeSn() != null) {
-            throw new GException(ErrorConstants.NOT_RETURNED_BATTERY);
-        }
+        Staff staff = staffService.findOneByUid(params.getUid());
+        Battery battery = batteryService.canLend(params.getBatterySn(), staff);
 
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, params.getUid());
         batteryService.lend(eBike, battery);
+        eBike = eBikeService.lendBattery(eBike);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("paidAmount", 0);
         data.put("lendBattery", lendBattery);
-        data.put("expireDate", eBike.getExpireDate());
+        data.put("ebike", eBike);
         return MessageDto.responseSuccess(data);
     }
 }

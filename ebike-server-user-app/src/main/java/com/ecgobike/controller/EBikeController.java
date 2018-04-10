@@ -85,7 +85,7 @@ public class EBikeController {
             throw new GException(ErrorConstants.LACK_MONEY);
         }
 
-        EBike eBike = eBikeService.renew(params.getEbikeSn());
+        EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
         user = userService.minusMoney(user, monthFee);
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.USER_RENEW_MONTHLY, eBike, null, params.getMonthNum());
 

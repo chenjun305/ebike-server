@@ -65,6 +65,7 @@ public class ErrorConstants {
 	public static final int NOT_EXIST_BATTERY = 300;//Not Exist Battery！
 	public static final int NOT_RETURNED_BATTERY = 301;//Not Returned Battery！
 	public static final int NOT_LEND_BATTERY = 302;//Not Lend Battery！
+	public static final int NOT_YOUR_SHOP_BATTERY = 303;//Not Your Shop Battery！
 	public static final int NOT_EXIST_STAFF = 401;//Not Exist Staff！
 	public static final int ALREADY_EXIST_STAFF = 402;//Already Exist Staff！
 	public static final int NOT_EXIST_PRODUCT = 501;//Not Exist Product！

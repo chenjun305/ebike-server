@@ -108,7 +108,7 @@ public class ShopEBikeController {
     @AuthRequire(Auth.STAFF)
     public MessageDto renew(RenewParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
-        EBike eBike = eBikeService.renew(params.getEbikeSn());
+        EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
 
         Map<String, Object> data = new HashMap<>();

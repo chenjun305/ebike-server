@@ -57,6 +57,7 @@
 	<err id="300" description="Not Exist Battery！" name="NOT_EXIST_BATTERY"/>
 	<err id="301" description="Not Returned Battery！" name="NOT_RETURNED_BATTERY"/>
 	<err id="302" description="Not Lend Battery！" name="NOT_LEND_BATTERY"/>
+	<err id="303" description="Not Your Shop Battery！" name="NOT_YOUR_SHOP_BATTERY"/>
 
 	<!--staff-->
 	<err id="401" description="Not Exist Staff！" name="NOT_EXIST_STAFF"/>

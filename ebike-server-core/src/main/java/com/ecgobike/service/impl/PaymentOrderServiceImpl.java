@@ -61,6 +61,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
                 throw new GException(ErrorConstants.NOT_EXIST_MONTH_NUM_FEE_RULE);
             }
             paymentOrder.setPrice(monthFee);
+            paymentOrder.setMonthNum(monthNum);
             paymentOrder.setStartDate(LocalDate.now());
             paymentOrder.setEndDate(LocalDate.now().plusMonths(1));
         }

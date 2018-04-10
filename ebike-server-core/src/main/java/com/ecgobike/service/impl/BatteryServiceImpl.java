@@ -31,6 +31,21 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
+    public Battery canLend(String batterySn, Staff staff) throws GException {
+        Battery battery = batteryRepository.findOneBySn(batterySn);
+        if (battery == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
+        }
+        if (battery.getEbikeSn() != null) {
+            throw new GException(ErrorConstants.NOT_RETURNED_BATTERY);
+        }
+        if (staff != null && battery.getShopId() != null && battery.getShopId() != staff.getShopId()) {
+            throw new GException(ErrorConstants.NOT_YOUR_SHOP_BATTERY);
+        }
+        return battery;
+    }
+
+    @Override
     public Battery lend(EBike eBike, Battery battery) {
         battery.setShopId(null);
         battery.setEbikeSn(eBike.getSn());
