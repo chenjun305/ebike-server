@@ -74,6 +74,24 @@ CREATE TABLE `product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品表';
 
+CREATE TABLE `logistics` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
+  `sn` varchar(64) NOT NULL COMMENT '编码',
+  `product_id` INT(11) UNSIGNED NOT NULL COMMENT '所属产品ID',
+  `storage_in_time` datetime DEFAULT NULL COMMENT '入库时间',
+  `storage_out_time` datetime DEFAULT NULL COMMENT '出库时间',
+  `purchase_sn` VARCHAR(64) COMMENT '进货编号',
+  `shop_id` int(11) unsigned COMMENT '商店ID',
+  `shop_in_time` datetime COMMENT '入店时间',
+  `shop_out_time` datetime COMMENT '卖出时间',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态: 0无效 1仓库 2在店 3销售完成',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn_idx` (`sn`),
+  KEY `shop_idx` (`shop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品物流表';
+
 CREATE TABLE `ebike` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
   `sn` varchar(64) NOT NULL COMMENT '二维码包含的信息，一般情况为车辆编码',
@@ -89,24 +107,6 @@ CREATE TABLE `ebike` (
   UNIQUE KEY `sn_idx` (`sn`),
   KEY `uid_idx` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电单车表';
-
-CREATE TABLE `ebike_detail` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
-  `sn` varchar(64) NOT NULL COMMENT '二维码包含的信息，一般情况为车辆编码',
-  `product_id` INT(11) UNSIGNED NOT NULL COMMENT '所属产品ID',
-  `storage_in_time` datetime DEFAULT NULL COMMENT '入库时间',
-  `storage_out_time` datetime DEFAULT NULL COMMENT '出库时间',
-  `purchase_sn` VARCHAR(64) COMMENT '进货编号',
-  `shop_id` int(11) unsigned COMMENT '商店ID',
-  `shop_in_time` datetime COMMENT '入店时间',
-  `shop_out_time` datetime COMMENT '卖出时间',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态: 0无效 1仓库 2在店 3销售完成',
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sn_idx` (`sn`),
-  KEY `shop_idx` (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电单车详情表';
 
 CREATE TABLE `battery` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
@@ -124,23 +124,6 @@ CREATE TABLE `battery` (
   KEY `shop_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池表';
 
-CREATE TABLE `battery_detail` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
-  `sn` varchar(64) NOT NULL COMMENT '编码',
-  `product_id` INT(11) UNSIGNED NOT NULL COMMENT '所属产品ID',
-  `storage_in_time` datetime DEFAULT NULL COMMENT '入库时间',
-  `storage_out_time` datetime DEFAULT NULL COMMENT '出库时间',
-  `purchase_sn` VARCHAR(64) COMMENT '进货编号',
-  `shop_id` int(11) unsigned COMMENT '商店ID',
-  `shop_in_time` datetime COMMENT '入店时间',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态: 0无效 1仓库 2到店',
-  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sn_idx` (`sn`),
-  KEY `shop_idx` (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='电池详情表';
-
 CREATE TABLE `payment_order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
   `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
@@ -151,6 +134,7 @@ CREATE TABLE `payment_order` (
   `uid` varchar(32) DEFAULT NULL COMMENT '用户uid',
   `staff_uid` varchar(32) DEFAULT NULL COMMENT '店员uid，店员帮用户操作时有值',
   `shop_id` INT(11) DEFAULT NULL COMMENT '门店ID',
+  `month_num` TINYINT DEFAULT NULL COMMENT '月换电次数',
   `start_date` DATE DEFAULT NULL COMMENT '包月开始时间',
   `end_date` DATE DEFAULT NULL COMMENT '包月结束时间',
   `status` TINYINT NOT NULL DEFAULT '0' COMMENT '状态 0未完成 1已完成',
