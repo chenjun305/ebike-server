@@ -62,6 +62,7 @@ public class ErrorConstants {
 	public static final int NOT_YOUR_EBIKE = 206;//Not Your EBike
 	public static final int ALREADY_SELLED = 207;//Already selled
 	public static final int NOT_EXIST_MONTH_NUM_FEE_RULE = 208;//Not Exist Month Num Fee Rule
+	public static final int NOT_YOUR_SHOP_EBIKE = 209;//Not Your Shop EBike
 	public static final int NOT_EXIST_BATTERY = 300;//Not Exist Battery！
 	public static final int NOT_RETURNED_BATTERY = 301;//Not Returned Battery！
 	public static final int NOT_LEND_BATTERY = 302;//Not Lend Battery！

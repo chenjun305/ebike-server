@@ -52,6 +52,7 @@
 	<err id="206" description="Not Your EBike" name="NOT_YOUR_EBIKE"/>
 	<err id="207" description="Already selled" name="ALREADY_SELLED"/>
 	<err id="208" description="Not Exist Month Num Fee Rule" name="NOT_EXIST_MONTH_NUM_FEE_RULE"/>
+	<err id="209" description="Not Your Shop EBike" name="NOT_YOUR_SHOP_EBIKE"/>
 
 	<!--Battery-->
 	<err id="300" description="Not Exist Battery！" name="NOT_EXIST_BATTERY"/>

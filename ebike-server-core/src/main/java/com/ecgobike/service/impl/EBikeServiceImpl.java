@@ -74,9 +74,15 @@ public class EBikeServiceImpl implements EBikeService {
     }
 
     @Override
-    public EBike sell(User user, EBike eBike) {
+    public EBike sell(User user, String sn, Product product) {
+        EBike eBike = new EBike();
+        eBike.setSn(sn);
+        eBike.setProduct(product);
         eBike.setUid(user.getUid());
+        eBike.setIsMembership((byte)0);
+        eBike.setMonthNum(0);
         eBike.setStatus((byte)1);
+        eBike.setCreateTime(LocalDateTime.now());
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
     }

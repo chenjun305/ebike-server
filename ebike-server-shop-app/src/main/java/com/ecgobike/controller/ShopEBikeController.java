@@ -4,6 +4,7 @@ import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Gender;
+import com.ecgobike.common.enums.LogisticsStatus;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
@@ -63,16 +64,13 @@ public class ShopEBikeController {
     @PostMapping("/sell")
     @AuthRequire(Auth.STAFF)
     public MessageDto sell(SellBikeParams params) throws GException {
-        EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
-        if (eBike == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
-        }
-        if (eBike.getUid() != null) {
-            throw  new GException(ErrorConstants.ALREADY_SELLED);
-        }
         Staff staff = staffService.findOneByUid(params.getUid());
-        if (staff == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_STAFF);
+
+        Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff);
+
+        EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
+        if (eBike != null && eBike.getUid() != null) {
+            throw  new GException(ErrorConstants.ALREADY_SELLED);
         }
         User user = userService.getOrCreate(params.getPhoneNum());
         user.setIsReal((byte)1);
@@ -80,7 +78,7 @@ public class ShopEBikeController {
         user.setAddress(params.getAddress());
         user = userService.update(user);
 
-        eBike = eBikeService.sell(user, eBike);
+        eBike = eBikeService.sell(user, params.getEbikeSn(), logistics.getProduct());
         PaymentOrder paymentOrder = paymentOrderService.createSellOrder(staff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
