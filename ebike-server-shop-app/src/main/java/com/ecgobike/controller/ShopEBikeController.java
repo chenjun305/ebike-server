@@ -1,7 +1,9 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.Gender;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,13 +75,7 @@ public class ShopEBikeController {
         if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
-        User user = userService.getUserByTel(params.getPhoneNum());
-        if (user == null) {
-            // new user
-            user = new User();
-            user.setUid(IdGen.uuid());
-            user.setTel(params.getPhoneNum());
-        }
+        User user = userService.getOrCreate(params.getPhoneNum());
         user.setIsReal((byte)1);
         user.setRealName(params.getRealName());
         user.setAddress(params.getAddress());

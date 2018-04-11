@@ -7,7 +7,7 @@
 	<err id="3" description="Request Error！" name="ERR_REQUEST"/>
 	<err id="4" description="Login in other device Error！" name="ERR_REPEATED_LOGIN"/>
 	<err id="5" description="Account Banned Error！" name="ERR_LOCK_ACCOUNT"/>
-	<err id="6" description="Riding Banned Error！" name="ERR_BANNED_RIDING"/>
+	<err id="6" description="Dupplicate SN！" name="ERR_DUPPLICATE_SN"/>
 	<err id="7" description="Version Error！" name="ERR_REQUEST_VERSION"/>
 	<err id="8" description="Login Verification Error！" name="ERR_LOGIN_OVERDUE"/>
 	<err id="9" description="Illegal Request！" name="ERR_ILLEGAL_REQUEST"/>
@@ -65,10 +65,12 @@
 
 	<!--Product-->
 	<err id="501" description="Not Exist Product！" name="NOT_EXIST_PRODUCT"/>
+	<err id="502" description="Not In Storage！" name="NOT_IN_STORAGE"/>
+
 
 	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>
 	<err id="601" description="Not Exist Purchase Order！" name="NOT_EXIST_PURCHASE_ORDER"/>
-	<err id="602" description="No Unpaid Order！" name="NO_UNPAID_ORDER"/>
+	<err id="602" description="No Permit Purchase Order！" name="NOT_PERMIT_PURCHASE_ORDER"/>
 	<err id="603" description="Order Payment Error！" name="ERR_PAY_ORDER"/>
 	<err id="604" description="Order Not Found！" name="ERR_NO_ORDER"/>
 	

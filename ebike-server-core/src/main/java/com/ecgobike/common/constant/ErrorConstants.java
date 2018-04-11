@@ -22,7 +22,7 @@ public class ErrorConstants {
 	public static final int ERR_REQUEST = 3;//Request Error！
 	public static final int ERR_REPEATED_LOGIN = 4;//Login in other device Error！
 	public static final int ERR_LOCK_ACCOUNT = 5;//Account Banned Error！
-	public static final int ERR_BANNED_RIDING = 6;//Riding Banned Error！
+	public static final int ERR_DUPPLICATE_SN = 6;//Dupplicate SN！
 	public static final int ERR_REQUEST_VERSION = 7;//Version Error！
 	public static final int ERR_LOGIN_OVERDUE = 8;//Login Verification Error！
 	public static final int ERR_ILLEGAL_REQUEST = 9;//Illegal Request！
@@ -69,9 +69,10 @@ public class ErrorConstants {
 	public static final int NOT_EXIST_STAFF = 401;//Not Exist Staff！
 	public static final int ALREADY_EXIST_STAFF = 402;//Already Exist Staff！
 	public static final int NOT_EXIST_PRODUCT = 501;//Not Exist Product！
+	public static final int NOT_IN_STORAGE = 502;//Not In Storage！
 	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！
 	public static final int NOT_EXIST_PURCHASE_ORDER = 601;//Not Exist Purchase Order！
-	public static final int NO_UNPAID_ORDER = 602;//No Unpaid Order！
+	public static final int NOT_PERMIT_PURCHASE_ORDER = 602;//No Permit Purchase Order！
 	public static final int ERR_PAY_ORDER = 603;//Order Payment Error！
 	public static final int ERR_NO_ORDER = 604;//Order Not Found！
 

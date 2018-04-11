@@ -2,11 +2,13 @@ package com.ecgobike.controller;
 
 import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.entity.EBike;
+import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.Product;
 import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.EBikeService;
+import com.ecgobike.service.LogisticsService;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ import java.util.Map;
 public class AdminEBikeController {
 
     @Autowired
-    EBikeService eBikeService;
+    LogisticsService logisticsService;
 
     @Autowired
     PaymentOrderService paymentOrderService;
@@ -43,7 +45,7 @@ public class AdminEBikeController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
-        Page<EBike> ebikes = eBikeService.findAll(pageable);
+        Page<Logistics> ebikes = logisticsService.findAllByType(ProductType.EBIKE, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("ebikes", ebikes);
         return MessageDto.responseSuccess(data);

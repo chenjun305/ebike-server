@@ -1,5 +1,6 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.enums.LogisticsStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
@@ -28,7 +29,7 @@ public class Logistics {
     private Long shopId;
     private LocalDateTime shopInTime;
     private LocalDateTime shopOutTime;
-    private Integer status;
+    private LogisticsStatus status;
 
     @JsonIgnore
     private LocalDateTime createTime;

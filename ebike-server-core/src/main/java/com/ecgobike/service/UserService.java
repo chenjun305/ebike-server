@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserService {
-    User login(String tel);
+    User getOrCreate(String tel);
     User getUserByUid(String uid);
     User getUserByTel(String tel);
     User update(User user);

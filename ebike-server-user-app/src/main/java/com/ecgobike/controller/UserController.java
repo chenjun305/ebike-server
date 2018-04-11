@@ -46,7 +46,7 @@ public class UserController {
         if (! smsService.isPinValid(tel, pin)) {
             throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
-        User user = userService.login(tel);
+        User user = userService.getOrCreate(tel);
 
         String uid = user.getUid();
         String signMat = AuthUtil.buildSignMaterial(uid);

@@ -15,5 +15,6 @@ public interface PurchaseOrderService {
     Page<PurchaseOrder> findAllRequire(Pageable pageable);
     Page<PurchaseOrder> findAllPermit(Pageable pageable);
     PurchaseOrder permit(String sn, Integer permitNum) throws GException;
-
+    PurchaseOrder departure(PurchaseOrder purchaseOrder);
+    PurchaseOrder findOneBySn(String sn);
 }

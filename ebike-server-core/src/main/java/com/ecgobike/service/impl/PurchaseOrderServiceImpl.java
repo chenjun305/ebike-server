@@ -11,7 +11,6 @@ import com.ecgobike.repository.PurchaseOrderRepository;
 import com.ecgobike.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -71,5 +70,19 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         purchaseOrder.setStatus(PurchaseOrderStatus.PERMIT);
         purchaseOrder.setUpdateTime(LocalDateTime.now());
         return purchaseOrderRepository.save(purchaseOrder);
+    }
+
+    @Override
+    public PurchaseOrder departure(PurchaseOrder purchaseOrder) {
+        purchaseOrder.setDepartureUid("admin");
+        purchaseOrder.setDepartureTime(new Date());
+        purchaseOrder.setStatus(PurchaseOrderStatus.TRANSIT);
+        purchaseOrder.setUpdateTime(LocalDateTime.now());
+        return purchaseOrderRepository.save(purchaseOrder);
+    }
+
+    @Override
+    public PurchaseOrder findOneBySn(String sn) {
+        return purchaseOrderRepository.findOneBySn(sn);
     }
 }

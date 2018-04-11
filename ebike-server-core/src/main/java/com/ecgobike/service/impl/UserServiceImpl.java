@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public User login(String tel) {
+    public User getOrCreate(String tel) {
         User user = userRepository.findOneByTel(tel);
         if (user == null) {
             // new user to register
