@@ -7,19 +7,13 @@ import com.ecgobike.common.enums.Gender;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
-import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.PaymentOrder;
+import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.JoinParams;
 import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.request.SellBikeParams;
 import com.ecgobike.pojo.response.MessageDto;
-import com.ecgobike.service.EBikeService;
-import com.ecgobike.service.PaymentOrderService;
-import com.ecgobike.service.StaffService;
-import com.ecgobike.service.UserService;
+import com.ecgobike.service.*;
 import com.ecgobike.common.enums.Auth;
-import com.ecgobike.entity.Staff;
-import com.ecgobike.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,14 +43,19 @@ public class ShopEBikeController {
     @Autowired
     PaymentOrderService paymentOrderService;
 
+    @Autowired
+    LogisticsService logisticsService;
+
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
     public MessageDto info(String ebikeSn) throws GException {
-        EBike eBike = eBikeService.findOneBySn(ebikeSn);
-        if (eBike == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
+        Logistics logistics = logisticsService.findOneBySn(ebikeSn);
+        if (logistics == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
+        EBike eBike = eBikeService.findOneBySn(ebikeSn);
         Map<String, Object> data = new HashMap<>();
+        data.put("logistics", logistics);
         data.put("ebike", eBike);
         return MessageDto.responseSuccess(data);
     }

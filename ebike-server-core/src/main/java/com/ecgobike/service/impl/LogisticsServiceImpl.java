@@ -28,6 +28,11 @@ public class LogisticsServiceImpl implements LogisticsService {
     LogisticsRepository logisticsRepository;
 
     @Override
+    public Logistics findOneBySn(String sn) {
+        return logisticsRepository.findOneBySn(sn);
+    }
+
+    @Override
     public Page<Logistics> findAll(Pageable pageable) {
         return logisticsRepository.findAll(pageable);
     }

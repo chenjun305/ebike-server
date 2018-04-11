@@ -15,6 +15,7 @@ import java.util.List;
  * Created by ChenJun on 2018/4/10.
  */
 public interface LogisticsService {
+    Logistics findOneBySn(String sn);
     Page<Logistics> findAll(Pageable pageable);
     Page<Logistics> findAllByType(ProductType type, Pageable pageable);
     Page<Logistics> findAllByStatus(LogisticsStatus status, Pageable pageable);
