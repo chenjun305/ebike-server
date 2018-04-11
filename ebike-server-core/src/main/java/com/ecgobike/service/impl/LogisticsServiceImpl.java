@@ -91,4 +91,16 @@ public class LogisticsServiceImpl implements LogisticsService {
         return logisticsRepository.saveAll(list);
     }
 
+    @Override
+    public List<Logistics> shopIn(PurchaseOrder purchaseOrder) {
+        List<Logistics> list = logisticsRepository.findAllByPurchaseSn(purchaseOrder.getSn());
+        for (Logistics logistics : list) {
+            logistics.setShopId(purchaseOrder.getShopId());
+            logistics.setShopInTime(LocalDateTime.now());
+            logistics.setStatus(LogisticsStatus.SHOP);
+            logistics.setUpdateTime(LocalDateTime.now());
+        }
+        return logisticsRepository.saveAll(list);
+    }
+
 }

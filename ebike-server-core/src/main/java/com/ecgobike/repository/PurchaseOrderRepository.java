@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by ChenJun on 2018/4/4.
  */
@@ -12,4 +14,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
     PurchaseOrder findOneBySn(String sn);
+    List<PurchaseOrder> findAllByShopId(Long shopId);
 }

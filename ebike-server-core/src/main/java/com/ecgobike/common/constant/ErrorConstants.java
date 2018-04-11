@@ -72,8 +72,8 @@ public class ErrorConstants {
 	public static final int NOT_IN_STORAGE = 502;//Not In Storage！
 	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！
 	public static final int NOT_EXIST_PURCHASE_ORDER = 601;//Not Exist Purchase Order！
-	public static final int NOT_PERMIT_PURCHASE_ORDER = 602;//No Permit Purchase Order！
-	public static final int ERR_PAY_ORDER = 603;//Order Payment Error！
+	public static final int NOT_PERMIT_PURCHASE_ORDER = 602;//Not Permit Purchase Order！
+	public static final int NOT_YOUR_SHOP_PURCHASE = 603;//Not Your Shop Purchase Order！
 	public static final int ERR_NO_ORDER = 604;//Order Not Found！
 
 	

@@ -83,7 +83,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
-        // TODO
+
         paymentOrder.setPrice(eBike.getProduct().getPrice());
         paymentOrder.setCurrency(eBike.getProduct().getCurrency());
 

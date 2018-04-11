@@ -15,4 +15,5 @@ import java.util.List;
 public interface LogisticsRepository extends JpaRepository<Logistics, Long> {
     Logistics findOneBySn(String sn);
     List<Logistics> findAllBySnIn(List<String> snList);
+    List<Logistics> findAllByPurchaseSn(String purchaseSn);
 }
