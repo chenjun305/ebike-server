@@ -14,5 +14,4 @@ import java.util.List;
 @Transactional
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
     PurchaseOrder findOneBySn(String sn);
-    List<PurchaseOrder> findAllByShopId(Long shopId);
 }

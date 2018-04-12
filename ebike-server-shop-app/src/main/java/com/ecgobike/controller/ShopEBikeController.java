@@ -7,10 +7,7 @@ import com.ecgobike.common.enums.*;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.*;
-import com.ecgobike.pojo.request.JoinParams;
-import com.ecgobike.pojo.request.ProductParams;
-import com.ecgobike.pojo.request.RenewParams;
-import com.ecgobike.pojo.request.SellBikeParams;
+import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.jws.soap.SOAPBinding;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -154,6 +152,15 @@ public class ShopEBikeController {
         Page<Logistics> stockList = logisticsService.findProductStockInShop(product, staff.getShopId(), pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", stockList);
+        return MessageDto.responseSuccess(data);
+    }
+
+    @RequestMapping("/customer")
+    @AuthRequire(Auth.STAFF)
+    public MessageDto customer(CustomerParams params) {
+        User customer = userService.getUserByUid(params.getCustomerUid());
+        Map<String, Object> data = new HashMap<>();
+        data.put("customer", customer);
         return MessageDto.responseSuccess(data);
     }
 

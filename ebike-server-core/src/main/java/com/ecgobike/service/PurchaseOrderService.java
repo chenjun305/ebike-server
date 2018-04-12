@@ -18,7 +18,7 @@ public interface PurchaseOrderService {
     PurchaseOrder permit(String sn, Integer permitNum) throws GException;
     PurchaseOrder departure(PurchaseOrder purchaseOrder);
     PurchaseOrder takeOver(String sn, Staff staff) throws GException;
-    List<PurchaseOrder> findAllByShopId(Long shopId);
+    Page<PurchaseOrder> findAllByShopId(Long shopId, Pageable pageable);
     Page<PurchaseOrder> findAllRequire(Pageable pageable);
     Page<PurchaseOrder> findAllPermit(Pageable pageable);
 }

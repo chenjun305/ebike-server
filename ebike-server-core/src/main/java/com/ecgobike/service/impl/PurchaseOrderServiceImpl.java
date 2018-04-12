@@ -44,8 +44,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public List<PurchaseOrder> findAllByShopId(Long shopId) {
-        return purchaseOrderRepository.findAllByShopId(shopId);
+    public Page<PurchaseOrder> findAllByShopId(Long shopId, Pageable pageable) {
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
+        purchaseOrder.setShopId(shopId);
+        Example<PurchaseOrder> example = Example.of(purchaseOrder);
+        return purchaseOrderRepository.findAll(example, pageable);
     }
 
     @Override

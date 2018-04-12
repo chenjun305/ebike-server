@@ -14,6 +14,10 @@ import com.ecgobike.pojo.request.PurchaseTakeParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,9 +48,12 @@ public class ShopPurchaseController {
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto list(AuthParams params){
+    public MessageDto list(
+            AuthParams params,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ){
         Staff staff = staffService.findOneByUid(params.getUid());
-        List<PurchaseOrder> list = purchaseOrderService.findAllByShopId(staff.getShopId());
+        Page<PurchaseOrder> list = purchaseOrderService.findAllByShopId(staff.getShopId(), pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
         return MessageDto.responseSuccess(data);
