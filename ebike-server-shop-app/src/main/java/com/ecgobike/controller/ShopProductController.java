@@ -80,7 +80,7 @@ public class ShopProductController {
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
-        PurchaseOrder purchaseOrder = purchaseOrderService.purchase(staff, params.getProductId(), params.getRequireNum());
+        PurchaseOrder purchaseOrder = purchaseOrderService.purchase(staff, product, params.getRequireNum());
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrder);
         return MessageDto.responseSuccess(data);

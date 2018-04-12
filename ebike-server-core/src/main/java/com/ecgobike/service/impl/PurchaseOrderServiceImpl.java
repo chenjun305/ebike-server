@@ -4,6 +4,7 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.PurchaseOrderStatus;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
+import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.repository.PurchaseOrderRepository;
@@ -28,10 +29,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     PurchaseOrderRepository purchaseOrderRepository;
 
     @Override
-    public PurchaseOrder purchase(Staff staff, Long productId, Integer requireNum) {
+    public PurchaseOrder purchase(Staff staff, Product product, Integer requireNum) {
         PurchaseOrder purchaseOrder = new PurchaseOrder();
         purchaseOrder.setSn(IdGen.genOrderSn());
-        purchaseOrder.setProductId(productId);
+        purchaseOrder.setProduct(product);
         purchaseOrder.setRequireNum(requireNum);
         purchaseOrder.setStaffUid(staff.getUid());
         purchaseOrder.setShopId(staff.getShopId());

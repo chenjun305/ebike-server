@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ChenJun on 2018/3/12.
@@ -28,6 +30,23 @@ public class BatteryServiceImpl implements BatteryService {
     @Override
     public Page<Battery> findAll(Pageable pageable) {
         return batteryRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Battery> shopIn(List<Logistics> logisticsList) {
+        List<Battery> list = new ArrayList<>();
+        for (Logistics logistics : logisticsList) {
+            Battery battery = new Battery();
+            battery.setSn(logistics.getSn());
+            battery.setProduct(logistics.getProduct());
+            battery.setShopId(logistics.getShopId());
+            battery.setBattery(100);
+            battery.setStatus((byte)1);
+            battery.setCreateTime(LocalDateTime.now());
+            battery.setUpdateTime(LocalDateTime.now());
+            list.add(battery);
+        }
+        return batteryRepository.saveAll(list);
     }
 
     @Override

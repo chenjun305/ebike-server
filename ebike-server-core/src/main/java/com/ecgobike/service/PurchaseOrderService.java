@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface PurchaseOrderService {
     PurchaseOrder findOneBySn(String sn);
-    PurchaseOrder purchase(Staff staff, Long productId, Integer requireNum);
+    PurchaseOrder purchase(Staff staff, Product product, Integer requireNum);
     PurchaseOrder permit(String sn, Integer permitNum) throws GException;
     PurchaseOrder departure(PurchaseOrder purchaseOrder);
     PurchaseOrder takeOver(String sn, Staff staff) throws GException;
