@@ -25,6 +25,7 @@ import java.util.List;
  */
 @Service
 public class LogisticsServiceImpl implements LogisticsService {
+
     @Autowired
     LogisticsRepository logisticsRepository;
 
@@ -62,9 +63,20 @@ public class LogisticsServiceImpl implements LogisticsService {
         Logistics logistics = new Logistics();
         logistics.setProduct(product);
         logistics.setShopId(shopId);
+        logistics.setStatus(LogisticsStatus.SHOP);
         Example<Logistics> example = Example.of(logistics);
 
         return logisticsRepository.findAll(example, pageable);
+    }
+
+    @Override
+    public long countProductStockInShop(Product product, Long shopId) {
+        Logistics logistics = new Logistics();
+        logistics.setProduct(product);
+        logistics.setShopId(shopId);
+        logistics.setStatus(LogisticsStatus.SHOP);
+        Example<Logistics> example = Example.of(logistics);
+        return logisticsRepository.count(example);
     }
 
     @Override

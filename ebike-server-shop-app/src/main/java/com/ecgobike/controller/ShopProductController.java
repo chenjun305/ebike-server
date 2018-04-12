@@ -8,13 +8,12 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.entity.Staff;
+import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseParams;
 import com.ecgobike.pojo.response.BatteryProductVO;
 import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.pojo.response.MessageDto;
-import com.ecgobike.service.ProductService;
-import com.ecgobike.service.PurchaseOrderService;
-import com.ecgobike.service.StaffService;
+import com.ecgobike.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,9 +39,20 @@ public class ShopProductController {
     @Autowired
     PurchaseOrderService purchaseOrderService;
 
+    @Autowired
+    PaymentOrderService paymentOrderService;
+
+    @Autowired
+    LogisticsService logisticsService;
+
+    @Autowired
+    BatteryService batteryService;
+
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto list(){
+    public MessageDto list(AuthParams params){
+        Staff staff = staffService.findOneByUid(params.getUid());
+        long shopId = staff.getShopId();
         Map<String, Object> data = new HashMap<>();
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         List<BatteryProductVO> batteryProducts = new ArrayList<>();
@@ -57,15 +67,18 @@ public class ShopProductController {
                 eBikeProductVO.setPrice(product.getPrice());
                 eBikeProductVO.setCurrency(product.getCurrency());
                 eBikeProductVO.setDesc(product.getDesc());
-                eBikeProductVO.setSellNum(25);
-                eBikeProductVO.setStockNum(88);
+                long sellNum = paymentOrderService.countProductSellOrdersInShop(product, shopId);
+                long stockNum = logisticsService.countProductStockInShop(product, shopId);
+                eBikeProductVO.setSellNum(sellNum);
+                eBikeProductVO.setStockNum(stockNum);
                 ebikeProducts.add(eBikeProductVO);
             } else if (product.getType() == ProductType.BATTERY) {
                 BatteryProductVO batteryProductVO = new BatteryProductVO();
                 batteryProductVO.setProductId(product.getId());
                 batteryProductVO.setType(product.getModel());
                 batteryProductVO.setIconUrl(product.getIconUrl());
-                batteryProductVO.setStockNum(77);
+                long stockNum = batteryService.countProductStockInShop(product, shopId);
+                batteryProductVO.setStockNum(stockNum);
                 batteryProducts.add(batteryProductVO);
             }
 

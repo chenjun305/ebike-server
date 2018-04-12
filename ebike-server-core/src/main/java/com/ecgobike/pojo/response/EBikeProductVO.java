@@ -16,6 +16,6 @@ public class EBikeProductVO {
     private BigDecimal price;
     private String currency;
     private String desc;
-    private Integer sellNum;
-    private Integer stockNum;
+    private long sellNum;
+    private long stockNum;
 }

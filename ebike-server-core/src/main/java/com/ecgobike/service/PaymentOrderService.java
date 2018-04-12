@@ -16,4 +16,5 @@ public interface PaymentOrderService {
     PaymentOrder createSellOrder(Staff staff, User user, EBike eBike);
     Page<PaymentOrder> findAllSall(Pageable pageable);
     Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable);
+    long countProductSellOrdersInShop(Product product, Long shopId);
 }

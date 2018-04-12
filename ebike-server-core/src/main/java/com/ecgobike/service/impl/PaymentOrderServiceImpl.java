@@ -115,4 +115,16 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
 
         return paymentOrderRepository.findAll(example, pageable);
     }
+
+    @Override
+    public long countProductSellOrdersInShop(Product product, Long shopId) {
+        PaymentOrder paymentOrder = new PaymentOrder();
+        paymentOrder.setProductId(product.getId());
+        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        paymentOrder.setShopId(shopId);
+
+        Example<PaymentOrder> example = Example.of(paymentOrder);
+
+        return paymentOrderRepository.count(example);
+    }
 }

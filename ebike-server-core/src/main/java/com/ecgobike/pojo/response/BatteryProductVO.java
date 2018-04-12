@@ -10,5 +10,5 @@ public class BatteryProductVO {
     private Long productId;
     private String type;
     private String iconUrl;
-    private Integer stockNum;
+    private long stockNum;
 }

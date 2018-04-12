@@ -21,6 +21,7 @@ public interface LogisticsService {
     Page<Logistics> findAllByType(ProductType type, Pageable pageable);
     Page<Logistics> findAllByStatus(LogisticsStatus status, Pageable pageable);
     Page<Logistics> findProductStockInShop(Product product, Long shopId, Pageable pageable);
+    long countProductStockInShop(Product product, Long shopId);
     List<Logistics> in(Product product, List<String> snList) throws GException;
     List<Logistics> out(PurchaseOrder purchaseOrder, List<String> snList) throws GException;
     List<Logistics> shopIn(PurchaseOrder purchaseOrder);
