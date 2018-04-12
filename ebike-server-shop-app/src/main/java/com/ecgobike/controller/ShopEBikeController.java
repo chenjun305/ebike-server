@@ -123,7 +123,18 @@ public class ShopEBikeController {
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
-        return MessageDto.responseSuccess();
+        Staff staff = staffService.findOneByUid(params.getUid());
+        Product product = productService.getOne(params.getProductId());
+        if (product == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
+        }
+        if (product.getType() != ProductType.EBIKE) {
+            throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
+        }
+        Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, staff.getShopId(), pageable);
+        Map<String, Object> data = new HashMap<>();
+        data.put("sellList", sellList);
+        return MessageDto.responseSuccess(data);
     }
 
     @RequestMapping("/stock/list")

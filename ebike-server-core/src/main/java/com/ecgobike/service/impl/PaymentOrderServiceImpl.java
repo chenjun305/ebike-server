@@ -6,10 +6,7 @@ import com.ecgobike.common.constant.MonthNumFee;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
-import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.PaymentOrder;
-import com.ecgobike.entity.Staff;
-import com.ecgobike.entity.User;
+import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.repository.PaymentOrderRepository;
 import com.ecgobike.service.PaymentOrderService;
@@ -102,6 +99,19 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     public Page<PaymentOrder> findAllSall(Pageable pageable) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        Example<PaymentOrder> example = Example.of(paymentOrder);
+
+        return paymentOrderRepository.findAll(example, pageable);
+    }
+
+    @Override
+    public Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable) {
+        PaymentOrder paymentOrder = new PaymentOrder();
+        // TODO
+        // add product filter
+        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        paymentOrder.setShopId(shopId);
+
         Example<PaymentOrder> example = Example.of(paymentOrder);
 
         return paymentOrderRepository.findAll(example, pageable);

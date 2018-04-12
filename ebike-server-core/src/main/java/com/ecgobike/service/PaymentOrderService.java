@@ -2,10 +2,7 @@ package com.ecgobike.service;
 
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.common.exception.GException;
-import com.ecgobike.entity.EBike;
-import com.ecgobike.entity.PaymentOrder;
-import com.ecgobike.entity.Staff;
-import com.ecgobike.entity.User;
+import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.Money;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +15,5 @@ public interface PaymentOrderService {
     PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff, Integer monthNum) throws GException;
     PaymentOrder createSellOrder(Staff staff, User user, EBike eBike);
     Page<PaymentOrder> findAllSall(Pageable pageable);
+    Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable);
 }
