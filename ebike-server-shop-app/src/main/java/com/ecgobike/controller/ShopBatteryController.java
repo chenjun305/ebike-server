@@ -2,6 +2,7 @@ package com.ecgobike.controller;
 
 import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.LendBatteryParams;
+import com.ecgobike.pojo.request.ProductParams;
 import com.ecgobike.pojo.request.ReturnBatteryParams;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;
@@ -13,6 +14,9 @@ import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.pojo.response.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -83,5 +87,14 @@ public class ShopBatteryController {
         data.put("lendBattery", lendBattery);
         data.put("ebike", eBike);
         return MessageDto.responseSuccess(data);
+    }
+
+    @RequestMapping("/stock/list")
+    @AuthRequire(Auth.STAFF)
+    public MessageDto stockList(
+            ProductParams params,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) throws GException {
+        return MessageDto.responseSuccess();
     }
 }

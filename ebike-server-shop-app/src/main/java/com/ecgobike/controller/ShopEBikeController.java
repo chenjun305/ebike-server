@@ -10,12 +10,16 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.JoinParams;
+import com.ecgobike.pojo.request.ProductParams;
 import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.request.SellBikeParams;
 import com.ecgobike.pojo.response.MessageDto;
 import com.ecgobike.service.*;
 import com.ecgobike.common.enums.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -111,4 +115,23 @@ public class ShopEBikeController {
         data.put("order", order);
         return MessageDto.responseSuccess(data);
     }
+
+    @RequestMapping("/sell/list")
+    @AuthRequire(Auth.STAFF)
+    public MessageDto sellList(
+            ProductParams params,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) throws GException {
+        return MessageDto.responseSuccess();
+    }
+
+    @RequestMapping("/stock/list")
+    @AuthRequire(Auth.STAFF)
+    public MessageDto stockList(
+            ProductParams params,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) throws GException {
+        return MessageDto.responseSuccess();
+    }
+
 }
