@@ -6,6 +6,7 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.repository.BatteryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,15 @@ public class BatteryServiceImpl implements BatteryService {
     @Override
     public Page<Battery> findAll(Pageable pageable) {
         return batteryRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Battery> findProductStockInShop(Product product, Long shopId, Pageable pageable) {
+        Battery battery = new Battery();
+        battery.setProduct(product);
+        battery.setShopId(shopId);
+        Example<Battery> example = Example.of(battery);
+        return batteryRepository.findAll(example, pageable);
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.List;
 public interface BatteryService {
     Battery findOneBySn(String sn);
     Page<Battery> findAll(Pageable pageable);
+    Page<Battery> findProductStockInShop(Product product, Long shopId, Pageable pageable);
     List<Battery> shopIn(List<Logistics> logisticsList);
     Battery canLend(String batterySn, Staff staff) throws GException;
     Battery lend(EBike eBike, Battery battery);

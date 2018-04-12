@@ -1,19 +1,18 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.request.ProductParams;
 import com.ecgobike.pojo.request.ReturnBatteryParams;
-import com.ecgobike.service.BatteryService;
-import com.ecgobike.service.EBikeService;
-import com.ecgobike.service.LendBatteryService;
-import com.ecgobike.service.StaffService;
+import com.ecgobike.service.*;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.pojo.response.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -42,6 +41,9 @@ public class ShopBatteryController {
 
     @Autowired
     EBikeService eBikeService;
+
+    @Autowired
+    ProductService productService;
 
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
@@ -95,6 +97,17 @@ public class ShopBatteryController {
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
-        return MessageDto.responseSuccess();
+        Staff staff = staffService.findOneByUid(params.getUid());
+        Product product = productService.getOne(params.getProductId());
+        if (product == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
+        }
+        if (product.getType() != ProductType.BATTERY) {
+            throw new GException(ErrorConstants.NOT_BATTERY_PRODUCT);
+        }
+        Page<Battery> stockList = batteryService.findProductStockInShop(product, staff.getShopId(), pageable);
+        Map<String, Object> data = new HashMap<>();
+        data.put("stockList", stockList);
+        return MessageDto.responseSuccess(data);
     }
 }
