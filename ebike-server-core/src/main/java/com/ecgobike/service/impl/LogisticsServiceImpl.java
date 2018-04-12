@@ -58,6 +58,16 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
+    public Page<Logistics> findProductStockInShop(Product product, Long shopId, Pageable pageable) {
+        Logistics logistics = new Logistics();
+        logistics.setProduct(product);
+        logistics.setShopId(shopId);
+        Example<Logistics> example = Example.of(logistics);
+
+        return logisticsRepository.findAll(example, pageable);
+    }
+
+    @Override
     public List<Logistics> in(Product product, List<String> snList) throws GException {
         List<Logistics> checkList = logisticsRepository.findAllBySnIn(snList);
         if (checkList != null && checkList.size() > 0) {

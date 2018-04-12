@@ -67,6 +67,9 @@
 	<!--Product-->
 	<err id="501" description="Not Exist Product！" name="NOT_EXIST_PRODUCT"/>
 	<err id="502" description="Not In Storage！" name="NOT_IN_STORAGE"/>
+	<err id="503" description="Not EBike Product！" name="NOT_EBIKE_PRODUCT"/>
+	<err id="504" description="Not Battery Product！" name="NOT_BATTERY_PRODUCT"/>
+
 
 
 	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>

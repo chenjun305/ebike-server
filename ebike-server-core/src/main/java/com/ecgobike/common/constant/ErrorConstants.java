@@ -71,6 +71,8 @@ public class ErrorConstants {
 	public static final int ALREADY_EXIST_STAFF = 402;//Already Exist Staff！
 	public static final int NOT_EXIST_PRODUCT = 501;//Not Exist Product！
 	public static final int NOT_IN_STORAGE = 502;//Not In Storage！
+	public static final int NOT_EBIKE_PRODUCT = 503;//Not EBike Product！
+	public static final int NOT_BATTERY_PRODUCT = 504;//Not Battery Product！
 	public static final int ORDER_PAID_REPEATED = 600;//Order Paid Repeated！
 	public static final int NOT_EXIST_PURCHASE_ORDER = 601;//Not Exist Purchase Order！
 	public static final int NOT_PERMIT_PURCHASE_ORDER = 602;//Not Permit Purchase Order！
