@@ -23,7 +23,8 @@ public class EBike {
 
     private String uid;
     private Byte isMembership;
-    private Integer monthNum;
+    private Integer monthLeft;
+    private Integer monthTotal;
     private LocalDate expireDate;
     private Byte status;
 

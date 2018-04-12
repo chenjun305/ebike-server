@@ -67,7 +67,8 @@ public class EBikeServiceImpl implements EBikeService {
             throw new GException(ErrorConstants.ALREADY_RENEW);
         }
 
-        eBike.setMonthNum(monthNum);
+        eBike.setMonthTotal(monthNum);
+        eBike.setMonthLeft(monthNum);
         eBike.setExpireDate(LocalDate.now().plusMonths(1));
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
@@ -80,7 +81,8 @@ public class EBikeServiceImpl implements EBikeService {
         eBike.setProduct(product);
         eBike.setUid(user.getUid());
         eBike.setIsMembership((byte)0);
-        eBike.setMonthNum(0);
+        eBike.setMonthTotal(0);
+        eBike.setMonthLeft(0);
         eBike.setStatus((byte)1);
         eBike.setCreateTime(LocalDateTime.now());
         eBike.setUpdateTime(LocalDateTime.now());
@@ -101,7 +103,7 @@ public class EBikeServiceImpl implements EBikeService {
         if (eBike.getExpireDate() == null || LocalDate.now().isAfter(eBike.getExpireDate())) {
             throw new GException(ErrorConstants.NEED_RENEW_MONTH_FEE);
         }
-        if (eBike.getMonthNum() <= 0) {
+        if (eBike.getMonthLeft() <= 0) {
             throw new GException(ErrorConstants.NEED_RENEW_MONTH_FEE);
         }
         return eBike;
@@ -109,7 +111,7 @@ public class EBikeServiceImpl implements EBikeService {
 
     @Override
     public EBike lendBattery(EBike eBike) {
-        eBike.setMonthNum(eBike.getMonthNum()-1);
+        eBike.setMonthLeft(eBike.getMonthLeft()-1);
         eBike.setUpdateTime(LocalDateTime.now());
         return eBikeRepository.save(eBike);
     }
