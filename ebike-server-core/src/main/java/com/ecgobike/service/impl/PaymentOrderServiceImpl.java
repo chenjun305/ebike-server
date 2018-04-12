@@ -64,6 +64,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         }
         paymentOrder.setCurrency(Constants.CURRENCY);
         paymentOrder.setEbikeSn(eBike.getSn());
+        paymentOrder.setProductId(eBike.getProduct().getId());
         paymentOrder.setUid(eBike.getUid());
         if (type == OrderType.STAFF_JOIN_MEMBERSHIP || type == OrderType.STAFF_RENEW_MONTHLY) {
             paymentOrder.setStaffUid(staff.getUid());
@@ -80,11 +81,10 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
-
         paymentOrder.setPrice(eBike.getProduct().getPrice());
         paymentOrder.setCurrency(eBike.getProduct().getCurrency());
-
         paymentOrder.setEbikeSn(eBike.getSn());
+        paymentOrder.setProductId(eBike.getProduct().getId());
         paymentOrder.setUid(user.getUid());
         paymentOrder.setStaffUid(staff.getUid());
         paymentOrder.setShopId(staff.getShopId());
@@ -107,8 +107,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     @Override
     public Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable) {
         PaymentOrder paymentOrder = new PaymentOrder();
-        // TODO
-        // add product filter
+        paymentOrder.setProductId(product.getId());
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
         paymentOrder.setShopId(shopId);
 

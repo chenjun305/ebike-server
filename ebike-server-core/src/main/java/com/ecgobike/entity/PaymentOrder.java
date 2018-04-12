@@ -24,6 +24,7 @@ public class PaymentOrder implements Serializable {
     private BigDecimal price;
     private String currency;
     private String ebikeSn;
+    private Long productId;
     private String uid;
     private String staffUid;
     private Long shopId;
