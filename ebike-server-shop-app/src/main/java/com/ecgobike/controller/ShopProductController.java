@@ -54,6 +54,9 @@ public class ShopProductController {
                 eBikeProductVO.setModel(product.getModel());
                 eBikeProductVO.setColor(product.getColor());
                 eBikeProductVO.setIconUrl(product.getIconUrl());
+                eBikeProductVO.setPrice(product.getPrice());
+                eBikeProductVO.setCurrency(product.getCurrency());
+                eBikeProductVO.setDesc(product.getDesc());
                 eBikeProductVO.setSellNum(25);
                 eBikeProductVO.setStockNum(88);
                 ebikeProducts.add(eBikeProductVO);
