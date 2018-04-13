@@ -9,8 +9,7 @@ import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.pojo.request.StorageInParams;
 import com.ecgobike.pojo.request.StorageOutParams;
-import com.ecgobike.pojo.response.MessageDto;
-import com.ecgobike.repository.LogisticsRepository;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.LogisticsService;
 import com.ecgobike.service.ProductService;
 import com.ecgobike.service.PurchaseOrderService;
@@ -44,7 +43,7 @@ public class AdminStorageController {
     ProductService productService;
 
     @PostMapping("/out")
-    public MessageDto out(StorageOutParams params) throws GException {
+    public AppResponse out(StorageOutParams params) throws GException {
         PurchaseOrder purchaseOrder = purchaseOrderService.findOneBySn(params.getPurchaseSn());
         if (purchaseOrder == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PURCHASE_ORDER);
@@ -56,22 +55,22 @@ public class AdminStorageController {
         purchaseOrderService.departure(purchaseOrder);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/out/list")
-    public MessageDto outList(
+    public AppResponse outList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                                           Pageable pageable
     ) {
         Page<Logistics> list = logisticsService.findAllByStatus(LogisticsStatus.TRANSIT, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/in")
-    public MessageDto in(StorageInParams params) throws GException {
+    public AppResponse in(StorageInParams params) throws GException {
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
@@ -79,17 +78,17 @@ public class AdminStorageController {
         List<Logistics> list = logisticsService.in(product, params.getSnList());
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/in/list")
-    public MessageDto inList(
+    public AppResponse inList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         Page<Logistics> list = logisticsService.findAll(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

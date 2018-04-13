@@ -1,17 +1,15 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
-import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
-import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseTakeParams;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,7 +46,7 @@ public class ShopPurchaseController {
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto list(
+    public AppResponse list(
             AuthParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ){
@@ -56,12 +54,12 @@ public class ShopPurchaseController {
         Page<PurchaseOrder> list = purchaseOrderService.findAllByShopId(staff.getShopId(), pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/take")
     @AuthRequire(Auth.STAFF)
-    public MessageDto take(PurchaseTakeParams params) throws GException {
+    public AppResponse take(PurchaseTakeParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         PurchaseOrder purchaseOrder = purchaseOrderService.takeOver(params.getPurchaseSn(), staff);
         List<Logistics> list = logisticsService.shopIn(purchaseOrder);
@@ -72,6 +70,6 @@ public class ShopPurchaseController {
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrder);
         data.put("list", list);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

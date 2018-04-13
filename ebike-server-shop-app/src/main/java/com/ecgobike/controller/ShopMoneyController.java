@@ -7,7 +7,7 @@ import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.request.TopupParams;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserService;
@@ -39,7 +39,7 @@ public class ShopMoneyController {
 
     @PostMapping("/topup")
     @AuthRequire(Auth.STAFF)
-    public MessageDto topup(TopupParams params) throws GException {
+    public AppResponse topup(TopupParams params) throws GException {
         User user = userService.getUserByTel(params.getTel());
         if (user == null) {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
@@ -54,6 +54,6 @@ public class ShopMoneyController {
         PaymentOrder paymentOrder = paymentOrderService.createTopupOrder(staff, user, money);
         Map<String, Object> data = new HashMap<>();
         data.put("paymentOrder", paymentOrder);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

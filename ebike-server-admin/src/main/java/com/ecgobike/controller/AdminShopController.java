@@ -3,7 +3,7 @@ package com.ecgobike.controller;
 import com.ecgobike.entity.Shop;
 import com.ecgobike.pojo.request.ShopParams;
 import com.ecgobike.service.ShopService;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +27,7 @@ public class AdminShopController {
     ShopService shopService;
 
     @PostMapping("/create")
-    public MessageDto create(ShopParams params) {
+    public AppResponse create(ShopParams params) {
         Shop shop = new Shop();
         shop.setName(params.getName());
         shop.setTel(params.getTel());
@@ -41,17 +41,17 @@ public class AdminShopController {
         Shop newShop = shopService.create(shop);
         Map<String, Object> data = new HashMap<>();
         data.put("shop", newShop);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/list")
-    public MessageDto list(
+    public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         Page<Shop> shops = shopService.findAll(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("shops", shops);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

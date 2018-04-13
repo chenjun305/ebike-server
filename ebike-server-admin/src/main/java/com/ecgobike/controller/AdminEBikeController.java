@@ -1,13 +1,11 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.enums.ProductType;
-import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.Product;
 import com.ecgobike.pojo.response.EBikeProductVO;
-import com.ecgobike.pojo.response.MessageDto;
-import com.ecgobike.service.EBikeService;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.LogisticsService;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.ProductService;
@@ -41,18 +39,18 @@ public class AdminEBikeController {
     ProductService productService;
 
     @RequestMapping("/list")
-    public MessageDto list(
+    public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         Page<Logistics> ebikes = logisticsService.findAllByType(ProductType.EBIKE, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("ebikes", ebikes);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/product/list")
-    public MessageDto productList() {
+    public AppResponse productList() {
         List<Product> productList = productService.findByType(ProductType.EBIKE);
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         for(Product product : productList) {
@@ -67,17 +65,17 @@ public class AdminEBikeController {
         }
         Map<String, Object> data = new HashMap<>();
         data.put("ebikeProducts", ebikeProducts);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/sale/list")
-    public MessageDto sellList(
+    public AppResponse sellList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         Page<PaymentOrder> saleList = paymentOrderService.findAllSall(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("saleList", saleList);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

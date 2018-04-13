@@ -1,14 +1,12 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
-import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.*;
 import com.ecgobike.common.exception.GException;
-import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.*;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,9 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.jws.soap.SOAPBinding;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +47,7 @@ public class ShopEBikeController {
 
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
-    public MessageDto info(String ebikeSn) throws GException {
+    public AppResponse info(String ebikeSn) throws GException {
         Logistics logistics = logisticsService.findOneBySn(ebikeSn);
         if (logistics == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
@@ -61,12 +56,12 @@ public class ShopEBikeController {
         Map<String, Object> data = new HashMap<>();
         data.put("logistics", logistics);
         data.put("ebike", eBike);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/sell")
     @AuthRequire(Auth.STAFF)
-    public MessageDto sell(SellBikeParams params) throws GException {
+    public AppResponse sell(SellBikeParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
 
         Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff);
@@ -86,12 +81,12 @@ public class ShopEBikeController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("paymentOrder", paymentOrder);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/join")
     @AuthRequire(Auth.STAFF)
-    public MessageDto join(JoinParams params) throws GException {
+    public AppResponse join(JoinParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
@@ -99,12 +94,12 @@ public class ShopEBikeController {
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
         data.put("order", order);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/renew")
     @AuthRequire(Auth.STAFF)
-    public MessageDto renew(RenewParams params) throws GException {
+    public AppResponse renew(RenewParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
@@ -112,12 +107,12 @@ public class ShopEBikeController {
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
         data.put("order", order);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/sell/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto sellList(
+    public AppResponse sellList(
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
@@ -132,12 +127,12 @@ public class ShopEBikeController {
         Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, staff.getShopId(), pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("sellList", sellList);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/stock/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto stockList(
+    public AppResponse stockList(
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
@@ -152,16 +147,16 @@ public class ShopEBikeController {
         Page<Logistics> stockList = logisticsService.findProductStockInShop(product, staff.getShopId(), pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", stockList);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/customer")
     @AuthRequire(Auth.STAFF)
-    public MessageDto customer(CustomerParams params) {
+    public AppResponse customer(CustomerParams params) {
         User customer = userService.getUserByUid(params.getCustomerUid());
         Map<String, Object> data = new HashMap<>();
         data.put("customer", customer);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
 }

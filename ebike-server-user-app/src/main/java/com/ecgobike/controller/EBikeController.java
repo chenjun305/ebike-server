@@ -13,7 +13,7 @@ import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.User;
 import com.ecgobike.pojo.request.RenewParams;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.EBikeService;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.UserService;
@@ -42,16 +42,16 @@ public class EBikeController {
 
     @PostMapping("/list")
     @AuthRequire(Auth.USER)
-    public MessageDto list(AuthParams authParams) {
+    public AppResponse list(AuthParams authParams) {
         List<EBike> ebikes =  eBikeService.findAllByUid(authParams.getUid());
         Map<String, Object> data = new HashMap<>();
         data.put("ebikes", ebikes);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/join")
     @AuthRequire(Auth.USER)
-    public MessageDto join(JoinParams params) throws GException {
+    public AppResponse join(JoinParams params) throws GException {
         // check user money
         User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
@@ -68,12 +68,12 @@ public class EBikeController {
         data.put("balance", user.getMoney());
         data.put("ebike", eBike);
         data.put("order", order);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/renew")
     @AuthRequire(Auth.USER)
-    public MessageDto renew(RenewParams params) throws GException {
+    public AppResponse renew(RenewParams params) throws GException {
         // check user money
         User user = userService.getUserByUid(params.getUid());
         BigDecimal money = user.getMoney();
@@ -93,7 +93,7 @@ public class EBikeController {
         data.put("balance", user.getMoney());
         data.put("ebike", eBike);
         data.put("order", order);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
 }

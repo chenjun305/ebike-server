@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.util.JacksonUtil;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 
@@ -27,7 +27,7 @@ public abstract class BaseInterceptor implements HandlerInterceptor {
      * @throws IOException
      */
     protected void sendErrorMsg(HttpServletResponse response, int errorCode, String msg, Object data) throws IOException {
-        MessageDto dto = new MessageDto();
+        AppResponse dto = new AppResponse();
         dto.setCode(errorCode);
         dto.setMsg(msg);
         dto.setData(data);

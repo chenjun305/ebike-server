@@ -7,9 +7,8 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.LendBattery;
-import com.ecgobike.entity.User;
 import com.ecgobike.pojo.request.LendBatteryParams;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;
 import com.ecgobike.service.LendBatteryService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +39,7 @@ public class BatteryController {
 
     @PostMapping("/lend")
     @AuthRequire(Auth.USER)
-    public MessageDto lend(LendBatteryParams params) throws GException {
+    public AppResponse lend(LendBatteryParams params) throws GException {
         EBike eBike = eBikeService.canLendBattery(params.getEbikeSn());
         if (eBike.getUid() == null || !eBike.getUid().equals(params.getUid())) {
             throw new GException(ErrorConstants.NOT_YOUR_EBIKE);
@@ -57,6 +55,6 @@ public class BatteryController {
         Map<String, Object> data = new HashMap<>();
         data.put("lendBattery", lendBattery);
         data.put("ebike", eBike);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

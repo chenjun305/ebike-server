@@ -4,10 +4,9 @@ import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.entity.LendBattery;
 import com.ecgobike.entity.Product;
 import com.ecgobike.pojo.response.BatteryProductVO;
-import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.entity.Battery;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.LendBatteryService;
 import com.ecgobike.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class AdminBatteryController {
     ProductService productService;
 
     @RequestMapping("/list")
-    public MessageDto list(
+    public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
@@ -48,11 +47,11 @@ public class AdminBatteryController {
         Map<String, Object> data = new HashMap<>();
         data.put("batteries", batteries);
 
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/product/list")
-    public MessageDto productList() {
+    public AppResponse productList() {
         List<BatteryProductVO> batteryProducts = new ArrayList<>();
         List<Product> productList = productService.findByType(ProductType.BATTERY);
         for (Product product :
@@ -67,11 +66,11 @@ public class AdminBatteryController {
         Map<String, Object> data = new HashMap<>();
         data.put("batteryProducts", batteryProducts);
 
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/lend/list")
-    public MessageDto lendList(
+    public AppResponse lendList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
@@ -79,6 +78,6 @@ public class AdminBatteryController {
         Map<String, Object> data = new HashMap<>();
         data.put("lendHistory", lendHistory);
 
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

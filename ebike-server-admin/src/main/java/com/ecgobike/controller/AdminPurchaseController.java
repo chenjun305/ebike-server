@@ -3,7 +3,7 @@ package com.ecgobike.controller;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.pojo.request.PurchasePermitParams;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,32 +28,32 @@ public class AdminPurchaseController {
     PurchaseOrderService purchaseOrderService;
 
     @RequestMapping("/list/require")
-    public MessageDto listRequire(
+    public AppResponse listRequire(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         Page<PurchaseOrder> purchaseRequireOrders = purchaseOrderService.findAllRequire(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseRequireOrders", purchaseRequireOrders);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/list/permit")
-    public MessageDto listPermit(
+    public AppResponse listPermit(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
         Page<PurchaseOrder> purchasePermitOrders = purchaseOrderService.findAllPermit(pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("purchasePermitOrders", purchasePermitOrders);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @PostMapping("/permit")
-    public MessageDto permit(PurchasePermitParams params) throws GException {
+    public AppResponse permit(PurchasePermitParams params) throws GException {
         PurchaseOrder purchaseOrder = purchaseOrderService.permit(params.getPurchaseSn(), params.getPermitNum());
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrder);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }

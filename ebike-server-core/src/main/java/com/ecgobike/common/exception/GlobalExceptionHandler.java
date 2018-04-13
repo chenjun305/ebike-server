@@ -3,7 +3,7 @@ package com.ecgobike.common.exception;
 import com.google.common.base.Strings;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.log.LogHelp;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GException.class)
     @ResponseBody
-    MessageDto handGException(HttpServletRequest request, GException e) {
-        MessageDto result = new MessageDto();
+    AppResponse handGException(HttpServletRequest request, GException e) {
+        AppResponse result = new AppResponse();
         result.setCode(e.getErr());
         if (Strings.isNullOrEmpty(e.getMsg())) {
             result.setMsg(ErrorConstants.getDesc(e.getErr()));
@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    MessageDto handException(HttpServletRequest request, Exception e) {
-        MessageDto result = new MessageDto();
+    AppResponse handException(HttpServletRequest request, Exception e) {
+        AppResponse result = new AppResponse();
         result.setCode(ErrorConstants.FAIL);
         result.setMsg(e.getMessage());
         LogHelp.doLogException(e);

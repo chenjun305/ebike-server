@@ -12,7 +12,7 @@ import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseParams;
 import com.ecgobike.pojo.response.BatteryProductVO;
 import com.ecgobike.pojo.response.EBikeProductVO;
-import com.ecgobike.pojo.response.MessageDto;
+import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +50,7 @@ public class ShopProductController {
 
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
-    public MessageDto list(AuthParams params){
+    public AppResponse list(AuthParams params){
         Staff staff = staffService.findOneByUid(params.getUid());
         long shopId = staff.getShopId();
         Map<String, Object> data = new HashMap<>();
@@ -85,12 +85,12 @@ public class ShopProductController {
         }
         data.put("ebikeProducts", ebikeProducts);
         data.put("batteryProducts", batteryProducts);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 
     @RequestMapping("/purchase")
     @AuthRequire(Auth.STAFF)
-    public MessageDto purchase(PurchaseParams params) throws GException {
+    public AppResponse purchase(PurchaseParams params) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
@@ -99,6 +99,6 @@ public class ShopProductController {
         PurchaseOrder purchaseOrder = purchaseOrderService.purchase(staff, product, params.getRequireNum());
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrder);
-        return MessageDto.responseSuccess(data);
+        return AppResponse.responseSuccess(data);
     }
 }
