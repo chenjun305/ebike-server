@@ -131,6 +131,11 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
+    public Page<PaymentOrder> findAllShopIncome(Pageable pageable) {
+        return paymentOrderRepository.findAll(pageable);
+    }
+
+    @Override
     public long countProductSellOrdersInShop(Product product, Long shopId) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setProductId(product.getId());
