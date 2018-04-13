@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ChenJun on 2018/3/15.
@@ -39,6 +41,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setUid(user.getUid());
         paymentOrder.setStaffUid(staff.getUid());
         paymentOrder.setShopId(staff.getShopId());
+        paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());
         paymentOrder.setUpdateTime(LocalDateTime.now());
@@ -70,6 +73,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
             paymentOrder.setStaffUid(staff.getUid());
             paymentOrder.setShopId(staff.getShopId());
         }
+        paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());
         paymentOrder.setUpdateTime(LocalDateTime.now());
@@ -88,6 +92,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setUid(user.getUid());
         paymentOrder.setStaffUid(staff.getUid());
         paymentOrder.setShopId(staff.getShopId());
+        paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());
         paymentOrder.setUpdateTime(LocalDateTime.now());
@@ -126,5 +131,10 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         Example<PaymentOrder> example = Example.of(paymentOrder);
 
         return paymentOrderRepository.count(example);
+    }
+
+    @Override
+    public List<Map<OrderType, BigDecimal>> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day) {
+        return paymentOrderRepository.sumDailyShopIncomeGroupByType(shopId, day);
     }
 }

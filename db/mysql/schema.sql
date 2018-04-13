@@ -136,6 +136,7 @@ CREATE TABLE `payment_order` (
   `uid` varchar(32) DEFAULT NULL COMMENT '用户uid',
   `staff_uid` varchar(32) DEFAULT NULL COMMENT '店员uid，店员帮用户操作时有值',
   `shop_id` INT(11) DEFAULT NULL COMMENT '门店ID',
+  `pay_date` date comment '付款日期',
   `month_num` TINYINT DEFAULT NULL COMMENT '月换电次数',
   `start_date` DATE DEFAULT NULL COMMENT '包月开始时间',
   `end_date` DATE DEFAULT NULL COMMENT '包月结束时间',
@@ -147,7 +148,8 @@ CREATE TABLE `payment_order` (
   KEY `ebike_sn_idx` (`ebike_sn`),
   KEY `uid_idx` (`uid`),
   KEY `staff_uid_idx` (`staff_uid`),
-  KEY `shop_id_idx` (`shop_id`)
+  KEY `shop_id_idx` (`shop_id`),
+  KEY `pay_date_idx` (`pay_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='订单';
 
 CREATE TABLE `lend_battery` (

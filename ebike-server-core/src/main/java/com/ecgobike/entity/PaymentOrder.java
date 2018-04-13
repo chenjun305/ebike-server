@@ -28,6 +28,7 @@ public class PaymentOrder implements Serializable {
     private String uid;
     private String staffUid;
     private Long shopId;
+    private LocalDate payDate;
     private Integer monthNum;
     private LocalDate startDate;
     private LocalDate endDate;

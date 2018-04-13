@@ -7,6 +7,11 @@ import com.ecgobike.pojo.request.Money;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by ChenJun on 2018/3/15.
  */
@@ -17,4 +22,5 @@ public interface PaymentOrderService {
     Page<PaymentOrder> findAllSall(Pageable pageable);
     Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable);
     long countProductSellOrdersInShop(Product product, Long shopId);
+    List<Map<OrderType, BigDecimal>> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day);
 }
