@@ -21,6 +21,7 @@ public interface PaymentOrderService {
     PaymentOrder createSellOrder(Staff staff, User user, EBike eBike);
     Page<PaymentOrder> findAllSall(Pageable pageable);
     Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable);
+    Page<PaymentOrder> findAllInShop(Long shopId, Pageable pageable);
     long countProductSellOrdersInShop(Product product, Long shopId);
     List<Map<OrderType, BigDecimal>> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day);
 }
