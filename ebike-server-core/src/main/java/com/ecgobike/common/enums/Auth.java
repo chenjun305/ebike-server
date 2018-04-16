@@ -6,7 +6,8 @@ package com.ecgobike.common.enums;
 public enum Auth {
     NULL(0),
     USER(1),
-    STAFF(2);
+    STAFF(2),
+    ADMIN(3);
 
     public int auth;
 

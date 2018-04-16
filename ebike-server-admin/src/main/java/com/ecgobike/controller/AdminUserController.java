@@ -1,5 +1,7 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.entity.User;
 import com.ecgobike.service.UserService;
@@ -25,6 +27,7 @@ public class AdminUserController {
     UserService userService;
 
     @RequestMapping("/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable

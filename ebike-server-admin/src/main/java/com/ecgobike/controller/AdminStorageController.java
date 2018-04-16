@@ -1,6 +1,8 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.LogisticsStatus;
 import com.ecgobike.common.enums.PurchaseOrderStatus;
 import com.ecgobike.common.exception.GException;
@@ -43,6 +45,7 @@ public class AdminStorageController {
     ProductService productService;
 
     @PostMapping("/out")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse out(StorageOutParams params) throws GException {
         PurchaseOrder purchaseOrder = purchaseOrderService.findOneBySn(params.getPurchaseSn());
         if (purchaseOrder == null) {
@@ -59,6 +62,7 @@ public class AdminStorageController {
     }
 
     @RequestMapping("/out/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse outList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                                           Pageable pageable
@@ -70,6 +74,7 @@ public class AdminStorageController {
     }
 
     @PostMapping("/in")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse in(StorageInParams params) throws GException {
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
@@ -82,6 +87,7 @@ public class AdminStorageController {
     }
 
     @RequestMapping("/in/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse inList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable

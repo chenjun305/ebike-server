@@ -1,5 +1,7 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.PaymentOrder;
@@ -39,6 +41,7 @@ public class AdminEBikeController {
     ProductService productService;
 
     @RequestMapping("/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
@@ -50,6 +53,7 @@ public class AdminEBikeController {
     }
 
     @RequestMapping("/product/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse productList() {
         List<Product> productList = productService.findByType(ProductType.EBIKE);
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
@@ -69,6 +73,7 @@ public class AdminEBikeController {
     }
 
     @RequestMapping("/sale/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse sellList(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable

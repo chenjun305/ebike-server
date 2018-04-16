@@ -1,5 +1,7 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.Shop;
 import com.ecgobike.pojo.request.ShopParams;
 import com.ecgobike.service.ShopService;
@@ -27,6 +29,7 @@ public class AdminShopController {
     ShopService shopService;
 
     @PostMapping("/create")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse create(ShopParams params) {
         Shop shop = new Shop();
         shop.setName(params.getName());
@@ -45,6 +48,7 @@ public class AdminShopController {
     }
 
     @PostMapping("/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable

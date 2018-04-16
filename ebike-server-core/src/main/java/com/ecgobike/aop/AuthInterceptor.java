@@ -11,6 +11,7 @@ import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
+import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.util.AES256;
 import com.ecgobike.common.util.DateUtils;
 import com.ecgobike.common.util.Utils;
@@ -136,11 +137,15 @@ public class AuthInterceptor extends BaseInterceptor {
                 return false;
             }
             return true;
-        } else if (auth == Auth.STAFF) {
+        } else if (auth == Auth.STAFF || auth == Auth.ADMIN) {
             // check if staff exist
             Staff staff = StaffHelper.findStaffByUid(uid);
             if (staff == null) {
                 sendErrorMsgByCode(response, ErrorConstants.NOT_EXIST_STAFF);
+                return false;
+            }
+            if (auth == Auth.ADMIN && staff.getRole() != StaffRole.OPERATE) {
+                sendErrorMsgByCode(response, ErrorConstants.AUTHENTICATION_FAIL);
                 return false;
             }
             return true;

@@ -1,5 +1,6 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.enums.StaffRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -27,7 +28,7 @@ public class Staff implements Serializable {
     private String idCardPics;
 
     private Long shopId;
-    private Byte role;
+    private StaffRole role;
     private String staffNum;
 
     private String address;

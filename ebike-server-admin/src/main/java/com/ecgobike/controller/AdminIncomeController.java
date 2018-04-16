@@ -1,5 +1,7 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.PaymentOrderService;
@@ -25,6 +27,7 @@ public class AdminIncomeController {
     PaymentOrderService paymentOrderService;
 
     @RequestMapping("/list")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) {

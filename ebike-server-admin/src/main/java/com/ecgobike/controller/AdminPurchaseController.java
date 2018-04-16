@@ -1,5 +1,7 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.pojo.request.PurchasePermitParams;
@@ -28,6 +30,7 @@ public class AdminPurchaseController {
     PurchaseOrderService purchaseOrderService;
 
     @RequestMapping("/list/require")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse listRequire(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
@@ -39,6 +42,7 @@ public class AdminPurchaseController {
     }
 
     @RequestMapping("/list/permit")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse listPermit(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
@@ -50,6 +54,7 @@ public class AdminPurchaseController {
     }
 
     @PostMapping("/permit")
+    @AuthRequire(Auth.ADMIN)
     public AppResponse permit(PurchasePermitParams params) throws GException {
         PurchaseOrder purchaseOrder = purchaseOrderService.permit(params.getPurchaseSn(), params.getPermitNum());
         Map<String, Object> data = new HashMap<>();
