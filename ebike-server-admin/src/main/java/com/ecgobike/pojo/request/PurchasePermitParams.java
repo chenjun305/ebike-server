@@ -8,7 +8,7 @@ import lombok.Data;
  * Created by ChenJun on 2018/4/8.
  */
 @Data
-public class PurchasePermitParams {
+public class PurchasePermitParams extends AuthParams {
     @NotNull
     private String purchaseSn;
     @Range(Min = 0)

@@ -56,7 +56,7 @@ public class AdminPurchaseController {
     @PostMapping("/permit")
     @AuthRequire(Auth.ADMIN)
     public AppResponse permit(PurchasePermitParams params) throws GException {
-        PurchaseOrder purchaseOrder = purchaseOrderService.permit(params.getPurchaseSn(), params.getPermitNum());
+        PurchaseOrder purchaseOrder = purchaseOrderService.permit(params.getPurchaseSn(), params.getPermitNum(), params.getUid());
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrder);
         return AppResponse.responseSuccess(data);

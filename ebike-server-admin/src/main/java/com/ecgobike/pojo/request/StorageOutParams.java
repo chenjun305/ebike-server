@@ -9,7 +9,7 @@ import java.util.List;
  * Created by ChenJun on 2018/4/8.
  */
 @Data
-public class StorageOutParams {
+public class StorageOutParams extends AuthParams {
     @NotNull
     private String purchaseSn;
 

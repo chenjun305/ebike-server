@@ -68,13 +68,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public PurchaseOrder permit(String sn, Integer permitNum) throws GException {
+    public PurchaseOrder permit(String sn, Integer permitNum, String permitUid) throws GException {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findOneBySn(sn);
         if (purchaseOrder == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PURCHASE_ORDER);
         }
         purchaseOrder.setPermitNum(permitNum);
-        purchaseOrder.setPermitUid("admin");
+        purchaseOrder.setPermitUid(permitUid);
         purchaseOrder.setPermitTime(new Date());
         purchaseOrder.setStatus(PurchaseOrderStatus.PERMIT);
         purchaseOrder.setUpdateTime(LocalDateTime.now());
@@ -82,8 +82,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public PurchaseOrder departure(PurchaseOrder purchaseOrder) {
-        purchaseOrder.setDepartureUid("admin");
+    public PurchaseOrder departure(PurchaseOrder purchaseOrder, String departureUid) {
+        purchaseOrder.setDepartureUid(departureUid);
         purchaseOrder.setDepartureTime(new Date());
         purchaseOrder.setStatus(PurchaseOrderStatus.TRANSIT);
         purchaseOrder.setUpdateTime(LocalDateTime.now());

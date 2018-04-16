@@ -55,7 +55,7 @@ public class AdminStorageController {
             throw new GException(ErrorConstants.NOT_PERMIT_PURCHASE_ORDER);
         }
         List<Logistics> list = logisticsService.out(purchaseOrder, params.getSnList());
-        purchaseOrderService.departure(purchaseOrder);
+        purchaseOrderService.departure(purchaseOrder, params.getUid());
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
         return AppResponse.responseSuccess(data);
