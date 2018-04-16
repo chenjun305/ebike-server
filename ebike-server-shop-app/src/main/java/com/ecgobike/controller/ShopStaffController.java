@@ -2,10 +2,13 @@ package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.pojo.request.StaffParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.service.ShopService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.sms.SmsService;
 import com.ecgobike.common.enums.Auth;
@@ -30,6 +33,9 @@ public class ShopStaffController {
 
     @Autowired
     StaffService staffService;
+
+    @Autowired
+    ShopService shopService;
 
     @PostMapping("/pin")
     public AppResponse pin(String tel) throws GException {
@@ -72,18 +78,29 @@ public class ShopStaffController {
     @PostMapping("/create")
     @AuthRequire(Auth.STAFF)
     public AppResponse create(StaffParams params) throws GException {
+        Staff me = staffService.findOneByUid(params.getUid());
+        if (me.getRole() != StaffRole.SHOP_OWNER && me.getRole() != StaffRole.OPERATE) {
+            throw new GException(ErrorConstants.NOT_SHOP_OWNER);
+        }
+
         Staff staff = staffService.findOneByTel(params.getTel());
         if (staff != null) {
             throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
         }
+        Long shopId = me.getShopId() == null ? params.getShopId() : me.getShopId();
+        Shop shop = shopService.getShopById(shopId);
+        if (shop == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+        }
+
         staff = new Staff();
         staff.setUid(IdGen.uuid());
         staff.setTel(params.getTel());
         staff.setRealName(params.getRealName());
         staff.setGender(params.getGender());
         staff.setIdCardNum(params.getIdCardNum());
-        staff.setShopId(params.getShopId());
-        staff.setRole(params.getRole());
+        staff.setShopId(shopId);
+        staff.setRole(StaffRole.SHOP_STAFF);
         staff.setStaffNum(params.getStaffNum());
         staff.setAddress(params.getAddress());
         staff.setStatus((byte)1);

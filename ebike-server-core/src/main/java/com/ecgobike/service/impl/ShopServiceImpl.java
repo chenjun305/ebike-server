@@ -32,4 +32,10 @@ public class ShopServiceImpl implements ShopService {
     public Shop create(Shop shop) {
         return shopRepository.save(shop);
     }
+
+    @Override
+    public Shop getShopById(Long id) {
+        return shopRepository.getOne(id);
+    }
+
 }

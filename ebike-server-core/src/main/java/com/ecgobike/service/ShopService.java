@@ -13,4 +13,5 @@ public interface ShopService {
     List<Shop> near(Double latitude, Double longitude);
     Page<Shop> findAll(Pageable pageable);
     Shop create(Shop shop);
+    Shop getShopById(Long id);
 }

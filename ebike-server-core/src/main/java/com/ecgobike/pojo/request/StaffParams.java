@@ -19,9 +19,7 @@ public class StaffParams extends AuthParams {
     private Byte gender;
     private String idCardNum;
     private Long shopId;
-    @Range(Min = 1)
-    private StaffRole role;
+    private int role;
     private String staffNum;
     private String address;
-
 }

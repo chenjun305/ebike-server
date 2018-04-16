@@ -6,6 +6,10 @@ import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.AuthUtil;
+import com.ecgobike.common.util.IdGen;
+import com.ecgobike.entity.Shop;
+import com.ecgobike.pojo.request.StaffParams;
+import com.ecgobike.service.ShopService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.response.AppResponse;
@@ -35,11 +39,17 @@ public class AdminStaffController {
     @Autowired
     SmsService smsService;
 
+    @Autowired
+    ShopService shopService;
+
     @PostMapping("/pin")
     public AppResponse pin(String tel) throws GException {
         Staff staff = staffService.findOneByTel(tel);
-        if (staff == null || staff.getRole() != StaffRole.OPERATE) {
+        if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
+        }
+        if (staff.getRole() != StaffRole.OPERATE) {
+            throw new GException(ErrorConstants.NOT_ADMIN);
         }
 
         boolean result = smsService.sendPin(tel);
@@ -53,8 +63,11 @@ public class AdminStaffController {
     @PostMapping("/login")
     public AppResponse login(String tel, String pin) throws GException {
         Staff staff = staffService.findOneByTel(tel);
-        if (staff == null || staff.getRole() != StaffRole.OPERATE) {
+        if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
+        }
+        if (staff.getRole() != StaffRole.OPERATE) {
+            throw new GException(ErrorConstants.NOT_ADMIN);
         }
 
         if (! smsService.isPinValid(tel, pin)) {
@@ -83,6 +96,34 @@ public class AdminStaffController {
         Map<String, Object> data = new HashMap<>();
         Page<Staff> staffs = staffService.findAll(pageable);
         data.put("staffs", staffs);
+        return AppResponse.responseSuccess(data);
+    }
+
+    @PostMapping("/create")
+    @AuthRequire(Auth.STAFF)
+    public AppResponse create(StaffParams params) throws GException {
+        Staff staff = staffService.findOneByTel(params.getTel());
+        if (staff != null) {
+            throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
+        }
+        Shop shop = shopService.getShopById(params.getShopId());
+        if (shop == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+        }
+        staff = new Staff();
+        staff.setUid(IdGen.uuid());
+        staff.setTel(params.getTel());
+        staff.setRealName(params.getRealName());
+        staff.setGender(params.getGender());
+        staff.setIdCardNum(params.getIdCardNum());
+        staff.setShopId(params.getShopId());
+        staff.setRole(StaffRole.getRole(params.getRole()));
+        staff.setStaffNum(params.getStaffNum());
+        staff.setAddress(params.getAddress());
+        staff.setStatus((byte)1);
+        Staff newStaff = staffService.create(staff);
+        Map<String, Object> data = new HashMap<>();
+        data.put("staff", newStaff);
         return AppResponse.responseSuccess(data);
     }
 }
