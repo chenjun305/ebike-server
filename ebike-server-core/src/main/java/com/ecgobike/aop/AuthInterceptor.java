@@ -12,6 +12,7 @@ import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.StaffRole;
+import com.ecgobike.common.log.LogHelp;
 import com.ecgobike.common.util.AES256;
 import com.ecgobike.common.util.DateUtils;
 import com.ecgobike.common.util.Utils;
@@ -86,7 +87,7 @@ public class AuthInterceptor extends BaseInterceptor {
         String time = tCells[1];
         try{
             Integer loginTime = Integer.parseInt(time);
-            if (loginTime + Constants.DAY30_2_SECOND < DateUtils.getNow()) {// 登录时间已经过期
+            if (loginTime + Constants.DAY7_2_SECOND < DateUtils.getNow()) {// 登录时间已经过期
                 sendErrorMsgByCode(response, ErrorConstants.LOGIN_OVERDUE);
                 return false;
             }
@@ -104,14 +105,17 @@ public class AuthInterceptor extends BaseInterceptor {
 
 
         TreeMap<String, String> checkMap = new TreeMap<>();
+        System.out.println("=======request parameters=========");
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             String key = entry.getKey();
+            String value = entry.getValue()[0];
+            System.out.println(key + ":" + value);
             if ("sign".equals(key) || "token".equals(key)) {
                 continue;
             }
-            String value = entry.getValue()[0];
             checkMap.put(key, value);
         }
+        System.out.println("=======end=========");
 
         StringBuffer orginSource = new StringBuffer();
         for (Map.Entry<String, String> entry : checkMap.entrySet()) {
@@ -122,9 +126,8 @@ public class AuthInterceptor extends BaseInterceptor {
 
         String sign = signCells[0];
         String check = Utils.getMD5(orginSource.toString());
-        System.out.println("right sign="+check);
-        System.out.println("sign="+sign);
         if (!check.equals(sign)) {
+            System.out.println("right sign="+check);
             sendErrorMsgByCode(response, ErrorConstants.ERR_SIGN);
             return false;
         }

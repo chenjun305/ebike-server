@@ -74,14 +74,14 @@ public class UserController {
 
     @PostMapping("/update")
     @AuthRequire(Auth.USER)
-    public AppResponse update(UserUpdateParams params, AuthParams authParams) throws GException {
-        User user = userService.getUserByUid(authParams.getUid());
+    public AppResponse update(UserUpdateParams params) throws GException {
+        User user = userService.getUserByUid(params.getUid());
         Byte gender = params.getGender();
         if (gender != null && Gender.getType(gender) == null) {
             throw new GException(ErrorConstants.ERR_PARAMS);
         }
-        if (params.getGender() != null) {
-            user.setGender(params.getGender());
+        if (gender != null) {
+            user.setGender(gender);
         }
         if (params.getAddress() != null) {
             user.setAddress(params.getAddress());

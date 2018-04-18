@@ -15,8 +15,8 @@ public interface Constants {
     /**生成token添加的盐*/
     String TOKEN_SALT = "UMUdfPjQDAK1cpUtO5eW8q2iQhljb8L6a7/k9yjdCOw=";
 
-    /**30天的秒数*/
-    int DAY30_2_SECOND = 60 * 60 * 24 * 30;
+    /**7天的秒数*/
+    int DAY7_2_SECOND = 60 * 60 * 24 * 7;
 
     // App Setting
     BigDecimal MEMBERSHIP_FEE = new BigDecimal(20.0);

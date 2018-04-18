@@ -28,7 +28,7 @@ public class AdminShopController {
     @Autowired
     ShopService shopService;
 
-    @PostMapping("/create")
+    @RequestMapping("/create")
     @AuthRequire(Auth.ADMIN)
     public AppResponse create(ShopParams params) {
         Shop shop = new Shop();
