@@ -47,7 +47,7 @@ public class AdminShopController {
         return AppResponse.responseSuccess(data);
     }
 
-    @PostMapping("/list")
+    @RequestMapping("/list")
     @AuthRequire(Auth.ADMIN)
     public AppResponse list(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)

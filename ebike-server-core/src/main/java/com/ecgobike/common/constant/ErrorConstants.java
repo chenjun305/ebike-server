@@ -70,8 +70,8 @@ public class ErrorConstants {
 	public static final int NOT_EXIST_STAFF = 401;//Not Exist Staff！
 	public static final int ALREADY_EXIST_STAFF = 402;//Already Exist Staff！
 	public static final int NOT_ADMIN = 403;//Not Admin！
-	public static final int NOT_SHOP_OWNER = 403;//Not Shop Owner！
-	public static final int NOT_EXIST_SHOP = 405;//Not Exist Shop！
+	public static final int NOT_SHOP_OWNER = 405;//Not Shop Owner！
+	public static final int NOT_EXIST_SHOP = 406;//Not Exist Shop！
 	public static final int NOT_EXIST_PRODUCT = 501;//Not Exist Product！
 	public static final int NOT_IN_STORAGE = 502;//Not In Storage！
 	public static final int NOT_EBIKE_PRODUCT = 503;//Not EBike Product！

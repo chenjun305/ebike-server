@@ -64,8 +64,8 @@
 	<err id="401" description="Not Exist Staff！" name="NOT_EXIST_STAFF"/>
 	<err id="402" description="Already Exist Staff！" name="ALREADY_EXIST_STAFF"/>
 	<err id="403" description="Not Admin！" name="NOT_ADMIN"/>
-	<err id="403" description="Not Shop Owner！" name="NOT_SHOP_OWNER"/>
-	<err id="405" description="Not Exist Shop！" name="NOT_EXIST_SHOP"/>
+	<err id="405" description="Not Shop Owner！" name="NOT_SHOP_OWNER"/>
+	<err id="406" description="Not Exist Shop！" name="NOT_EXIST_SHOP"/>
 
 	<!--Product-->
 	<err id="501" description="Not Exist Product！" name="NOT_EXIST_PRODUCT"/>
