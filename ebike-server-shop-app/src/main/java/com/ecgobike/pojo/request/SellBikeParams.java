@@ -2,6 +2,7 @@ package com.ecgobike.pojo.request;
 
 import com.ecgobike.common.annotation.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by ChenJun on 2018/3/26.
@@ -18,5 +19,9 @@ public class SellBikeParams extends AuthParams {
     private String idCardNum;
     @NotNull
     private String address;
+
+//    @NotNull
+//    private MultipartFile[] idCardFiles;
+
 
 }

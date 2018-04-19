@@ -1,6 +1,7 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.FileType;
 import com.ecgobike.common.enums.Gender;
@@ -60,6 +61,9 @@ public class UserController {
         String signMat = AuthUtil.buildSignMaterial(uid);
         String token = AuthUtil.buildToken(uid, signMat);
 
+        if (user.getAvatar() != null && user.getAvatar().length() > 0) {
+            user.setAvatar(Constants.USER_AVATAR_URL_PREFIX + user.getAvatar());
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
 
@@ -75,6 +79,9 @@ public class UserController {
         String uid = params.getUid();
         User user = userService.getUserByUid(uid);
 
+        if (user.getAvatar() != null && user.getAvatar().length() > 0) {
+            user.setAvatar(Constants.USER_AVATAR_URL_PREFIX + user.getAvatar());
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         return AppResponse.responseSuccess(data);
@@ -82,7 +89,10 @@ public class UserController {
 
     @PostMapping("/update")
     @AuthRequire(Auth.USER)
-    public AppResponse update(@RequestParam(value = "avatar", required = false) MultipartFile file, UserUpdateParams params) throws GException {
+    public AppResponse update(
+            @RequestParam(value = "avatar", required = false) MultipartFile file,
+            UserUpdateParams params
+    ) throws GException {
         String uid = params.getUid();
         Byte gender = params.getGender();
         User user = userService.getUserByUid(uid);
@@ -99,10 +109,15 @@ public class UserController {
             user.setNickname(params.getNickname());
         }
         if (file != null && !file.isEmpty()) {
-            String fileName = fileService.saveFile(FileType.USER_AVATAR, uid, file);
-            user.setAvatar(fileName);
+            MultipartFile[] files = { file };
+            String[] fileNames = fileService.saveFile(FileType.USER_AVATAR, uid, files);
+            user.setAvatar(fileNames[0]);
         }
         user = userService.update(user);
+
+        if (user.getAvatar() != null && user.getAvatar().length() > 0) {
+            user.setAvatar(Constants.USER_AVATAR_URL_PREFIX + user.getAvatar());
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         return AppResponse.responseSuccess(data);

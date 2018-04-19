@@ -9,6 +9,7 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * Created by ChenJun on 2018/4/18.
@@ -49,49 +52,59 @@ public class CosFileServiceImpl implements FileService {
 
 
     @Override
-    public String saveFile(FileType type, String uid, MultipartFile file) throws GException {
+    public String[] saveFile(FileType type, String uid, MultipartFile[] files) throws GException {
         //String fileName = UUID.randomUUID().toString() + prepareSuffix(file);
         String bucketName = "";
-        String fileName = uid + "-";
+        String fileNamePrefix = uid + "-";
         switch (type) {
             case USER_AVATAR:
                 bucketName = bucketNameUserAvatar;
-                fileName += fileNameUserAvatar;
+                fileNamePrefix += fileNameUserAvatar;
                 break;
             case STAFF_AVATAR:
                 bucketName = bucketNameStaffAvatar;
-                fileName += fileNameStaffAvatar;
+                fileNamePrefix += fileNameStaffAvatar;
                 break;
             case USER_IDCARD:
                 bucketName = bucketNameUserIdcard;
-                fileName += fileNameUserIdcard;
+                fileNamePrefix += fileNameUserIdcard;
                 break;
             case STAFF_IDCARD:
                 bucketName = bucketNameStaffIdcard;
-                fileName += fileNameStaffIdcard;
+                fileNamePrefix += fileNameStaffIdcard;
                 break;
             default:
                 throw new GException(ErrorConstants.ILLEGAL_IMAGE_FORMAT);
         }
         // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
         bucketName = bucketName + "-" + appId;
-        fileName  += prepareSuffix(file);
-        String key = "/" + fileName;
-        System.out.println("key=" + key);
+        String[] fileNames = new String[files.length];
+        for (int i=0; i < files.length; i++) {
+            MultipartFile file = files[i];
+            String fileName = fileNamePrefix + "-" + i + prepareSuffix(file);
+            fileNames[i] = fileName;
+            String key = "/" + fileName;
+            try {
+//                if (cosClient.doesObjectExist(bucketName, key)) {
+//                    System.out.println(key + " already exist, delete first");
+//                    cosClient.deleteObject(bucketName, key);
+//                }
+                System.out.println("upload " + key);
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                // 设置输入流长度
+                objectMetadata.setContentLength(file.getSize());
 
-        try {
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            // 设置输入流长度
-            objectMetadata.setContentLength(file.getSize());
-
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file.getInputStream(), objectMetadata);
-            PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
-            String etag = putObjectResult.getETag();
-            System.out.println("etag=" + etag);
-        } catch (IOException e) {
-            throw new GException(ErrorConstants.ILLEGAL_IMAGE_FORMAT);
+                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file.getInputStream(), objectMetadata);
+                PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+                String etag = putObjectResult.getETag();
+                System.out.println("etag=" + etag);
+            } catch (IOException e) {
+                throw new GException(ErrorConstants.ILLEGAL_IMAGE_FORMAT);
+            } catch (CosClientException e) {
+                throw new GException(ErrorConstants.FAIL);
+            }
         }
-        return fileName;
+        return fileNames;
     }
 
     protected String prepareSuffix(MultipartFile file) throws GException {

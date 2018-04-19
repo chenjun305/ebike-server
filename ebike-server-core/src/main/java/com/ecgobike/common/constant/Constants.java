@@ -22,4 +22,7 @@ public interface Constants {
     BigDecimal MEMBERSHIP_FEE = new BigDecimal(20.0);
     String CURRENCY = "USD";
     String CURRENCY_SYMBOL = "$";
+
+    // File
+    String USER_AVATAR_URL_PREFIX = "http://ebike-user-avatar-1251198400.cosgz.myqcloud.com/";
 }

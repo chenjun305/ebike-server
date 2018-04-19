@@ -15,7 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +47,9 @@ public class ShopEBikeController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    FileService fileService;
+
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
     public AppResponse info(String ebikeSn) throws GException {
@@ -61,7 +66,12 @@ public class ShopEBikeController {
 
     @PostMapping("/sell")
     @AuthRequire(Auth.STAFF)
-    public AppResponse sell(SellBikeParams params) throws GException {
+    public AppResponse sell(
+            @RequestParam(value = "idCardFile1") MultipartFile file1,
+            @RequestParam(value = "idCardFile2") MultipartFile file2,
+            @RequestParam(value = "idCardFile3") MultipartFile file3,
+            SellBikeParams params
+    ) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
 
         Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff);
@@ -74,6 +84,11 @@ public class ShopEBikeController {
         user.setIsReal((byte)1);
         user.setRealName(params.getRealName());
         user.setAddress(params.getAddress());
+        MultipartFile[] files = {file1, file2, file3};
+        //if (params.getIdCardFiles().length > 0) {
+            String[] fileNames = fileService.saveFile(FileType.USER_IDCARD, user.getUid(), files);
+            System.out.println("upload " + fileNames + "success!");
+        //}
         user = userService.update(user);
 
         eBike = eBikeService.sell(user, params.getEbikeSn(), logistics.getProduct());

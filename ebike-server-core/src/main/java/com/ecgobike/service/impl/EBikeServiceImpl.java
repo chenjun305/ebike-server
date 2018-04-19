@@ -63,7 +63,7 @@ public class EBikeServiceImpl implements EBikeService {
         if (eBike.getIsMembership() == null || eBike.getIsMembership() == 0) {
             throw new GException(ErrorConstants.NO_MEMBERSHIP);
         }
-        if (eBike.getExpireDate() != null && eBike.getExpireDate().isAfter(LocalDate.now())) {
+        if (eBike.getExpireDate() != null && eBike.getExpireDate().isAfter(LocalDate.now()) && eBike.getMonthLeft() > 0) {
             throw new GException(ErrorConstants.ALREADY_RENEW);
         }
 
