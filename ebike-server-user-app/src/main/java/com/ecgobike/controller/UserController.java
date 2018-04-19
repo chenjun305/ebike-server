@@ -2,10 +2,12 @@ package com.ecgobike.controller;
 
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.FileType;
 import com.ecgobike.common.enums.Gender;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.UserUpdateParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.service.FileService;
 import com.ecgobike.service.sms.SmsService;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
@@ -15,8 +17,11 @@ import com.ecgobike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +34,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    FileService fileService;
 
     @PostMapping("/pin")
     public AppResponse pin(String tel) throws GException {
@@ -74,9 +82,10 @@ public class UserController {
 
     @PostMapping("/update")
     @AuthRequire(Auth.USER)
-    public AppResponse update(UserUpdateParams params) throws GException {
-        User user = userService.getUserByUid(params.getUid());
+    public AppResponse update(@RequestParam(value = "avatar", required = false) MultipartFile file, UserUpdateParams params) throws GException {
+        String uid = params.getUid();
         Byte gender = params.getGender();
+        User user = userService.getUserByUid(uid);
         if (gender != null && Gender.getType(gender) == null) {
             throw new GException(ErrorConstants.ERR_PARAMS);
         }
@@ -88,6 +97,10 @@ public class UserController {
         }
         if (params.getNickname() != null) {
             user.setNickname(params.getNickname());
+        }
+        if (file != null && !file.isEmpty()) {
+            String fileName = fileService.saveFile(FileType.USER_AVATAR, uid, file);
+            user.setAvatar(fileName);
         }
         user = userService.update(user);
         Map<String, Object> data = new HashMap<>();

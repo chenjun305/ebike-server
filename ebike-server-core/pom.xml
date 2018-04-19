@@ -47,6 +47,14 @@
             <artifactId>guava</artifactId>
             <version>22.0</version>
         </dependency>
+
+        <!-- 腾讯云对象存储 -->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.2.4</version>
+        </dependency>
+
         <!-- for AES256 -->
         <!--
         The Bouncy Castle Crypto package is a Java implementation of cryptographic algorithms.

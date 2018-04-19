@@ -4,7 +4,11 @@ server:
     context-path: ${context_path:/user-app}
 spring:
   jmx:
-    enabled: false
+      enabled: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
   datasource:
     type: org.apache.commons.dbcp2.BasicDataSource
     driver-class-name: com.mysql.jdbc.Driver
