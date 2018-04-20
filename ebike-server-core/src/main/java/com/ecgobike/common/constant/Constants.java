@@ -24,6 +24,12 @@ public interface Constants {
     String CURRENCY_SYMBOL = "$";
 
     // Tencent COS File storage
-    String USER_AVATAR_URL_PREFIX = "http://ebike-user-avatar-1251198400.cosgz.myqcloud.com/";
-    String USER_IDCARD_URL_PREFIX = "http://ebike-user-idcard-1251198400.cosgz.myqcloud.com/";
+    String COS_APP_ID = "1251198400";
+    String COS_SECRET_ID = "AKID8EE3jE50KUhjkatmwdVJ1YJJEzeAYlq7";
+    String COS_SECRET_KEY = "Nl4QbbnwLdkkZDmBOQaZPSO9ILDuPo37";
+    // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
+    String BUCKET_USER_AVATAR = "ebike-user-avatar" + "-" + COS_APP_ID;
+    String BUCKET_USER_IDCARD = "ebike-user-idcard" + "-" + COS_APP_ID;
+    String USER_AVATAR_URL_PREFIX = "http://" + BUCKET_USER_AVATAR + ".cosgz.myqcloud.com/";
+    String USER_IDCARD_URL_PREFIX = "http://" + BUCKET_USER_IDCARD + ".cosgz.myqcloud.com/";
 }

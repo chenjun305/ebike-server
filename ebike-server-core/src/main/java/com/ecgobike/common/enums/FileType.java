@@ -6,9 +6,7 @@ package com.ecgobike.common.enums;
 public enum FileType {
     UNKNOWN(0),
     USER_AVATAR(1),
-    STAFF_AVATAR(2),
-    USER_IDCARD(3),
-    STAFF_IDCARD(4);
+    USER_IDCARD(3);
 
     private int type;
 

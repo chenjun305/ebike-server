@@ -33,7 +33,7 @@ public class ErrorConstants {
 	public static final int LACK_PARAMS_CHECK_SIGN = 14;//Lack Sign params Error！
 	public static final int ILLEGAL_PARAMS_CHECK_SIGN = 15;//Illegal Sign Params Error！
 	public static final int ERR_PARAMS = 16;//Request params Error！
-	public static final int ERR_EMPTY_UPLOAD_PIC = 17;//Upload Pic empty Error！
+	public static final int ERR_UPLOAD_PIC = 17;//Upload Pic Error！
 	public static final int ERR_REQUEST_TOO_FAST = 18;//Request too fast！
 	public static final int ERR_WRONG_VERSION = 19;//Please update to the latest version！
 	public static final int ILLEGAL_IMAGE_FORMAT = 20;//Illegal image format！

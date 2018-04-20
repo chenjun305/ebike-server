@@ -18,7 +18,7 @@
 	<err id="14" description="Lack Sign params Error！" name="LACK_PARAMS_CHECK_SIGN"/>
 	<err id="15" description="Illegal Sign Params Error！" name="ILLEGAL_PARAMS_CHECK_SIGN"/>
 	<err id="16" description="Request params Error！" name="ERR_PARAMS"/>
-	<err id="17" description="Upload Pic empty Error！" name="ERR_EMPTY_UPLOAD_PIC"/>
+	<err id="17" description="Upload Pic Error！" name="ERR_UPLOAD_PIC"/>
 	<err id="18" description="Request too fast！" name="ERR_REQUEST_TOO_FAST"/>
 	<err id="19" description="Please update to the latest version！" name="ERR_WRONG_VERSION"/>
 	<err id="20" description="Illegal image format！" name="ILLEGAL_IMAGE_FORMAT"/>

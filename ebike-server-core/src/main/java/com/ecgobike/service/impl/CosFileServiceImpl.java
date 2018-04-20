@@ -1,5 +1,6 @@
 package com.ecgobike.service.impl;
 
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.FileType;
 import com.ecgobike.common.exception.GException;
@@ -18,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
 
 /**
  * Created by ChenJun on 2018/4/18.
@@ -27,23 +26,13 @@ import java.time.LocalDateTime;
 @Service
 public class CosFileServiceImpl implements FileService {
 
-    private static final long appId = 1251198400;
-    private static final String secretId = "AKID8EE3jE50KUhjkatmwdVJ1YJJEzeAYlq7";
-    private static final String secretKey = "Nl4QbbnwLdkkZDmBOQaZPSO9ILDuPo37";
-    private static final String bucketNameUserAvatar = "ebike-user-avatar";
-    private static final String bucketNameStaffAvatar = "ebike-staff-avatar";
-    private static final String bucketNameUserIdcard = "ebike-user-idcard";
-    private static final String bucketNameStaffIdcard = "ebike-staff-idcard";
     private static final String fileNameUserAvatar = "user-avatar";
-    private static final String fileNameStaffAvatar = "staff-avatar";
     private static final String fileNameUserIdcard = "user-idcard";
-    private static final String fileNameStaffIdcard = "staff-idcard";
-
     private static COSClient cosClient = null;
 
     static {
         // 1 初始化用户身份信息(secretId, secretKey)
-        COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
+        COSCredentials cred = new BasicCOSCredentials(Constants.COS_SECRET_ID, Constants.COS_SECRET_KEY);
         // 2 设置bucket的区域, COS地域的简称请参照 https://cloud.tencent.com/document/product/436/6224
         ClientConfig clientConfig = new ClientConfig(new Region("ap-guangzhou"));
         // 3 生成cos客户端
@@ -54,30 +43,22 @@ public class CosFileServiceImpl implements FileService {
     @Override
     public String[] saveFile(FileType type, String uid, MultipartFile[] files) throws GException {
         //String fileName = UUID.randomUUID().toString() + prepareSuffix(file);
-        String bucketName = "";
+        String bucketName;
         String fileNamePrefix = uid + "-";
         switch (type) {
             case USER_AVATAR:
-                bucketName = bucketNameUserAvatar;
+                bucketName = Constants.BUCKET_USER_AVATAR;
                 fileNamePrefix += fileNameUserAvatar;
                 break;
-            case STAFF_AVATAR:
-                bucketName = bucketNameStaffAvatar;
-                fileNamePrefix += fileNameStaffAvatar;
-                break;
+
             case USER_IDCARD:
-                bucketName = bucketNameUserIdcard;
+                bucketName = Constants.BUCKET_USER_IDCARD;
                 fileNamePrefix += fileNameUserIdcard;
                 break;
-            case STAFF_IDCARD:
-                bucketName = bucketNameStaffIdcard;
-                fileNamePrefix += fileNameStaffIdcard;
-                break;
+
             default:
                 throw new GException(ErrorConstants.ILLEGAL_IMAGE_FORMAT);
         }
-        // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
-        bucketName = bucketName + "-" + appId;
         String[] fileNames = new String[files.length];
         for (int i=0; i < files.length; i++) {
             MultipartFile file = files[i];
@@ -101,7 +82,7 @@ public class CosFileServiceImpl implements FileService {
             } catch (IOException e) {
                 throw new GException(ErrorConstants.ILLEGAL_IMAGE_FORMAT);
             } catch (CosClientException e) {
-                throw new GException(ErrorConstants.FAIL);
+                throw new GException(ErrorConstants.ERR_UPLOAD_PIC);
             }
         }
         return fileNames;
