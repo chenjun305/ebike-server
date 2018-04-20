@@ -23,6 +23,8 @@ public class User implements Serializable {
     private Byte isReal;
     private String realName;
     private Byte gender;
+    private String idCardNum;
+    private String idCardPics;
     private BigDecimal money;
     private String currency;
     private String address;
