@@ -8,17 +8,20 @@ import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.*;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,15 +83,25 @@ public class ShopEBikeController {
         if (eBike != null && eBike.getUid() != null) {
             throw  new GException(ErrorConstants.ALREADY_SELLED);
         }
+
         User user = userService.getOrCreate(params.getPhoneNum());
         user.setIsReal((byte)1);
         user.setRealName(params.getRealName());
         user.setAddress(params.getAddress());
+        user.setIdCardNum(params.getIdCardNum());
         MultipartFile[] files = {file1, file2, file3};
-        //if (params.getIdCardFiles().length > 0) {
-            String[] fileNames = fileService.saveFile(FileType.USER_IDCARD, user.getUid(), files);
-            System.out.println("upload " + fileNames + "success!");
-        //}
+        String[] fileNames = fileService.saveFile(FileType.USER_IDCARD, user.getUid(), files);
+        String idCardPics = null;
+        for (String fileName : fileNames) {
+            if (idCardPics == null) {
+                idCardPics = fileName;
+            } else {
+                idCardPics = idCardPics + "," + fileName;
+            }
+        }
+        System.out.println("upload " + idCardPics + "success!");
+        user.setIdCardPics(idCardPics);
+
         user = userService.update(user);
 
         eBike = eBikeService.sell(user, params.getEbikeSn(), logistics.getProduct());
