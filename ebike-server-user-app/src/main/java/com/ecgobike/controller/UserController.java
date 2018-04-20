@@ -5,6 +5,8 @@ import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.FileType;
 import com.ecgobike.common.enums.Gender;
+import com.ecgobike.helper.FileUrlHelper;
+import com.ecgobike.helper.UserHelper;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.UserUpdateParams;
 import com.ecgobike.pojo.response.AppResponse;
@@ -61,11 +63,8 @@ public class UserController {
         String signMat = AuthUtil.buildSignMaterial(uid);
         String token = AuthUtil.buildToken(uid, signMat);
 
-        if (user.getAvatar() != null && user.getAvatar().length() > 0) {
-            user.setAvatar(Constants.USER_AVATAR_URL_PREFIX + user.getAvatar());
-        }
         Map<String, Object> data = new HashMap<>();
-        data.put("user", user);
+        data.put("user", FileUrlHelper.dealUser(user));
 
         data.put("uid", uid);
         data.put("signMat",signMat);
@@ -79,11 +78,8 @@ public class UserController {
         String uid = params.getUid();
         User user = userService.getUserByUid(uid);
 
-        if (user.getAvatar() != null && user.getAvatar().length() > 0) {
-            user.setAvatar(Constants.USER_AVATAR_URL_PREFIX + user.getAvatar());
-        }
         Map<String, Object> data = new HashMap<>();
-        data.put("user", user);
+        data.put("user", FileUrlHelper.dealUser(user));
         return AppResponse.responseSuccess(data);
     }
 
@@ -115,11 +111,8 @@ public class UserController {
         }
         user = userService.update(user);
 
-        if (user.getAvatar() != null && user.getAvatar().length() > 0) {
-            user.setAvatar(Constants.USER_AVATAR_URL_PREFIX + user.getAvatar());
-        }
         Map<String, Object> data = new HashMap<>();
-        data.put("user", user);
+        data.put("user", FileUrlHelper.dealUser(user));
         return AppResponse.responseSuccess(data);
     }
 }

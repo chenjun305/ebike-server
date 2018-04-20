@@ -23,6 +23,7 @@ public interface Constants {
     String CURRENCY = "USD";
     String CURRENCY_SYMBOL = "$";
 
-    // File
+    // Tencent COS File storage
     String USER_AVATAR_URL_PREFIX = "http://ebike-user-avatar-1251198400.cosgz.myqcloud.com/";
+    String USER_IDCARD_URL_PREFIX = "http://ebike-user-idcard-1251198400.cosgz.myqcloud.com/";
 }
