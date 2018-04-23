@@ -69,7 +69,7 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
-    public Battery canLend(String batterySn, Staff staff) throws GException {
+    public Battery canLend(String batterySn, Long staffShopId) throws GException {
         Battery battery = batteryRepository.findOneBySn(batterySn);
         if (battery == null) {
             throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
@@ -77,7 +77,7 @@ public class BatteryServiceImpl implements BatteryService {
         if (battery.getEbikeSn() != null) {
             throw new GException(ErrorConstants.NOT_RETURNED_BATTERY);
         }
-        if (staff != null && battery.getShopId() != null && battery.getShopId() != staff.getShopId()) {
+        if (staffShopId != null && battery.getShopId() != null && battery.getShopId() != staffShopId) {
             throw new GException(ErrorConstants.NOT_YOUR_SHOP_BATTERY);
         }
         return battery;
@@ -92,7 +92,7 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
-    public Battery returnBattery(Staff staff, String batterySn) throws GException {
+    public Battery returnBattery(Long staffShopId, String batterySn) throws GException {
         Battery battery = batteryRepository.findOneBySn(batterySn);
         if (battery == null) {
             throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
@@ -101,7 +101,7 @@ public class BatteryServiceImpl implements BatteryService {
             throw new GException(ErrorConstants.NOT_LEND_BATTERY);
         }
         battery.setEbikeSn(null);
-        battery.setShopId(staff.getShopId());
+        battery.setShopId(staffShopId);
         battery.setUpdateTime(LocalDateTime.now());
         return batteryRepository.save(battery);
     }

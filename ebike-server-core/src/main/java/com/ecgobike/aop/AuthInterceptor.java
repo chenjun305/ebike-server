@@ -12,14 +12,15 @@ import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.StaffRole;
-import com.ecgobike.common.log.LogHelp;
 import com.ecgobike.common.util.AES256;
 import com.ecgobike.common.util.DateUtils;
 import com.ecgobike.common.util.Utils;
-import com.ecgobike.entity.Staff;
-import com.ecgobike.helper.StaffHelper;
+import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.UserRole;
+import com.ecgobike.helper.ShopStaffHelper;
 import com.ecgobike.helper.UserHelper;
 import com.ecgobike.entity.User;
+import com.ecgobike.helper.UserRoleHelper;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -132,26 +133,24 @@ public class AuthInterceptor extends BaseInterceptor {
             return false;
         }
 
-        if (auth == Auth.USER) {
-            // 检测用户是否存在
-            User user = UserHelper.findUserByUid(uid);
-            if (user == null) {
-                sendErrorMsgByCode(response, ErrorConstants.USER_NOT_FOUND);
-                return false;
-            }
-            return true;
-        } else if (auth == Auth.STAFF || auth == Auth.ADMIN) {
-            // check if staff exist
-            Staff staff = StaffHelper.findStaffByUid(uid);
-            if (staff == null) {
+        // 检测用户是否存在
+        User user = UserHelper.findUserByUid(uid);
+        if (user == null) {
+            sendErrorMsgByCode(response, ErrorConstants.USER_NOT_FOUND);
+            return false;
+        }
+        if (auth == Auth.STAFF) {
+            ShopStaff shopStaff = ShopStaffHelper.findByUid(uid);
+            if (shopStaff == null) {
                 sendErrorMsgByCode(response, ErrorConstants.NOT_EXIST_STAFF);
                 return false;
             }
-            if (auth == Auth.ADMIN && staff.getRole() != StaffRole.OPERATE) {
-                sendErrorMsgByCode(response, ErrorConstants.AUTHENTICATION_FAIL);
+        } else if (auth == Auth.ADMIN) {
+            UserRole admin = UserRoleHelper.findByUidAndRole(uid, StaffRole.OPERATE);
+            if (admin == null) {
+                sendErrorMsgByCode(response, ErrorConstants.NOT_ADMIN);
                 return false;
             }
-            return true;
         }
         return defaultAuth;
     }

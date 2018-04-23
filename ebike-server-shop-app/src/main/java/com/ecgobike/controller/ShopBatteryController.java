@@ -34,7 +34,7 @@ public class ShopBatteryController {
     BatteryService batteryService;
 
     @Autowired
-    StaffService staffService;
+    ShopStaffService shopStaffService;
 
     @Autowired
     LendBatteryService lendBatteryService;
@@ -60,9 +60,11 @@ public class ShopBatteryController {
     @RequestMapping("/return")
     @AuthRequire(Auth.STAFF)
     public AppResponse returnBattery(ReturnBatteryParams params) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
-        batteryService.returnBattery(staff, params.getBatterySn());
-        LendBattery lendBattery = lendBatteryService.returnBattery(staff, params.getBatterySn());
+        String uid = params.getUid();
+        String batterySn = params.getBatterySn();
+        ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
+        batteryService.returnBattery(staff.getShopId(), params.getBatterySn());
+        LendBattery lendBattery = lendBatteryService.returnBattery(staff, batterySn);
 
         Map<String, Object> data = new HashMap<>();
         data.put("lendBattery", lendBattery);
@@ -78,8 +80,8 @@ public class ShopBatteryController {
         }
 
         // check for battery
-        Staff staff = staffService.findOneByUid(params.getUid());
-        Battery battery = batteryService.canLend(params.getBatterySn(), staff);
+        Long shopId = shopStaffService.getShopIdByUid(params.getUid());
+        Battery battery = batteryService.canLend(params.getBatterySn(), shopId);
 
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, params.getUid());
         batteryService.lend(eBike, battery);
@@ -97,7 +99,6 @@ public class ShopBatteryController {
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
@@ -105,7 +106,8 @@ public class ShopBatteryController {
         if (product.getType() != ProductType.BATTERY) {
             throw new GException(ErrorConstants.NOT_BATTERY_PRODUCT);
         }
-        Page<Battery> stockList = batteryService.findProductStockInShop(product, staff.getShopId(), pageable);
+        Long shopId = shopStaffService.getShopIdByUid(params.getUid());
+        Page<Battery> stockList = batteryService.findProductStockInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", stockList);
         return AppResponse.responseSuccess(data);

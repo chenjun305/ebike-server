@@ -6,7 +6,7 @@ import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.PurchaseOrder;
-import com.ecgobike.entity.Staff;
+import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseTakeParams;
 import com.ecgobike.pojo.response.AppResponse;
@@ -33,7 +33,7 @@ public class ShopPurchaseController {
     PurchaseOrderService purchaseOrderService;
 
     @Autowired
-    StaffService staffService;
+    ShopStaffService shopStaffService;
 
     @Autowired
     LogisticsService logisticsService;
@@ -50,8 +50,8 @@ public class ShopPurchaseController {
             AuthParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ){
-        Staff staff = staffService.findOneByUid(params.getUid());
-        Page<PurchaseOrder> list = purchaseOrderService.findAllByShopId(staff.getShopId(), pageable);
+        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
+        Page<PurchaseOrder> list = purchaseOrderService.findAllByShopId(shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
         return AppResponse.responseSuccess(data);
@@ -60,7 +60,7 @@ public class ShopPurchaseController {
     @RequestMapping("/take")
     @AuthRequire(Auth.STAFF)
     public AppResponse take(PurchaseTakeParams params) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
+        ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
         PurchaseOrder purchaseOrder = purchaseOrderService.takeOver(params.getPurchaseSn(), staff);
         List<Logistics> list = logisticsService.shopIn(purchaseOrder);
         // if type is battery, insert into battery table

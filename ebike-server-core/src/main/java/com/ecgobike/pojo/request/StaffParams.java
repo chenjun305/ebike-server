@@ -16,10 +16,15 @@ public class StaffParams extends AuthParams {
 
     @NotNull
     private String realName;
+    @NotNull
     private Byte gender;
+    @NotNull
     private String idCardNum;
+
     private Long shopId;
-    private int role;
+    private StaffRole role;
     private String staffNum;
+
+    @NotNull
     private String address;
 }

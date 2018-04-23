@@ -1,5 +1,6 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.enums.StaffRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -7,25 +8,21 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Created by ChenJun on 2018/4/20.
+ */
 @Entity
-@Table(name = "shop")
+@Table(name = "user_role")
 @Data
-public class Shop implements Serializable {
+public class UserRole implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String uid;
+    private StaffRole role;
+    private Integer status;
 
-    private String name;
-    private String tel;
-    private String address;
-    private String openTime;
-    private String description;
-    private String latitude;
-    private String longitude;
-    private String geohash;
-    private Integer batteryAvailable;
-    private Byte status;
-
+    @JsonIgnore
     private LocalDateTime createTime;
     @JsonIgnore
     private LocalDateTime updateTime;

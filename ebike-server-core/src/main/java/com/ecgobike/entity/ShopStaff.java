@@ -1,6 +1,5 @@
 package com.ecgobike.entity;
 
-import com.ecgobike.common.enums.StaffRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -9,35 +8,26 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Created by ChenJun on 2018/3/19.
+ * Created by ChenJun on 2018/4/20.
  */
+
+
 @Entity
-@Table(name = "staff")
+@Table(name = "shop_staff")
 @Data
-public class Staff implements Serializable {
+public class ShopStaff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String uid;
-    private String tel;
-    private String avatar;
-
-    private String realName;
-    private Byte gender;
-    private String idCardNum;
-    private String idCardPics;
-
     private Long shopId;
-    private StaffRole role;
     private String staffNum;
-
-    private String address;
-
-    private Byte status;
+    private Integer status;
 
     @JsonIgnore
     private LocalDateTime createTime;
     @JsonIgnore
     private LocalDateTime updateTime;
+
 
 }

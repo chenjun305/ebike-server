@@ -7,7 +7,7 @@ import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
-import com.ecgobike.entity.Staff;
+import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseParams;
 import com.ecgobike.pojo.response.BatteryProductVO;
@@ -34,7 +34,7 @@ public class ShopProductController {
     ProductService productService;
 
     @Autowired
-    StaffService staffService;
+    ShopStaffService shopStaffService;
 
     @Autowired
     PurchaseOrderService purchaseOrderService;
@@ -51,8 +51,7 @@ public class ShopProductController {
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
     public AppResponse list(AuthParams params){
-        Staff staff = staffService.findOneByUid(params.getUid());
-        long shopId = staff.getShopId();
+        long shopId = shopStaffService.getShopIdByUid(params.getUid());
         Map<String, Object> data = new HashMap<>();
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         List<BatteryProductVO> batteryProducts = new ArrayList<>();
@@ -91,7 +90,7 @@ public class ShopProductController {
     @RequestMapping("/purchase")
     @AuthRequire(Auth.STAFF)
     public AppResponse purchase(PurchaseParams params) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
+        ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);

@@ -6,19 +6,24 @@ import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.Shop;
+import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.User;
+import com.ecgobike.entity.UserRole;
 import com.ecgobike.pojo.request.StaffParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.ShopService;
-import com.ecgobike.service.StaffService;
+import com.ecgobike.service.ShopStaffService;
+import com.ecgobike.service.UserRoleService;
+import com.ecgobike.service.UserService;
 import com.ecgobike.service.sms.SmsService;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.util.AuthUtil;
-import com.ecgobike.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,15 +37,25 @@ public class ShopStaffController {
     SmsService smsService;
 
     @Autowired
-    StaffService staffService;
+    UserService userService;
+
+    @Autowired
+    UserRoleService userRoleService;
+
+    @Autowired
+    ShopStaffService shopStaffService;
 
     @Autowired
     ShopService shopService;
 
     @PostMapping("/pin")
     public AppResponse pin(String tel) throws GException {
-        Staff staff = staffService.findOneByTel(tel);
-        if (staff == null) {
+        User user = userService.getUserByTel(tel);
+        if (user == null) {
+            throw new GException(ErrorConstants.USER_NOT_FOUND);
+        }
+        ShopStaff shopStaff = shopStaffService.findOneByUid(user.getUid());
+        if (shopStaff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
         boolean result = smsService.sendPin(tel);
@@ -53,8 +68,12 @@ public class ShopStaffController {
 
     @PostMapping("/login")
     public AppResponse login(String tel, String pin) throws GException {
-        Staff staff = staffService.findOneByTel(tel);
-        if (staff == null) {
+        User user = userService.getUserByTel(tel);
+        if (user == null) {
+            throw new GException(ErrorConstants.USER_NOT_FOUND);
+        }
+        ShopStaff shopStaff = shopStaffService.findOneByUid(user.getUid());
+        if (shopStaff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
 
@@ -62,12 +81,12 @@ public class ShopStaffController {
             throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
 
-        String uid = staff.getUid();
+        String uid = user.getUid();
         String signMat = AuthUtil.buildSignMaterial(uid);
         String token = AuthUtil.buildToken(uid, signMat);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("staff", staff);
+        data.put("staff", user);
 
         data.put("uid", uid);
         data.put("signMat",signMat);
@@ -78,35 +97,28 @@ public class ShopStaffController {
     @PostMapping("/create")
     @AuthRequire(Auth.STAFF)
     public AppResponse create(StaffParams params) throws GException {
-        Staff me = staffService.findOneByUid(params.getUid());
-        if (me.getRole() != StaffRole.SHOP_OWNER && me.getRole() != StaffRole.OPERATE) {
+        UserRole shopOwner = userRoleService.findOneByUidAndRole(params.getUid(), StaffRole.SHOP_OWNER);
+        if (shopOwner == null) {
             throw new GException(ErrorConstants.NOT_SHOP_OWNER);
         }
-
-        Staff staff = staffService.findOneByTel(params.getTel());
-        if (staff != null) {
+        User user = userService.getOrCreate(params.getTel());
+        ShopStaff shopStaff = shopStaffService.findOneByUid(user.getUid());
+        if (shopStaff != null) {
             throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
         }
-        Long shopId = me.getShopId() == null ? params.getShopId() : me.getShopId();
-        Shop shop = shopService.getShopById(shopId);
-        if (shop == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_SHOP);
-        }
+        user.setIsReal((byte)1);
+        user.setRealName(params.getRealName());
+        user.setGender(params.getGender());
+        user.setIdCardNum(params.getIdCardNum());
+        user.setAddress(params.getAddress());
+        userService.update(user);
 
-        staff = new Staff();
-        staff.setUid(IdGen.uuid());
-        staff.setTel(params.getTel());
-        staff.setRealName(params.getRealName());
-        staff.setGender(params.getGender());
-        staff.setIdCardNum(params.getIdCardNum());
-        staff.setShopId(shopId);
-        staff.setRole(StaffRole.SHOP_STAFF);
-        staff.setStaffNum(params.getStaffNum());
-        staff.setAddress(params.getAddress());
-        staff.setStatus((byte)1);
-        Staff newStaff = staffService.create(staff);
+        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
+        shopStaffService.create(user.getUid(), shopId, params.getStaffNum());
+        userRoleService.create(user.getUid(), params.getRole());
+
         Map<String, Object> data = new HashMap<>();
-        data.put("staff", newStaff);
+        data.put("staff", user);
         return AppResponse.responseSuccess(data);
     }
 }

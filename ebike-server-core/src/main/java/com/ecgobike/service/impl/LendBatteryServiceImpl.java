@@ -6,7 +6,7 @@ import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.LendBattery;
-import com.ecgobike.entity.Staff;
+import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.repository.LendBatteryRepository;
 import com.ecgobike.service.LendBatteryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class LendBatteryServiceImpl implements LendBatteryService {
     }
 
     @Override
-    public LendBattery returnBattery(Staff staff, String batterySn) throws GException {
+    public LendBattery returnBattery(ShopStaff staff, String batterySn) throws GException {
         LendBattery lendBattery = lendBatteryRepository.findOneByBatterySnAndStatus(batterySn, (byte)0);;
         if (lendBattery == null) {
             throw new GException(ErrorConstants.NOT_LEND_BATTERY);

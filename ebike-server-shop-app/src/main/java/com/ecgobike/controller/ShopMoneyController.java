@@ -4,12 +4,12 @@ import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.PaymentOrder;
-import com.ecgobike.entity.Staff;
+import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.request.TopupParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.PaymentOrderService;
-import com.ecgobike.service.StaffService;
+import com.ecgobike.service.ShopStaffService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.User;
@@ -32,7 +32,7 @@ public class ShopMoneyController {
     UserService userService;
 
     @Autowired
-    StaffService staffService;
+    ShopStaffService shopStaffService;
 
     @Autowired
     PaymentOrderService paymentOrderService;
@@ -45,7 +45,7 @@ public class ShopMoneyController {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
         }
 
-        Staff staff = staffService.findOneByUid(params.getUid());
+        ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
 
         String currency = params.getCurrency() == null ? "USD" : params.getCurrency();
         Money money = new Money(params.getAmount(), currency);

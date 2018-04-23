@@ -7,7 +7,6 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
-import com.ecgobike.entity.Staff;
 import com.ecgobike.repository.LogisticsRepository;
 import com.ecgobike.service.LogisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,13 +131,13 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
-    public Logistics sell(String sn, Staff staff) throws GException {
+    public Logistics sell(String sn, long staffShopId) throws GException {
         Logistics logistics = logisticsRepository.findOneBySn(sn);
         if (logistics == null || logistics.getProduct().getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
         }
         if (logistics.getStatus() != LogisticsStatus.SHOP
-                || logistics.getShopId() != staff.getShopId()) {
+                || logistics.getShopId() != staffShopId) {
             throw new GException(ErrorConstants.NOT_YOUR_SHOP_EBIKE);
         }
         logistics.setShopOutTime(LocalDateTime.now());

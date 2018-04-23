@@ -4,11 +4,10 @@ import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.entity.PaymentOrder;
-import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.PaymentOrderService;
-import com.ecgobike.service.StaffService;
+import com.ecgobike.service.ShopStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +30,7 @@ import java.util.Map;
 public class ShopFinanceController {
 
     @Autowired
-    StaffService staffService;
+    ShopStaffService shopStaffService;
 
     @Autowired
     PaymentOrderService paymentOrderService;
@@ -39,8 +38,8 @@ public class ShopFinanceController {
     @RequestMapping("/today")
     @AuthRequire(Auth.STAFF)
     public AppResponse today(AuthParams params) {
-        Staff staff = staffService.findOneByUid(params.getUid());
-        List<Map<OrderType, BigDecimal>> finance = paymentOrderService.sumDailyShopIncomeGroupByType(staff.getShopId(), LocalDate.now());
+        Long shopId = shopStaffService.getShopIdByUid(params.getUid());
+        List<Map<OrderType, BigDecimal>> finance = paymentOrderService.sumDailyShopIncomeGroupByType(shopId, LocalDate.now());
         Map<String, Object> data = new HashMap<>();
         data.put("financeToday", finance);
         return AppResponse.responseSuccess(data);
@@ -51,8 +50,8 @@ public class ShopFinanceController {
     public AppResponse history(AuthParams params,
                                @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Staff staff = staffService.findOneByUid(params.getUid());
-        Page<PaymentOrder> history = paymentOrderService.findAllInShop(staff.getShopId(), pageable);
+        Long shopId = shopStaffService.getShopIdByUid(params.getUid());
+        Page<PaymentOrder> history = paymentOrderService.findAllInShop(shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("history", history);
         return AppResponse.responseSuccess(data);

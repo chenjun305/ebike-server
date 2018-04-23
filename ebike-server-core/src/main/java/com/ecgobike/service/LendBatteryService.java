@@ -4,7 +4,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Battery;
 import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.LendBattery;
-import com.ecgobike.entity.Staff;
+import com.ecgobike.entity.ShopStaff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,6 +13,6 @@ import org.springframework.data.domain.Pageable;
  */
 public interface LendBatteryService {
     LendBattery lend(EBike eBike, Battery battery, String lendStaffUid);
-    LendBattery returnBattery(Staff staff, String batterySn) throws GException;
+    LendBattery returnBattery(ShopStaff staff, String batterySn) throws GException;
     Page<LendBattery> findAllLendHistory(Pageable pageable);
 }

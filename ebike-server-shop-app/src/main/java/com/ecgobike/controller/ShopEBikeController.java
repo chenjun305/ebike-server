@@ -39,7 +39,7 @@ public class ShopEBikeController {
     UserService userService;
 
     @Autowired
-    StaffService staffService;
+    ShopStaffService shopStaffService;
 
     @Autowired
     PaymentOrderService paymentOrderService;
@@ -75,9 +75,8 @@ public class ShopEBikeController {
             @RequestParam(value = "idCardFile3") MultipartFile file3,
             SellBikeParams params
     ) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
-
-        Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff);
+        ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
+        Logistics logistics = logisticsService.sell(params.getEbikeSn(), shopStaff.getShopId());
 
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
         if (eBike != null && eBike.getUid() != null) {
@@ -105,7 +104,7 @@ public class ShopEBikeController {
         user = userService.update(user);
 
         eBike = eBikeService.sell(user, params.getEbikeSn(), logistics.getProduct());
-        PaymentOrder paymentOrder = paymentOrderService.createSellOrder(staff, user, eBike);
+        PaymentOrder paymentOrder = paymentOrderService.createSellOrder(shopStaff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
         data.put("paymentOrder", paymentOrder);
@@ -115,9 +114,9 @@ public class ShopEBikeController {
     @PostMapping("/join")
     @AuthRequire(Auth.STAFF)
     public AppResponse join(JoinParams params) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
+        ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
-        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, shopStaff, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
@@ -128,9 +127,9 @@ public class ShopEBikeController {
     @PostMapping("/renew")
     @AuthRequire(Auth.STAFF)
     public AppResponse renew(RenewParams params) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
+        ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
-        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, shopStaff, params.getMonthNum());
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
@@ -144,7 +143,6 @@ public class ShopEBikeController {
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
@@ -152,7 +150,8 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, staff.getShopId(), pageable);
+        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
+        Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("sellList", sellList);
         return AppResponse.responseSuccess(data);
@@ -164,7 +163,6 @@ public class ShopEBikeController {
             ProductParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) throws GException {
-        Staff staff = staffService.findOneByUid(params.getUid());
         Product product = productService.getOne(params.getProductId());
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
@@ -172,7 +170,8 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Page<Logistics> stockList = logisticsService.findProductStockInShop(product, staff.getShopId(), pageable);
+        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
+        Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", stockList);
         return AppResponse.responseSuccess(data);

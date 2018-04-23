@@ -22,19 +22,27 @@ CREATE TABLE `user` (
 
 CREATE TABLE `user_role` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
-  `uid` varchar(32) NOT NULL COMMENT 'ID',
-  `tel` varchar(12) NOT NULL COMMENT '手机号',
-  `role` tinyint(2) NOT NULL COMMENT '用户角色: 0未知 1店长 2店员 3运营管理',
-  `staff_num` VARCHAR(32) COMMENT '员工编号',
-  `shop_id` int(11) unsigned COMMENT '所属商店ID',
-  `status` tinyint(1) DEFAULT '1' COMMENT '用户状态:0禁用 1正常',
+  `uid` varchar(32) NOT NULL COMMENT 'UID',
+  `role` TINYINT UNSIGNED NOT NULL COMMENT '用户角色: 0未知 1店长 2店员 3运营管理',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态: 0禁用 1正常',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `tel_idx` (`tel`),
-  KEY `uid_idx` (`uid`),
-  KEY `shop_idx` (`shop_id`)
+  UNIQUE KEY `uid_role_idx` (`uid`, `role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';
+
+CREATE TABLE `shop_staff` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
+  `uid` varchar(32) NOT NULL COMMENT 'UID',
+  `shop_id` int(11) unsigned NOT NULL COMMENT '所属商店ID',
+  `staff_num` VARCHAR(32) COMMENT '员工编号',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态:0禁用 1正常',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uid_idx` (`uid`),
+  KEY `shop_idx` (`shop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店员表';
 
 CREATE TABLE `shop` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
