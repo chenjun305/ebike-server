@@ -1,5 +1,7 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -20,7 +22,9 @@ public class LendBattery {
     private String sn;
     private String batterySn;
     private String ebikeSn;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime lendTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime returnTime;
     private String uid;
     private String lendStaffUid;
@@ -29,8 +33,8 @@ public class LendBattery {
     private Long returnShopId;
     private Byte status;
 
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

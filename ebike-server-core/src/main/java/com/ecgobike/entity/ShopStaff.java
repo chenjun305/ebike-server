@@ -1,5 +1,7 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -24,9 +26,9 @@ public class ShopStaff implements Serializable {
     private String staffNum;
     private Integer status;
 
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 
 

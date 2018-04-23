@@ -1,5 +1,7 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -26,7 +28,8 @@ public class Shop implements Serializable {
     private Integer batteryAvailable;
     private Byte status;
 
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

@@ -1,6 +1,8 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.LogisticsStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
@@ -23,16 +25,20 @@ public class Logistics {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime storageInTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime storageOutTime;
     private String purchaseSn;
     private Long shopId;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime shopInTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime shopOutTime;
     private LogisticsStatus status;
 
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

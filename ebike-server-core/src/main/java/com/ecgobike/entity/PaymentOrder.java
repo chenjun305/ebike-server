@@ -1,5 +1,7 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -33,6 +35,8 @@ public class PaymentOrder implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer status;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

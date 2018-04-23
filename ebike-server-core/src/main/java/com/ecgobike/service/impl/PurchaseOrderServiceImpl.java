@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by ChenJun on 2018/4/4.
@@ -35,7 +34,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         purchaseOrder.setRequireNum(requireNum);
         purchaseOrder.setStaffUid(staff.getUid());
         purchaseOrder.setShopId(staff.getShopId());
-        purchaseOrder.setPurchaseTime(new Date());
+        purchaseOrder.setPurchaseTime(LocalDateTime.now());
         purchaseOrder.setStatus(PurchaseOrderStatus.REQUIRE);
         purchaseOrder.setCreateTime(LocalDateTime.now());
         purchaseOrder.setUpdateTime(LocalDateTime.now());
@@ -74,7 +73,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         }
         purchaseOrder.setPermitNum(permitNum);
         purchaseOrder.setPermitUid(permitUid);
-        purchaseOrder.setPermitTime(new Date());
+        purchaseOrder.setPermitTime(LocalDateTime.now());
         purchaseOrder.setStatus(PurchaseOrderStatus.PERMIT);
         purchaseOrder.setUpdateTime(LocalDateTime.now());
         return purchaseOrderRepository.save(purchaseOrder);
@@ -83,7 +82,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Override
     public PurchaseOrder departure(PurchaseOrder purchaseOrder, String departureUid) {
         purchaseOrder.setDepartureUid(departureUid);
-        purchaseOrder.setDepartureTime(new Date());
+        purchaseOrder.setDepartureTime(LocalDateTime.now());
         purchaseOrder.setStatus(PurchaseOrderStatus.TRANSIT);
         purchaseOrder.setUpdateTime(LocalDateTime.now());
         return purchaseOrderRepository.save(purchaseOrder);
@@ -99,7 +98,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             throw new GException(ErrorConstants.NOT_YOUR_SHOP_PURCHASE);
         }
         purchaseOrder.setTakeOverUid(staff.getUid());
-        purchaseOrder.setTakeOverTime(new Date());
+        purchaseOrder.setTakeOverTime(LocalDateTime.now());
         purchaseOrder.setStatus(PurchaseOrderStatus.TAKE_OVER);
         purchaseOrder.setUpdateTime(LocalDateTime.now());
         return purchaseOrderRepository.save(purchaseOrder);

@@ -1,7 +1,8 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.StaffRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,8 +23,8 @@ public class UserRole implements Serializable {
     private StaffRole role;
     private Integer status;
 
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

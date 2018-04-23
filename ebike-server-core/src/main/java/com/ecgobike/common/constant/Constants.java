@@ -23,6 +23,10 @@ public interface Constants {
     String CURRENCY = "USD";
     String CURRENCY_SYMBOL = "$";
 
+    // DateTime Json Format
+    String JSON_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    String JSON_FORAMT_TIMEZONE = "GMT+8";
+
     // Tencent COS File storage
     String COS_APP_ID = "1251198400";
     String COS_SECRET_ID = "AKID8EE3jE50KUhjkatmwdVJ1YJJEzeAYlq7";

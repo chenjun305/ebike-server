@@ -1,6 +1,8 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.PurchaseOrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -36,15 +38,21 @@ public class PurchaseOrder implements Serializable {
     private String departureUid;
     private String takeOverUid;
 
-    private Date purchaseTime;
-    private Date permitTime;
-    private Date departureTime;
-    private Date takeOverTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    private LocalDateTime purchaseTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    private LocalDateTime permitTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    private LocalDateTime departureTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    private LocalDateTime takeOverTime;
 
     private PurchaseOrderStatus status;
 
-    @JsonIgnore
+    // @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonIgnore
+    // @JsonIgnore
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }
