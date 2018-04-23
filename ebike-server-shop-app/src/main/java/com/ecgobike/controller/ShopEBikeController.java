@@ -5,6 +5,7 @@ import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.*;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
+import com.ecgobike.helper.FileUrlHelper;
 import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.*;
@@ -182,7 +183,7 @@ public class ShopEBikeController {
     public AppResponse customer(CustomerParams params) {
         User customer = userService.getUserByUid(params.getCustomerUid());
         Map<String, Object> data = new HashMap<>();
-        data.put("customer", customer);
+        data.put("customer", FileUrlHelper.dealUser(customer));
         return AppResponse.responseSuccess(data);
     }
 
