@@ -115,7 +115,7 @@ public class ShopStaffController {
 
         Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
         shopStaffService.create(user.getUid(), shopId, params.getStaffNum());
-        userRoleService.create(user.getUid(), params.getRole());
+        userRoleService.create(user.getUid(), StaffRole.getRole(params.getRole()));
 
         Map<String, Object> data = new HashMap<>();
         data.put("staff", user);

@@ -22,7 +22,10 @@ public class StaffParams extends AuthParams {
     private String idCardNum;
 
     private Long shopId;
-    private StaffRole role;
+
+    @Range(Min = 1, Max = 3)
+    private Integer role;
+
     private String staffNum;
 
     @NotNull

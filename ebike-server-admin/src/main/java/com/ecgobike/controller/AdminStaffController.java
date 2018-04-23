@@ -116,26 +116,37 @@ public class AdminStaffController {
     @PostMapping("/create")
     @AuthRequire(Auth.ADMIN)
     public AppResponse create(StaffParams params) throws GException {
-        Shop shop = shopService.getShopById(params.getShopId());
-        if (shop == null) {
-            throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+        Long shopId = params.getShopId();
+        if (shopId != null && shopId > 0) {
+            Shop shop = shopService.getShopById(params.getShopId());
+            if (shop == null) {
+                throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+            }
+        } else {
+            if (params.getRole() == StaffRole.SHOP_OWNER.get() || params.getRole() == StaffRole.SHOP_STAFF.get()) {
+                throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+            }
         }
+
         User user = userService.getOrCreate(params.getTel());
         String uid = user.getUid();
-        UserRole userRole = userRoleService.findOneByUidAndRole(uid, params.getRole());
+        UserRole userRole = userRoleService.findOneByUidAndRole(uid, StaffRole.getRole(params.getRole()));
         if (userRole != null) {
             throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
         }
+
         user.setIsReal((byte)1);
+        user.setGender(params.getGender());
         user.setRealName(params.getRealName());
         user.setIdCardNum(params.getIdCardNum());
         user.setAddress(params.getAddress());
         user.setUpdateTime(LocalDateTime.now());
         userService.update(user);
 
-        userRoleService.create(uid, params.getRole());
-
-        shopStaffService.create(uid, params.getShopId(), params.getStaffNum());
+        userRoleService.create(uid, StaffRole.getRole(params.getRole()));
+        if (params.getRole() == StaffRole.SHOP_STAFF.get() || params.getRole() == StaffRole.SHOP_OWNER.get()) {
+            shopStaffService.create(uid, params.getShopId(), params.getStaffNum());
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("staff", user);
