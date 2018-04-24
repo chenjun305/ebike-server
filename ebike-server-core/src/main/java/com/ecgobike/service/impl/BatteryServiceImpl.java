@@ -1,5 +1,6 @@
 package com.ecgobike.service.impl;
 
+import com.ecgobike.common.enums.BatteryStatus;
 import com.ecgobike.entity.*;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.common.constant.ErrorConstants;
@@ -60,7 +61,7 @@ public class BatteryServiceImpl implements BatteryService {
             battery.setProduct(logistics.getProduct());
             battery.setShopId(logistics.getShopId());
             battery.setBattery(100);
-            battery.setStatus((byte)1);
+            battery.setStatus(BatteryStatus.IN_SHOP);
             battery.setCreateTime(LocalDateTime.now());
             battery.setUpdateTime(LocalDateTime.now());
             list.add(battery);
@@ -87,6 +88,7 @@ public class BatteryServiceImpl implements BatteryService {
     public Battery lend(EBike eBike, Battery battery) {
         battery.setShopId(null);
         battery.setEbikeSn(eBike.getSn());
+        battery.setStatus(BatteryStatus.LEND_OUT);
         battery.setUpdateTime(LocalDateTime.now());
         return batteryRepository.save(battery);
     }
@@ -102,6 +104,7 @@ public class BatteryServiceImpl implements BatteryService {
         }
         battery.setEbikeSn(null);
         battery.setShopId(staffShopId);
+        battery.setStatus(BatteryStatus.IN_SHOP);
         battery.setUpdateTime(LocalDateTime.now());
         return batteryRepository.save(battery);
     }

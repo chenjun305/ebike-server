@@ -1,6 +1,7 @@
 package com.ecgobike.entity;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.enums.BatteryStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class Battery {
     private Long shopId;
     private String ebikeSn;
     private Integer battery;
-    private Byte status;
+    private BatteryStatus status;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
