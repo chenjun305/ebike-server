@@ -88,7 +88,7 @@ CREATE TABLE `logistics` (
   `shop_id` int(11) unsigned COMMENT '商店ID',
   `shop_in_time` datetime COMMENT '入店时间',
   `shop_out_time` datetime COMMENT '卖出时间',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态: 0无效 1仓库 2在店 3销售完成',
+  `status` tinyint(1) DEFAULT '1' COMMENT '0 unknown 1 in_storage 2 in_transit 3 in_shop 4 sell_out',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
