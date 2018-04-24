@@ -66,7 +66,7 @@ public class ShopProductController {
                 eBikeProductVO.setPrice(product.getPrice());
                 eBikeProductVO.setCurrency(product.getCurrency());
                 eBikeProductVO.setDesc(product.getDesc());
-                long sellNum = paymentOrderService.countProductSellOrdersInShop(product, shopId);
+                long sellNum = paymentOrderService.countProductSellOrdersInShop(product.getId(), shopId);
                 long stockNum = logisticsService.countProductStockInShop(product, shopId);
                 eBikeProductVO.setSellNum(sellNum);
                 eBikeProductVO.setStockNum(stockNum);

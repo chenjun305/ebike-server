@@ -136,12 +136,24 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
-    public long countProductSellOrdersInShop(Product product, Long shopId) {
-        PaymentOrder paymentOrder = new PaymentOrder();
-        paymentOrder.setProductId(product.getId());
-        paymentOrder.setType(OrderType.SELL_EBIKE.get());
-        paymentOrder.setShopId(shopId);
+    public long countProductSellOrdersInShop(Long productId, Long shopId) {
+        return countSellOrdersBy(productId, shopId);
+    }
 
+    @Override
+    public long countProductSellOrders(Long productId) {
+        return countSellOrdersBy(productId, null);
+    }
+
+    protected long countSellOrdersBy(Long productId, Long shopId) {
+        PaymentOrder paymentOrder = new PaymentOrder();
+        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        if (productId != null) {
+            paymentOrder.setProductId(productId);
+        }
+        if (shopId != null) {
+            paymentOrder.setShopId(shopId);
+        }
         Example<PaymentOrder> example = Example.of(paymentOrder);
 
         return paymentOrderRepository.count(example);

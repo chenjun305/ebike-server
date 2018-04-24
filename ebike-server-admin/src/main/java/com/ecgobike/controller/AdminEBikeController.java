@@ -63,8 +63,12 @@ public class AdminEBikeController {
             eBikeProductVO.setModel(product.getModel());
             eBikeProductVO.setColor(product.getColor());
             eBikeProductVO.setIconUrl(product.getIconUrl());
-            eBikeProductVO.setSellNum(25);
-            eBikeProductVO.setStockNum(88);
+            eBikeProductVO.setPrice(product.getPrice());
+            eBikeProductVO.setCurrency(product.getCurrency());
+            long sellNum = paymentOrderService.countProductSellOrders(product.getId());
+            eBikeProductVO.setSellNum(sellNum);
+            long stockNum = logisticsService.countProductStock(product);
+            eBikeProductVO.setStockNum(stockNum);
             ebikeProducts.add(eBikeProductVO);
         }
         Map<String, Object> data = new HashMap<>();

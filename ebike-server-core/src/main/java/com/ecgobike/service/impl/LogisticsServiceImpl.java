@@ -79,6 +79,15 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
+    public long countProductStock(Product product) {
+        Logistics logistics = new Logistics();
+        logistics.setProduct(product);
+        logistics.setStatus(LogisticsStatus.STORAGE);
+        Example<Logistics> example = Example.of(logistics);
+        return logisticsRepository.count(example);
+    }
+
+    @Override
     public List<Logistics> in(Product product, List<String> snList) throws GException {
         List<Logistics> checkList = logisticsRepository.findAllBySnIn(snList);
         if (checkList != null && checkList.size() > 0) {
