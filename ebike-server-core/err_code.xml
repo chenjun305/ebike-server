@@ -75,7 +75,7 @@
 
 
 
-	<err id="600" description="Order Paid Repeated！" name="ORDER_PAID_REPEATED"/>
+	<err id="600" description="SN Num Lower Than Purchase！" name="SN_NUM_LOWER_THAN_PURCHASE"/>
 	<err id="601" description="Not Exist Purchase Order！" name="NOT_EXIST_PURCHASE_ORDER"/>
 	<err id="602" description="Not Permit Purchase Order！" name="NOT_PERMIT_PURCHASE_ORDER"/>
 	<err id="603" description="Not Your Shop Purchase Order！" name="NOT_YOUR_SHOP_PURCHASE"/>

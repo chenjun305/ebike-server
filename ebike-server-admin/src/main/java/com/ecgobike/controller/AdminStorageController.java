@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ChenJun on 2018/4/8.
@@ -54,7 +52,17 @@ public class AdminStorageController {
         if (purchaseOrder.getStatus() != PurchaseOrderStatus.PERMIT) {
             throw new GException(ErrorConstants.NOT_PERMIT_PURCHASE_ORDER);
         }
-        List<Logistics> list = logisticsService.out(purchaseOrder, params.getSnList());
+
+        // check if has duplicate sn
+        List<String> snList = params.getSnList();
+        Set<String> set = new HashSet<>(snList);
+        if (set.size() < snList.size()) {
+            throw new GException(ErrorConstants.ERR_DUPPLICATE_SN);
+        }
+        if (snList.size() < purchaseOrder.getPermitNum()) {
+            throw new GException(ErrorConstants.SN_NUM_LOWER_THAN_PURCHASE);
+        }
+        List<Logistics> list = logisticsService.out(purchaseOrder, snList);
         purchaseOrderService.departure(purchaseOrder, params.getUid());
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
