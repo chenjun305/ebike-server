@@ -8,8 +8,10 @@ import com.ecgobike.entity.*;
 import com.ecgobike.helper.FileUrlHelper;
 import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.EBikeInfoVO;
 import com.ecgobike.service.*;
 import com.google.common.base.Strings;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +56,9 @@ public class ShopEBikeController {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    Mapper mapper;
+
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
     public AppResponse info(String ebikeSn) throws GException {
@@ -62,9 +67,10 @@ public class ShopEBikeController {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
         EBike eBike = eBikeService.findOneBySn(ebikeSn);
+        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
         Map<String, Object> data = new HashMap<>();
         data.put("logistics", logistics);
-        data.put("ebike", eBike);
+        data.put("ebike", eBikeInfoVO);
         return AppResponse.responseSuccess(data);
     }
 

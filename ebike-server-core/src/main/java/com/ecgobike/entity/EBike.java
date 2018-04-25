@@ -3,6 +3,7 @@ package com.ecgobike.entity;
 import com.ecgobike.common.constant.Constants;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class EBike {
     private String sn;
 
     //@JsonIgnore
+    //@JsonSerialize
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
