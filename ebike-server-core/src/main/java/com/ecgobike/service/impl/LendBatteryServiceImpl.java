@@ -50,7 +50,7 @@ public class LendBatteryServiceImpl implements LendBatteryService {
             throw new GException(ErrorConstants.NOT_LEND_BATTERY);
         }
         lendBattery.setReturnTime(LocalDateTime.now());
-        lendBattery.setReturnShopId(staff.getShopId());
+        lendBattery.setReturnShopId(staff.getShop().getId());
         lendBattery.setReturnStaffUid(staff.getUid());
         lendBattery.setStatus((byte)1);
         lendBattery.setUpdateTime(LocalDateTime.now());

@@ -117,15 +117,16 @@ public class AdminStaffController {
     @AuthRequire(Auth.ADMIN)
     public AppResponse create(StaffParams params) throws GException {
         Long shopId = params.getShopId();
-        if (shopId != null && shopId > 0) {
-            Shop shop = shopService.getShopById(params.getShopId());
-            if (shop == null) {
+        if (params.getRole() == StaffRole.SHOP_OWNER.get() || params.getRole() == StaffRole.SHOP_STAFF.get()) {
+            if (shopId == null || shopId <= 0) {
                 throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+            } else {
+                Shop shop = shopService.getShopById(params.getShopId());
+                if (shop == null) {
+                    throw new GException(ErrorConstants.NOT_EXIST_SHOP);
+                }
             }
-        } else {
-            if (params.getRole() == StaffRole.SHOP_OWNER.get() || params.getRole() == StaffRole.SHOP_STAFF.get()) {
-                throw new GException(ErrorConstants.NOT_EXIST_SHOP);
-            }
+
         }
 
         User user = userService.getOrCreate(params.getTel());
@@ -145,7 +146,8 @@ public class AdminStaffController {
 
         userRoleService.create(uid, StaffRole.getRole(params.getRole()));
         if (params.getRole() == StaffRole.SHOP_STAFF.get() || params.getRole() == StaffRole.SHOP_OWNER.get()) {
-            shopStaffService.create(uid, params.getShopId(), params.getStaffNum());
+            Shop shop = shopService.getShopById(params.getShopId());
+            shopStaffService.create(uid, shop, params.getStaffNum());
         }
 
         Map<String, Object> data = new HashMap<>();

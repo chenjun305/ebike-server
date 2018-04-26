@@ -113,8 +113,8 @@ public class ShopStaffController {
         user.setAddress(params.getAddress());
         userService.update(user);
 
-        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
-        shopStaffService.create(user.getUid(), shopId, params.getStaffNum());
+        Shop shop = shopStaffService.findOneByUid(params.getUid()).getShop();
+        shopStaffService.create(user.getUid(), shop, params.getStaffNum());
         userRoleService.create(user.getUid(), StaffRole.getRole(params.getRole()));
 
         Map<String, Object> data = new HashMap<>();

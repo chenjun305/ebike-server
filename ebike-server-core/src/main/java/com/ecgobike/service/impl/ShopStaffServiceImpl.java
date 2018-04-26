@@ -1,5 +1,6 @@
 package com.ecgobike.service.impl;
 
+import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.repository.ShopStaffRepository;
 import com.ecgobike.service.ShopStaffService;
@@ -27,14 +28,14 @@ public class ShopStaffServiceImpl implements ShopStaffService {
     @Override
     public Long getShopIdByUid(String uid) {
         ShopStaff shopStaff = shopStaffRepository.findOneByUid(uid);
-        return shopStaff.getShopId();
+        return shopStaff.getShop().getId();
     }
 
     @Override
-    public ShopStaff create(String uid, Long shopId, String staffNum) {
+    public ShopStaff create(String uid, Shop shop, String staffNum) {
         ShopStaff shopStaff = new ShopStaff();
         shopStaff.setUid(uid);
-        shopStaff.setShopId(shopId);
+        shopStaff.setShop(shop);
         shopStaff.setStaffNum(staffNum);
         shopStaff.setStatus(1);
         shopStaff.setCreateTime(LocalDateTime.now());

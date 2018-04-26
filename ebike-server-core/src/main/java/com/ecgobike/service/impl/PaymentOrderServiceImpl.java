@@ -40,7 +40,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setCurrency(money.getCurrency());
         paymentOrder.setUid(user.getUid());
         paymentOrder.setStaffUid(shopStaff.getUid());
-        paymentOrder.setShopId(shopStaff.getShopId());
+        paymentOrder.setShopId(shopStaff.getShop().getId());
         paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());
@@ -71,7 +71,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setUid(eBike.getUid());
         if (type == OrderType.STAFF_JOIN_MEMBERSHIP || type == OrderType.STAFF_RENEW_MONTHLY) {
             paymentOrder.setStaffUid(shopStaff.getUid());
-            paymentOrder.setShopId(shopStaff.getShopId());
+            paymentOrder.setShopId(shopStaff.getShop().getId());
         }
         paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
@@ -91,7 +91,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setProductId(eBike.getProduct().getId());
         paymentOrder.setUid(user.getUid());
         paymentOrder.setStaffUid(shopStaff.getUid());
-        paymentOrder.setShopId(shopStaff.getShopId());
+        paymentOrder.setShopId(shopStaff.getShop().getId());
         paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());

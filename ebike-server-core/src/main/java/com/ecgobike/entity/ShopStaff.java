@@ -22,7 +22,12 @@ public class ShopStaff implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String uid;
-    private Long shopId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
     private String staffNum;
     private Integer status;
 

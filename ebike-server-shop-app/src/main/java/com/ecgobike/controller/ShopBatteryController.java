@@ -63,7 +63,7 @@ public class ShopBatteryController {
         String uid = params.getUid();
         String batterySn = params.getBatterySn();
         ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
-        batteryService.returnBattery(staff.getShopId(), params.getBatterySn());
+        batteryService.returnBattery(staff.getShop().getId(), params.getBatterySn());
         LendBattery lendBattery = lendBatteryService.returnBattery(staff, batterySn);
 
         Map<String, Object> data = new HashMap<>();

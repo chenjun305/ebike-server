@@ -6,6 +6,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.repository.PurchaseOrderRepository;
 import com.ecgobike.service.PurchaseOrderService;
@@ -33,7 +34,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         purchaseOrder.setProduct(product);
         purchaseOrder.setRequireNum(requireNum);
         purchaseOrder.setStaffUid(staff.getUid());
-        purchaseOrder.setShopId(staff.getShopId());
+        purchaseOrder.setShop(staff.getShop());
         purchaseOrder.setPurchaseTime(LocalDateTime.now());
         purchaseOrder.setStatus(PurchaseOrderStatus.REQUIRE);
         purchaseOrder.setCreateTime(LocalDateTime.now());
@@ -42,9 +43,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public Page<PurchaseOrder> findAllByShopId(Long shopId, Pageable pageable) {
+    public Page<PurchaseOrder> findAllByShop(Shop shop, Pageable pageable) {
         PurchaseOrder purchaseOrder = new PurchaseOrder();
-        purchaseOrder.setShopId(shopId);
+        purchaseOrder.setShop(shop);
         Example<PurchaseOrder> example = Example.of(purchaseOrder);
         return purchaseOrderRepository.findAll(example, pageable);
     }
@@ -94,7 +95,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         if (purchaseOrder == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PURCHASE_ORDER);
         }
-        if (staff.getShopId() != purchaseOrder.getShopId()) {
+        if (staff.getShop().getId() != purchaseOrder.getShop().getId()) {
             throw new GException(ErrorConstants.NOT_YOUR_SHOP_PURCHASE);
         }
         purchaseOrder.setTakeOverUid(staff.getUid());

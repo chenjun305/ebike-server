@@ -6,6 +6,7 @@ import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.ShopStaff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseTakeParams;
@@ -50,8 +51,8 @@ public class ShopPurchaseController {
             AuthParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ){
-        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
-        Page<PurchaseOrder> list = purchaseOrderService.findAllByShopId(shopId, pageable);
+        Shop shop = shopStaffService.findOneByUid(params.getUid()).getShop();
+        Page<PurchaseOrder> list = purchaseOrderService.findAllByShop(shop, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
         return AppResponse.responseSuccess(data);

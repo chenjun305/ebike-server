@@ -131,7 +131,7 @@ public class LogisticsServiceImpl implements LogisticsService {
     public List<Logistics> shopIn(PurchaseOrder purchaseOrder) {
         List<Logistics> list = logisticsRepository.findAllByPurchaseSn(purchaseOrder.getSn());
         for (Logistics logistics : list) {
-            logistics.setShopId(purchaseOrder.getShopId());
+            logistics.setShopId(purchaseOrder.getShop().getId());
             logistics.setShopInTime(LocalDateTime.now());
             logistics.setStatus(LogisticsStatus.SHOP);
             logistics.setUpdateTime(LocalDateTime.now());

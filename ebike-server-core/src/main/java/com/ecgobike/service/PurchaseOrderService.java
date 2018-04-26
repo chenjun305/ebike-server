@@ -3,6 +3,7 @@ package com.ecgobike.service;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.ShopStaff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ public interface PurchaseOrderService {
     PurchaseOrder permit(String sn, Integer permitNum, String permitUid) throws GException;
     PurchaseOrder departure(PurchaseOrder purchaseOrder, String departureUid);
     PurchaseOrder takeOver(String sn, ShopStaff staff) throws GException;
-    Page<PurchaseOrder> findAllByShopId(Long shopId, Pageable pageable);
+    Page<PurchaseOrder> findAllByShop(Shop shop, Pageable pageable);
     Page<PurchaseOrder> findAllRequire(Pageable pageable);
     Page<PurchaseOrder> findAllPermit(Pageable pageable);
 }

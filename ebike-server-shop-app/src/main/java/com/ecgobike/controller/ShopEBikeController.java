@@ -67,11 +67,13 @@ public class ShopEBikeController {
         if (logistics == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
-        EBike eBike = eBikeService.findOneBySn(ebikeSn);
-        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
         Map<String, Object> data = new HashMap<>();
         data.put("logistics", logistics);
-        data.put("ebike", eBikeInfoVO);
+        EBike eBike = eBikeService.findOneBySn(ebikeSn);
+        if (eBike != null) {
+            EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+            data.put("ebike", eBikeInfoVO);
+        }
         return AppResponse.responseSuccess(data);
     }
 
@@ -84,7 +86,7 @@ public class ShopEBikeController {
             SellBikeParams params
     ) throws GException {
         ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
-        Logistics logistics = logisticsService.sell(params.getEbikeSn(), shopStaff.getShopId());
+        Logistics logistics = logisticsService.sell(params.getEbikeSn(), shopStaff.getShop().getId());
 
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
         if (eBike != null && eBike.getUid() != null) {
@@ -158,7 +160,7 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
+        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShop().getId();
         Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("sellList", sellList);
@@ -178,7 +180,7 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShopId();
+        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShop().getId();
         Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", stockList);

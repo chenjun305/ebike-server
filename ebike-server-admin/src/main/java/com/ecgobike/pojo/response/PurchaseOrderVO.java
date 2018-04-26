@@ -1,41 +1,33 @@
-package com.ecgobike.entity;
+package com.ecgobike.pojo.response;
 
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.PurchaseOrderStatus;
+import com.ecgobike.entity.Product;
+import com.ecgobike.entity.Shop;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
- * Created by ChenJun on 2018/4/4.
+ * Created by ChenJun on 2018/4/26.
  */
-@Entity
-@Table(name = "purchase_order")
 @Data
-public class PurchaseOrder implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PurchaseOrderVO {
     private Long id;
 
     private String sn;
 
-    //@JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
     private Product product;
 
     private Integer requireNum;
     private Integer permitNum;
     private String staffUid;
 
-    //@JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     private String permitUid;
@@ -53,7 +45,6 @@ public class PurchaseOrder implements Serializable {
 
     private PurchaseOrderStatus status;
 
-    // @JsonIgnore
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
     // @JsonIgnore
