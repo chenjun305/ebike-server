@@ -15,7 +15,7 @@ import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.util.AES256;
 import com.ecgobike.common.util.DateUtils;
 import com.ecgobike.common.util.Utils;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.entity.UserRole;
 import com.ecgobike.helper.ShopStaffHelper;
 import com.ecgobike.helper.UserHelper;
@@ -140,8 +140,8 @@ public class AuthInterceptor extends BaseInterceptor {
             return false;
         }
         if (auth == Auth.STAFF) {
-            ShopStaff shopStaff = ShopStaffHelper.findByUid(uid);
-            if (shopStaff == null) {
+            Staff staff = ShopStaffHelper.findByUid(uid);
+            if (staff == null) {
                 sendErrorMsgByCode(response, ErrorConstants.NOT_EXIST_STAFF);
                 return false;
             }

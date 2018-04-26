@@ -6,19 +6,21 @@ import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.AuthUtil;
-import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.Shop;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.entity.User;
 import com.ecgobike.entity.UserRole;
 import com.ecgobike.pojo.request.StaffParams;
+import com.ecgobike.pojo.response.StaffInfoVO;
 import com.ecgobike.service.ShopService;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.ShopStaffService;
 import com.ecgobike.service.UserRoleService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.service.sms.SmsService;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,11 +29,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.jws.soap.SOAPBinding;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by ChenJun on 2018/3/21.
@@ -54,6 +58,9 @@ public class AdminStaffController {
 
     @Autowired
     ShopStaffService shopStaffService;
+
+    @Autowired
+    Mapper mapper;
 
     @PostMapping("/pin")
     public AppResponse pin(String tel) throws GException {
@@ -108,7 +115,17 @@ public class AdminStaffController {
                     Pageable pageable
     ) {
         Map<String, Object> data = new HashMap<>();
-        Page<ShopStaff> staffs = shopStaffService.findAll(pageable);
+        Page<Staff> list = shopStaffService.findAll(pageable);
+        Page<StaffInfoVO> staffs = list.map((Staff staff) -> {
+            User user = userService.getUserByUid(staff.getUid());
+            StaffInfoVO staffInfoVO = mapper.map(user, StaffInfoVO.class);
+            staffInfoVO.setStaffNum(staff.getStaffNum());
+            staffInfoVO.setShop(staff.getShop());
+            List<UserRole> roleList = userRoleService.findAllByUid(staff.getUid());
+            List<StaffRole> roles = roleList.stream().map(UserRole::getRole).collect(toList());
+            staffInfoVO.setRoles(roles);
+            return staffInfoVO;
+        });
         data.put("staffs", staffs);
         return AppResponse.responseSuccess(data);
     }
@@ -117,11 +134,12 @@ public class AdminStaffController {
     @AuthRequire(Auth.ADMIN)
     public AppResponse create(StaffParams params) throws GException {
         Long shopId = params.getShopId();
+        Shop shop = null;
         if (params.getRole() == StaffRole.SHOP_OWNER.get() || params.getRole() == StaffRole.SHOP_STAFF.get()) {
             if (shopId == null || shopId <= 0) {
                 throw new GException(ErrorConstants.NOT_EXIST_SHOP);
             } else {
-                Shop shop = shopService.getShopById(params.getShopId());
+                shop = shopService.getShopById(params.getShopId());
                 if (shop == null) {
                     throw new GException(ErrorConstants.NOT_EXIST_SHOP);
                 }
@@ -145,10 +163,8 @@ public class AdminStaffController {
         userService.update(user);
 
         userRoleService.create(uid, StaffRole.getRole(params.getRole()));
-        if (params.getRole() == StaffRole.SHOP_STAFF.get() || params.getRole() == StaffRole.SHOP_OWNER.get()) {
-            Shop shop = shopService.getShopById(params.getShopId());
-            shopStaffService.create(uid, shop, params.getStaffNum());
-        }
+
+        shopStaffService.create(uid, shop, params.getStaffNum());
 
         Map<String, Object> data = new HashMap<>();
         data.put("staff", user);

@@ -7,7 +7,7 @@ import com.ecgobike.common.util.IdGen;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.entity.Shop;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.repository.PurchaseOrderRepository;
 import com.ecgobike.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     PurchaseOrderRepository purchaseOrderRepository;
 
     @Override
-    public PurchaseOrder purchase(ShopStaff staff, Product product, Integer requireNum) {
+    public PurchaseOrder purchase(Staff staff, Product product, Integer requireNum) {
         PurchaseOrder purchaseOrder = new PurchaseOrder();
         purchaseOrder.setSn(IdGen.genOrderSn());
         purchaseOrder.setProduct(product);
@@ -90,7 +90,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public PurchaseOrder takeOver(String sn, ShopStaff staff) throws GException {
+    public PurchaseOrder takeOver(String sn, Staff staff) throws GException {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findOneBySn(sn);
         if (purchaseOrder == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PURCHASE_ORDER);

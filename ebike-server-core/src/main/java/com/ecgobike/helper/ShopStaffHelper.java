@@ -1,6 +1,6 @@
 package com.ecgobike.helper;
 
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.service.ShopStaffService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -23,16 +23,16 @@ public class ShopStaffHelper {
     /**
      * 警告:此cache中只能用作获取不变数据，不能用作获取动态数据
      */
-    private static Cache<String, ShopStaff> shopStaffCache = CacheBuilder.newBuilder().expireAfterAccess(10 * 60, TimeUnit.SECONDS).maximumSize(500).build();
+    private static Cache<String, Staff> shopStaffCache = CacheBuilder.newBuilder().expireAfterAccess(10 * 60, TimeUnit.SECONDS).maximumSize(500).build();
 
-    public static ShopStaff findByUid(String uid) {
-        ShopStaff shopStaff = shopStaffCache.getIfPresent(uid);
-        if (shopStaff == null) {
-            shopStaff = shopStaffService.findOneByUid(uid);
-            if (shopStaff != null) {
-                shopStaffCache.put(uid, shopStaff);
+    public static Staff findByUid(String uid) {
+        Staff staff = shopStaffCache.getIfPresent(uid);
+        if (staff == null) {
+            staff = shopStaffService.findOneByUid(uid);
+            if (staff != null) {
+                shopStaffCache.put(uid, staff);
             }
         }
-        return shopStaff;
+        return staff;
     }
 }

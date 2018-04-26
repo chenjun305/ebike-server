@@ -62,7 +62,7 @@ public class ShopBatteryController {
     public AppResponse returnBattery(ReturnBatteryParams params) throws GException {
         String uid = params.getUid();
         String batterySn = params.getBatterySn();
-        ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = shopStaffService.findOneByUid(params.getUid());
         batteryService.returnBattery(staff.getShop().getId(), params.getBatterySn());
         LendBattery lendBattery = lendBatteryService.returnBattery(staff, batterySn);
 

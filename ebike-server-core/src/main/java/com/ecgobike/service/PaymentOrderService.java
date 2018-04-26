@@ -16,9 +16,9 @@ import java.util.Map;
  * Created by ChenJun on 2018/3/15.
  */
 public interface PaymentOrderService {
-    PaymentOrder createTopupOrder(ShopStaff shopStaff, User user, Money money);
-    PaymentOrder createMembershipOrder(OrderType type, EBike eBike, ShopStaff shopStaff, Integer monthNum) throws GException;
-    PaymentOrder createSellOrder(ShopStaff shopStaff, User user, EBike eBike);
+    PaymentOrder createTopupOrder(Staff staff, User user, Money money);
+    PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff, Integer monthNum) throws GException;
+    PaymentOrder createSellOrder(Staff staff, User user, EBike eBike);
     Page<PaymentOrder> findAllSall(Pageable pageable);
     Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable);
     Page<PaymentOrder> findAllInShop(Long shopId, Pageable pageable);

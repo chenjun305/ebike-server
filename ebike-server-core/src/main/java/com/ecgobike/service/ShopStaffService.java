@@ -1,7 +1,7 @@
 package com.ecgobike.service;
 
 import com.ecgobike.entity.Shop;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,8 +9,8 @@ import org.springframework.data.domain.Pageable;
  * Created by ChenJun on 2018/4/20.
  */
 public interface ShopStaffService {
-    ShopStaff findOneByUid(String uid);
+    Staff findOneByUid(String uid);
     Long getShopIdByUid(String uid);
-    ShopStaff create(String uid, Shop shop, String staffNum);
-    Page<ShopStaff> findAll(Pageable pageable);
+    Staff create(String uid, Shop shop, String staffNum);
+    Page<Staff> findAll(Pageable pageable);
 }

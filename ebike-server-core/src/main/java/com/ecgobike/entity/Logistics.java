@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -14,14 +15,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "logistics")
 @Data
-public class Logistics {
+public class Logistics implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String sn;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
 

@@ -32,15 +32,15 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     PaymentOrderRepository paymentOrderRepository;
 
     @Override
-    public PaymentOrder createTopupOrder(ShopStaff shopStaff, User user, Money money) {
+    public PaymentOrder createTopupOrder(Staff staff, User user, Money money) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(OrderType.STAFF_TOPUP_USER.get());
         paymentOrder.setPrice(money.getAmount());
         paymentOrder.setCurrency(money.getCurrency());
         paymentOrder.setUid(user.getUid());
-        paymentOrder.setStaffUid(shopStaff.getUid());
-        paymentOrder.setShopId(shopStaff.getShop().getId());
+        paymentOrder.setStaffUid(staff.getUid());
+        paymentOrder.setShopId(staff.getShop().getId());
         paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());
@@ -49,7 +49,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
-    public PaymentOrder createMembershipOrder(OrderType type, EBike eBike, ShopStaff shopStaff, Integer monthNum) throws GException {
+    public PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff, Integer monthNum) throws GException {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(type.get());
@@ -70,8 +70,8 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setProductId(eBike.getProduct().getId());
         paymentOrder.setUid(eBike.getUid());
         if (type == OrderType.STAFF_JOIN_MEMBERSHIP || type == OrderType.STAFF_RENEW_MONTHLY) {
-            paymentOrder.setStaffUid(shopStaff.getUid());
-            paymentOrder.setShopId(shopStaff.getShop().getId());
+            paymentOrder.setStaffUid(staff.getUid());
+            paymentOrder.setShopId(staff.getShop().getId());
         }
         paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
@@ -81,7 +81,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
-    public PaymentOrder createSellOrder(ShopStaff shopStaff, User user, EBike eBike) {
+    public PaymentOrder createSellOrder(Staff staff, User user, EBike eBike) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
@@ -90,8 +90,8 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setEbikeSn(eBike.getSn());
         paymentOrder.setProductId(eBike.getProduct().getId());
         paymentOrder.setUid(user.getUid());
-        paymentOrder.setStaffUid(shopStaff.getUid());
-        paymentOrder.setShopId(shopStaff.getShop().getId());
+        paymentOrder.setStaffUid(staff.getUid());
+        paymentOrder.setShopId(staff.getShop().getId());
         paymentOrder.setPayDate(LocalDate.now());
         paymentOrder.setStatus(1);
         paymentOrder.setCreateTime(LocalDateTime.now());

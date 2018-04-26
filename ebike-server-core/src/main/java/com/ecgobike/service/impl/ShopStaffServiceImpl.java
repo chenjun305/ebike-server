@@ -1,7 +1,7 @@
 package com.ecgobike.service.impl;
 
 import com.ecgobike.entity.Shop;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.repository.ShopStaffRepository;
 import com.ecgobike.service.ShopStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,30 +21,30 @@ public class ShopStaffServiceImpl implements ShopStaffService {
     ShopStaffRepository shopStaffRepository;
 
     @Override
-    public ShopStaff findOneByUid(String uid) {
+    public Staff findOneByUid(String uid) {
         return shopStaffRepository.findOneByUid(uid);
     }
 
     @Override
     public Long getShopIdByUid(String uid) {
-        ShopStaff shopStaff = shopStaffRepository.findOneByUid(uid);
-        return shopStaff.getShop().getId();
+        Staff staff = shopStaffRepository.findOneByUid(uid);
+        return staff.getShop().getId();
     }
 
     @Override
-    public ShopStaff create(String uid, Shop shop, String staffNum) {
-        ShopStaff shopStaff = new ShopStaff();
-        shopStaff.setUid(uid);
-        shopStaff.setShop(shop);
-        shopStaff.setStaffNum(staffNum);
-        shopStaff.setStatus(1);
-        shopStaff.setCreateTime(LocalDateTime.now());
-        shopStaff.setUpdateTime(LocalDateTime.now());
-        return shopStaffRepository.save(shopStaff);
+    public Staff create(String uid, Shop shop, String staffNum) {
+        Staff staff = new Staff();
+        staff.setUid(uid);
+        staff.setShop(shop);
+        staff.setStaffNum(staffNum);
+        staff.setStatus(1);
+        staff.setCreateTime(LocalDateTime.now());
+        staff.setUpdateTime(LocalDateTime.now());
+        return shopStaffRepository.save(staff);
     }
 
     @Override
-    public Page<ShopStaff> findAll(Pageable pageable) {
+    public Page<Staff> findAll(Pageable pageable) {
         return shopStaffRepository.findAll(pageable);
     }
 }

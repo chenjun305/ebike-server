@@ -7,11 +7,13 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.entity.Shop;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseTakeParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.PurchaseOrderVO;
 import com.ecgobike.service.*;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +47,9 @@ public class ShopPurchaseController {
     @Autowired
     BatteryService batteryService;
 
+    @Autowired
+    Mapper mapper;
+
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
     public AppResponse list(
@@ -61,15 +66,16 @@ public class ShopPurchaseController {
     @RequestMapping("/take")
     @AuthRequire(Auth.STAFF)
     public AppResponse take(PurchaseTakeParams params) throws GException {
-        ShopStaff staff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = shopStaffService.findOneByUid(params.getUid());
         PurchaseOrder purchaseOrder = purchaseOrderService.takeOver(params.getPurchaseSn(), staff);
         List<Logistics> list = logisticsService.shopIn(purchaseOrder);
         // if type is battery, insert into battery table
         if (purchaseOrder.getProduct().getType() == ProductType.BATTERY) {
             batteryService.shopIn(list);
         }
+        PurchaseOrderVO purchaseOrderVO = mapper.map(purchaseOrder, PurchaseOrderVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("purchaseOrder", purchaseOrder);
+        data.put("purchaseOrder", purchaseOrderVO);
         data.put("list", list);
         return AppResponse.responseSuccess(data);
     }

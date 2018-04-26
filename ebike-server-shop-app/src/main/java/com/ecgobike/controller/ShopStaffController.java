@@ -1,23 +1,17 @@
 package com.ecgobike.controller;
 
-import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
-import com.ecgobike.common.util.IdGen;
-import com.ecgobike.entity.Shop;
-import com.ecgobike.entity.ShopStaff;
+import com.ecgobike.entity.Staff;
 import com.ecgobike.entity.User;
 import com.ecgobike.entity.UserRole;
-import com.ecgobike.pojo.request.StaffParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.StaffInfoVO;
-import com.ecgobike.service.ShopService;
 import com.ecgobike.service.ShopStaffService;
 import com.ecgobike.service.UserRoleService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.service.sms.SmsService;
-import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.util.AuthUtil;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +54,8 @@ public class ShopStaffController {
         if (user == null) {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
         }
-        ShopStaff shopStaff = shopStaffService.findOneByUid(user.getUid());
-        if (shopStaff == null) {
+        Staff staff = shopStaffService.findOneByUid(user.getUid());
+        if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
         boolean result = smsService.sendPin(tel);
@@ -79,8 +73,8 @@ public class ShopStaffController {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
         }
         String uid = user.getUid();
-        ShopStaff shopStaff = shopStaffService.findOneByUid(uid);
-        if (shopStaff == null) {
+        Staff staff = shopStaffService.findOneByUid(uid);
+        if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
 
@@ -98,8 +92,8 @@ public class ShopStaffController {
         String signMat = AuthUtil.buildSignMaterial(uid);
         String token = AuthUtil.buildToken(uid, signMat);
         StaffInfoVO staffInfoVO = mapper.map(user, StaffInfoVO.class);
-        staffInfoVO.setStaffNum(shopStaff.getStaffNum());
-        staffInfoVO.setShop(shopStaff.getShop());
+        staffInfoVO.setStaffNum(staff.getStaffNum());
+        staffInfoVO.setShop(staff.getShop());
 
         List<StaffRole> roles = roleList.stream().map(UserRole::getRole).collect(toList());
         staffInfoVO.setRoles(roles);
@@ -122,7 +116,7 @@ public class ShopStaffController {
 //            throw new GException(ErrorConstants.NOT_SHOP_OWNER);
 //        }
 //        User user = userService.getOrCreate(params.getTel());
-//        ShopStaff shopStaff = shopStaffService.findOneByUid(user.getUid());
+//        Staff shopStaff = shopStaffService.findOneByUid(user.getUid());
 //        if (shopStaff != null) {
 //            throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
 //        }

@@ -10,21 +10,18 @@ import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.EBikeInfoVO;
 import com.ecgobike.service.*;
-import com.google.common.base.Strings;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,8 +82,8 @@ public class ShopEBikeController {
             @RequestParam(value = "idCardFile3") MultipartFile file3,
             SellBikeParams params
     ) throws GException {
-        ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
-        Logistics logistics = logisticsService.sell(params.getEbikeSn(), shopStaff.getShop().getId());
+        Staff staff = shopStaffService.findOneByUid(params.getUid());
+        Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff.getShop().getId());
 
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
         if (eBike != null && eBike.getUid() != null) {
@@ -114,7 +111,7 @@ public class ShopEBikeController {
         user = userService.update(user);
 
         eBike = eBikeService.sell(user, params.getEbikeSn(), logistics.getProduct());
-        PaymentOrder paymentOrder = paymentOrderService.createSellOrder(shopStaff, user, eBike);
+        PaymentOrder paymentOrder = paymentOrderService.createSellOrder(staff, user, eBike);
 
         Map<String, Object> data = new HashMap<>();
         data.put("paymentOrder", paymentOrder);
@@ -124,9 +121,9 @@ public class ShopEBikeController {
     @PostMapping("/join")
     @AuthRequire(Auth.STAFF)
     public AppResponse join(JoinParams params) throws GException {
-        ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = shopStaffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
-        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, shopStaff, null);
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);
@@ -137,9 +134,9 @@ public class ShopEBikeController {
     @PostMapping("/renew")
     @AuthRequire(Auth.STAFF)
     public AppResponse renew(RenewParams params) throws GException {
-        ShopStaff shopStaff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = shopStaffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
-        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, shopStaff, params.getMonthNum());
+        PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
 
         Map<String, Object> data = new HashMap<>();
         data.put("ebike", eBike);

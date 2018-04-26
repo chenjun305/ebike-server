@@ -31,18 +31,19 @@ CREATE TABLE `user_role` (
   UNIQUE KEY `uid_role_idx` (`uid`, `role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';
 
-CREATE TABLE `shop_staff` (
+CREATE TABLE `staff` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',
   `uid` varchar(32) NOT NULL COMMENT 'UID',
-  `shop_id` int(11) unsigned NOT NULL COMMENT '所属商店ID',
   `staff_num` VARCHAR(32) COMMENT '员工编号',
+  `shop_id` int(11) unsigned COMMENT '所属商店ID',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态:0禁用 1正常',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uid_idx` (`uid`),
+  UNIQUE KEY `staff_num_idx` (`staff_num`),
   KEY `shop_idx` (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店员表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工表';
 
 CREATE TABLE `shop` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增唯一id',

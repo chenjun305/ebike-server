@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "shop_staff")
 @Data
-public class ShopStaff implements Serializable {
+public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
