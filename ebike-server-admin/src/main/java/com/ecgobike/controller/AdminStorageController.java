@@ -62,11 +62,10 @@ public class AdminStorageController {
         if (snList.size() < purchaseOrder.getPermitNum()) {
             throw new GException(ErrorConstants.SN_NUM_LOWER_THAN_PURCHASE);
         }
-        List<Logistics> list = logisticsService.out(purchaseOrder, snList);
+        logisticsService.out(purchaseOrder, snList);
         purchaseOrderService.departure(purchaseOrder, params.getUid());
-        Map<String, Object> data = new HashMap<>();
-        data.put("list", list);
-        return AppResponse.responseSuccess(data);
+
+        return AppResponse.responseSuccess();
     }
 
     @RequestMapping("/out/list")
@@ -88,10 +87,8 @@ public class AdminStorageController {
         if (product == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
-        List<Logistics> list = logisticsService.in(product, params.getSnList());
-        Map<String, Object> data = new HashMap<>();
-        data.put("list", list);
-        return AppResponse.responseSuccess(data);
+        logisticsService.in(product, params.getSnList());
+        return AppResponse.responseSuccess();
     }
 
     @RequestMapping("/in/list")

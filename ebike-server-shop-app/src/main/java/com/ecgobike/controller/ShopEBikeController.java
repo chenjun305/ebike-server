@@ -9,6 +9,7 @@ import com.ecgobike.helper.FileUrlHelper;
 import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.EBikeInfoVO;
+import com.ecgobike.pojo.response.LogisticsVO;
 import com.ecgobike.service.*;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,8 +180,9 @@ public class ShopEBikeController {
         }
         Long shopId = staffService.findOneByUid(params.getUid()).getShop().getId();
         Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shopId, pageable);
+        Page<LogisticsVO> voList = stockList.map((Logistics logistics) -> mapper.map(logistics, LogisticsVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("stockList", stockList);
+        data.put("stockList", voList);
         return AppResponse.responseSuccess(data);
     }
 
