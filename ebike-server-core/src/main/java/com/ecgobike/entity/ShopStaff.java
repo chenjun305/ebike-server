@@ -24,7 +24,7 @@ public class ShopStaff implements Serializable {
     private String uid;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
