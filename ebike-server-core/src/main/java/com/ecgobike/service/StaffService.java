@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * Created by ChenJun on 2018/4/20.
  */
-public interface ShopStaffService {
+public interface StaffService {
     Staff findOneByUid(String uid);
     Long getShopIdByUid(String uid);
     Staff create(String uid, Shop shop, String staffNum);

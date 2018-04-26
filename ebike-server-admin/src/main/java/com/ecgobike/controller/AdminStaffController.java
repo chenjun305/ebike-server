@@ -14,7 +14,7 @@ import com.ecgobike.pojo.request.StaffParams;
 import com.ecgobike.pojo.response.StaffInfoVO;
 import com.ecgobike.service.ShopService;
 import com.ecgobike.pojo.response.AppResponse;
-import com.ecgobike.service.ShopStaffService;
+import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserRoleService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.service.sms.SmsService;
@@ -33,7 +33,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
@@ -57,7 +56,7 @@ public class AdminStaffController {
     ShopService shopService;
 
     @Autowired
-    ShopStaffService shopStaffService;
+    StaffService staffService;
 
     @Autowired
     Mapper mapper;
@@ -115,7 +114,7 @@ public class AdminStaffController {
                     Pageable pageable
     ) {
         Map<String, Object> data = new HashMap<>();
-        Page<Staff> list = shopStaffService.findAll(pageable);
+        Page<Staff> list = staffService.findAll(pageable);
         Page<StaffInfoVO> staffs = list.map((Staff staff) -> {
             User user = userService.getUserByUid(staff.getUid());
             StaffInfoVO staffInfoVO = mapper.map(user, StaffInfoVO.class);
@@ -164,7 +163,7 @@ public class AdminStaffController {
 
         userRoleService.create(uid, StaffRole.getRole(params.getRole()));
 
-        shopStaffService.create(uid, shop, params.getStaffNum());
+        staffService.create(uid, shop, params.getStaffNum());
 
         Map<String, Object> data = new HashMap<>();
         data.put("staff", user);

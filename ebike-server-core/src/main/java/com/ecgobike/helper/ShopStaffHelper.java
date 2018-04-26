@@ -1,7 +1,7 @@
 package com.ecgobike.helper;
 
 import com.ecgobike.entity.Staff;
-import com.ecgobike.service.ShopStaffService;
+import com.ecgobike.service.StaffService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class ShopStaffHelper {
-    private static ShopStaffService shopStaffService;
+    private static StaffService staffService;
 
     @Autowired
-    public void setShopStaffService(ShopStaffService shopStaffService) {
-        ShopStaffHelper.shopStaffService = shopStaffService;
+    public void setShopStaffService(StaffService staffService) {
+        ShopStaffHelper.staffService = staffService;
     }
 
     /**
@@ -28,7 +28,7 @@ public class ShopStaffHelper {
     public static Staff findByUid(String uid) {
         Staff staff = shopStaffCache.getIfPresent(uid);
         if (staff == null) {
-            staff = shopStaffService.findOneByUid(uid);
+            staff = staffService.findOneByUid(uid);
             if (staff != null) {
                 shopStaffCache.put(uid, staff);
             }

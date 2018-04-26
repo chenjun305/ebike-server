@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "shop_staff")
+@Table(name = "staff")
 @Data
 public class Staff implements Serializable {
     @Id

@@ -8,7 +8,7 @@ import com.ecgobike.entity.User;
 import com.ecgobike.entity.UserRole;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.StaffInfoVO;
-import com.ecgobike.service.ShopStaffService;
+import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserRoleService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.service.sms.SmsService;
@@ -41,7 +41,7 @@ public class ShopStaffController {
     UserRoleService userRoleService;
 
     @Autowired
-    ShopStaffService shopStaffService;
+    StaffService staffService;
 
 //    @Autowired
 //    ShopService shopService;
@@ -54,7 +54,7 @@ public class ShopStaffController {
         if (user == null) {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
         }
-        Staff staff = shopStaffService.findOneByUid(user.getUid());
+        Staff staff = staffService.findOneByUid(user.getUid());
         if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
@@ -73,7 +73,7 @@ public class ShopStaffController {
             throw new GException(ErrorConstants.USER_NOT_FOUND);
         }
         String uid = user.getUid();
-        Staff staff = shopStaffService.findOneByUid(uid);
+        Staff staff = staffService.findOneByUid(uid);
         if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
@@ -116,7 +116,7 @@ public class ShopStaffController {
 //            throw new GException(ErrorConstants.NOT_SHOP_OWNER);
 //        }
 //        User user = userService.getOrCreate(params.getTel());
-//        Staff shopStaff = shopStaffService.findOneByUid(user.getUid());
+//        Staff shopStaff = staffService.findOneByUid(user.getUid());
 //        if (shopStaff != null) {
 //            throw new GException(ErrorConstants.ALREADY_EXIST_STAFF);
 //        }
@@ -127,8 +127,8 @@ public class ShopStaffController {
 //        user.setAddress(params.getAddress());
 //        userService.update(user);
 //
-//        Shop shop = shopStaffService.findOneByUid(params.getUid()).getShop();
-//        shopStaffService.create(user.getUid(), shop, params.getStaffNum());
+//        Shop shop = staffService.findOneByUid(params.getUid()).getShop();
+//        staffService.create(user.getUid(), shop, params.getStaffNum());
 //        userRoleService.create(user.getUid(), StaffRole.getRole(params.getRole()));
 //
 //        Map<String, Object> data = new HashMap<>();

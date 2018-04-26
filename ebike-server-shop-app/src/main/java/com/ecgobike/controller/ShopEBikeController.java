@@ -39,7 +39,7 @@ public class ShopEBikeController {
     UserService userService;
 
     @Autowired
-    ShopStaffService shopStaffService;
+    StaffService staffService;
 
     @Autowired
     PaymentOrderService paymentOrderService;
@@ -82,7 +82,7 @@ public class ShopEBikeController {
             @RequestParam(value = "idCardFile3") MultipartFile file3,
             SellBikeParams params
     ) throws GException {
-        Staff staff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = staffService.findOneByUid(params.getUid());
         Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff.getShop().getId());
 
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
@@ -121,7 +121,7 @@ public class ShopEBikeController {
     @PostMapping("/join")
     @AuthRequire(Auth.STAFF)
     public AppResponse join(JoinParams params) throws GException {
-        Staff staff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
 
@@ -134,7 +134,7 @@ public class ShopEBikeController {
     @PostMapping("/renew")
     @AuthRequire(Auth.STAFF)
     public AppResponse renew(RenewParams params) throws GException {
-        Staff staff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = staffService.findOneByUid(params.getUid());
         EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
 
@@ -157,7 +157,7 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShop().getId();
+        Long shopId = staffService.findOneByUid(params.getUid()).getShop().getId();
         Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("sellList", sellList);
@@ -177,7 +177,7 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Long shopId = shopStaffService.findOneByUid(params.getUid()).getShop().getId();
+        Long shopId = staffService.findOneByUid(params.getUid()).getShop().getId();
         Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", stockList);

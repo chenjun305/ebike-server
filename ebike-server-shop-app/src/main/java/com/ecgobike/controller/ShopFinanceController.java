@@ -7,7 +7,7 @@ import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.PaymentOrderService;
-import com.ecgobike.service.ShopStaffService;
+import com.ecgobike.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class ShopFinanceController {
 
     @Autowired
-    ShopStaffService shopStaffService;
+    StaffService staffService;
 
     @Autowired
     PaymentOrderService paymentOrderService;
@@ -38,7 +38,7 @@ public class ShopFinanceController {
     @RequestMapping("/today")
     @AuthRequire(Auth.STAFF)
     public AppResponse today(AuthParams params) {
-        Long shopId = shopStaffService.getShopIdByUid(params.getUid());
+        Long shopId = staffService.getShopIdByUid(params.getUid());
         List<Map<OrderType, BigDecimal>> finance = paymentOrderService.sumDailyShopIncomeGroupByType(shopId, LocalDate.now());
         Map<String, Object> data = new HashMap<>();
         data.put("financeToday", finance);
@@ -50,7 +50,7 @@ public class ShopFinanceController {
     public AppResponse history(AuthParams params,
                                @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Long shopId = shopStaffService.getShopIdByUid(params.getUid());
+        Long shopId = staffService.getShopIdByUid(params.getUid());
         Page<PaymentOrder> history = paymentOrderService.findAllInShop(shopId, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("history", history);

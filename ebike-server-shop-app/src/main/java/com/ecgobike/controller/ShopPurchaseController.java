@@ -36,7 +36,7 @@ public class ShopPurchaseController {
     PurchaseOrderService purchaseOrderService;
 
     @Autowired
-    ShopStaffService shopStaffService;
+    StaffService staffService;
 
     @Autowired
     LogisticsService logisticsService;
@@ -56,7 +56,7 @@ public class ShopPurchaseController {
             AuthParams params,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ){
-        Shop shop = shopStaffService.findOneByUid(params.getUid()).getShop();
+        Shop shop = staffService.findOneByUid(params.getUid()).getShop();
         Page<PurchaseOrder> list = purchaseOrderService.findAllByShop(shop, pageable);
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
@@ -66,7 +66,7 @@ public class ShopPurchaseController {
     @RequestMapping("/take")
     @AuthRequire(Auth.STAFF)
     public AppResponse take(PurchaseTakeParams params) throws GException {
-        Staff staff = shopStaffService.findOneByUid(params.getUid());
+        Staff staff = staffService.findOneByUid(params.getUid());
         PurchaseOrder purchaseOrder = purchaseOrderService.takeOver(params.getPurchaseSn(), staff);
         List<Logistics> list = logisticsService.shopIn(purchaseOrder);
         // if type is battery, insert into battery table

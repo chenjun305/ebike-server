@@ -2,8 +2,8 @@ package com.ecgobike.service.impl;
 
 import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.Staff;
-import com.ecgobike.repository.ShopStaffRepository;
-import com.ecgobike.service.ShopStaffService;
+import com.ecgobike.repository.StaffRepository;
+import com.ecgobike.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,19 +15,19 @@ import java.time.LocalDateTime;
  * Created by ChenJun on 2018/4/20.
  */
 @Service
-public class ShopStaffServiceImpl implements ShopStaffService {
+public class StaffServiceImpl implements StaffService {
 
     @Autowired
-    ShopStaffRepository shopStaffRepository;
+    StaffRepository staffRepository;
 
     @Override
     public Staff findOneByUid(String uid) {
-        return shopStaffRepository.findOneByUid(uid);
+        return staffRepository.findOneByUid(uid);
     }
 
     @Override
     public Long getShopIdByUid(String uid) {
-        Staff staff = shopStaffRepository.findOneByUid(uid);
+        Staff staff = staffRepository.findOneByUid(uid);
         return staff.getShop().getId();
     }
 
@@ -40,11 +40,11 @@ public class ShopStaffServiceImpl implements ShopStaffService {
         staff.setStatus(1);
         staff.setCreateTime(LocalDateTime.now());
         staff.setUpdateTime(LocalDateTime.now());
-        return shopStaffRepository.save(staff);
+        return staffRepository.save(staff);
     }
 
     @Override
     public Page<Staff> findAll(Pageable pageable) {
-        return shopStaffRepository.findAll(pageable);
+        return staffRepository.findAll(pageable);
     }
 }
