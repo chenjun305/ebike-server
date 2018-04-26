@@ -28,17 +28,17 @@ public class ControllerTestHelper {
 
     public static String calculateSign(Map<String, String> map) {
         TreeMap<String, String> checkMap = new TreeMap<>();
-        System.out.println("=======request parameters=========");
+        //System.out.println("=======request parameters=========");
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            System.out.println(key + ":" + value);
+            //System.out.println(key + ":" + value);
             if ("sign".equals(key) || "token".equals(key)) {
                 continue;
             }
             checkMap.put(key, value);
         }
-        System.out.println("=======end=========");
+        //System.out.println("=======end=========");
 
         StringBuffer orginSource = new StringBuffer();
         for (Map.Entry<String, String> entry : checkMap.entrySet()) {

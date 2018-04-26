@@ -62,6 +62,7 @@ public class ShopEBikeController {
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
     public AppResponse info(String ebikeSn) throws GException {
+        System.out.println("in Method ebike/info");
         Logistics logistics = logisticsService.findOneBySn(ebikeSn);
         if (logistics == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
