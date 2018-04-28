@@ -59,8 +59,8 @@ public class AdminStorageController {
         if (set.size() < snList.size()) {
             throw new GException(ErrorConstants.ERR_DUPPLICATE_SN);
         }
-        if (snList.size() < purchaseOrder.getPermitNum()) {
-            throw new GException(ErrorConstants.SN_NUM_LOWER_THAN_PURCHASE);
+        if (snList.size() != purchaseOrder.getPermitNum()) {
+            throw new GException(ErrorConstants.SN_NUM_NOT_EQUAL_PURCHASE);
         }
         logisticsService.out(purchaseOrder, snList);
         purchaseOrderService.departure(purchaseOrder, params.getUid());

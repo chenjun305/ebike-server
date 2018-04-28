@@ -76,7 +76,7 @@ public class ErrorConstants {
 	public static final int NOT_IN_STORAGE = 502;//Not In Storage！
 	public static final int NOT_EBIKE_PRODUCT = 503;//Not EBike Product！
 	public static final int NOT_BATTERY_PRODUCT = 504;//Not Battery Product！
-	public static final int SN_NUM_LOWER_THAN_PURCHASE = 600;//SN Num Lower Than Purchase！
+	public static final int SN_NUM_NOT_EQUAL_PURCHASE = 600;//SN Num Not Equal Purchase！
 	public static final int NOT_EXIST_PURCHASE_ORDER = 601;//Not Exist Purchase Order！
 	public static final int NOT_PERMIT_PURCHASE_ORDER = 602;//Not Permit Purchase Order！
 	public static final int NOT_YOUR_SHOP_PURCHASE = 603;//Not Your Shop Purchase Order！

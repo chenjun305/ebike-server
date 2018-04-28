@@ -7,8 +7,10 @@ import lombok.Data;
  */
 @Data
 public class BatteryProductVO {
-    private Long productId;
-    private String type;
+    private Long id;
+    private String model;
+    private String color;
     private String iconUrl;
+    private String desc;
     private long stockNum;
 }

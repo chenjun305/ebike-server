@@ -121,7 +121,7 @@ CREATE TABLE `battery` (
   `shop_id` int(11) unsigned DEFAULT NULL COMMENT '商店ID',
   `ebike_sn` VARCHAR(64) DEFAULT NULL COMMENT '电单车sn',
   `battery` int(5) unsigned DEFAULT '0' COMMENT '电量',
-  `status` tinyint(1) DEFAULT '1' COMMENT '车辆状态: 0无效 1正常，用户使用中 2 门店-充满 3 门店-充电中 4 仓库',
+  `status` tinyint(1) DEFAULT '1' COMMENT '车辆状态: 0无效 1 IN_SHOP 2 Lend_Out',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),

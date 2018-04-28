@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 public class EBikeInfoVO {
     private String sn;
-    private Product product;
+    //private Product product;
     private String uid;
     private Byte isMembership;
     private Integer monthLeft;

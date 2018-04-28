@@ -9,6 +9,7 @@ import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.repository.LogisticsRepository;
 import com.ecgobike.service.LogisticsService;
+import org.apache.tomcat.jni.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -145,7 +146,9 @@ public class LogisticsServiceImpl implements LogisticsService {
         if (logistics == null || logistics.getProduct().getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EXIST_EBIKE);
         }
-        if (logistics.getStatus() != LogisticsStatus.SHOP
+        if (logistics.getStatus() == LogisticsStatus.SELLED) {
+            throw new GException(ErrorConstants.ALREADY_SELLED);
+        } else if (logistics.getStatus() != LogisticsStatus.SHOP
                 || logistics.getShopId() != staffShopId) {
             throw new GException(ErrorConstants.NOT_YOUR_SHOP_EBIKE);
         }

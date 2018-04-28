@@ -5,12 +5,16 @@ import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.request.ProductParams;
 import com.ecgobike.pojo.request.ReturnBatteryParams;
+import com.ecgobike.pojo.response.BatteryInfoVO;
+import com.ecgobike.pojo.response.EBikeInfoVO;
+import com.ecgobike.pojo.response.LendBatteryVO;
 import com.ecgobike.service.*;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.pojo.response.AppResponse;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +49,9 @@ public class ShopBatteryController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    Mapper mapper;
+
     @RequestMapping("/info")
     @AuthRequire(Auth.STAFF)
     public AppResponse info(String batterySn) throws GException {
@@ -52,8 +59,9 @@ public class ShopBatteryController {
         if (battery == null) {
             throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
         }
+        BatteryInfoVO batteryInfoVO = mapper.map(battery, BatteryInfoVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("battery", battery);
+        data.put("battery", batteryInfoVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -65,9 +73,9 @@ public class ShopBatteryController {
         Staff staff = staffService.findOneByUid(params.getUid());
         batteryService.returnBattery(staff.getShop().getId(), params.getBatterySn());
         LendBattery lendBattery = lendBatteryService.returnBattery(staff, batterySn);
-
+        LendBatteryVO lendBatteryVO = mapper.map(lendBattery, LendBatteryVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("lendBattery", lendBattery);
+        data.put("lendBattery", lendBatteryVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -81,15 +89,18 @@ public class ShopBatteryController {
 
         // check for battery
         Long shopId = staffService.getShopIdByUid(params.getUid());
-        Battery battery = batteryService.canLend(params.getBatterySn(), shopId);
+        Battery battery = batteryService.canLend(params.getBatterySn(), params.getEbikeSn(), shopId);
 
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, params.getUid());
         batteryService.lend(eBike, battery);
         eBike = eBikeService.lendBattery(eBike);
 
+        LendBatteryVO lendBatteryVO = mapper.map(lendBattery, LendBatteryVO.class);
+        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+
         Map<String, Object> data = new HashMap<>();
-        data.put("lendBattery", lendBattery);
-        data.put("ebike", eBike);
+        data.put("lendBattery", lendBatteryVO);
+        data.put("ebike", eBikeInfoVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -108,8 +119,9 @@ public class ShopBatteryController {
         }
         Long shopId = staffService.getShopIdByUid(params.getUid());
         Page<Battery> stockList = batteryService.findProductStockInShop(product, shopId, pageable);
+        Page<BatteryInfoVO> voList = stockList.map((Battery battery) -> mapper.map(battery, BatteryInfoVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("stockList", stockList);
+        data.put("stockList", voList);
         return AppResponse.responseSuccess(data);
     }
 }

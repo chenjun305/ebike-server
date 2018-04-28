@@ -10,6 +10,7 @@ import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.EBikeInfoVO;
 import com.ecgobike.pojo.response.LogisticsVO;
+import com.ecgobike.pojo.response.PaymentOrderVO;
 import com.ecgobike.service.*;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,12 +85,13 @@ public class ShopEBikeController {
             SellBikeParams params
     ) throws GException {
         Staff staff = staffService.findOneByUid(params.getUid());
-        Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff.getShop().getId());
 
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
         if (eBike != null && eBike.getUid() != null) {
             throw  new GException(ErrorConstants.ALREADY_SELLED);
         }
+
+        Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff.getShop().getId());
 
         User user = userService.getOrCreate(params.getPhoneNum());
         user.setIsReal((byte)1);
@@ -113,9 +115,10 @@ public class ShopEBikeController {
 
         eBike = eBikeService.sell(user, params.getEbikeSn(), logistics.getProduct());
         PaymentOrder paymentOrder = paymentOrderService.createSellOrder(staff, user, eBike);
+        PaymentOrderVO paymentOrderVO = mapper.map(paymentOrder, PaymentOrderVO.class);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("paymentOrder", paymentOrder);
+        data.put("paymentOrder", paymentOrderVO);
         return AppResponse.responseSuccess(data);
     }
 

@@ -63,24 +63,14 @@ public class ShopProductController {
         List<Product> productList = productService.findAllProducts();
         for (Product product : productList) {
             if (product.getType() == ProductType.EBIKE) {
-                EBikeProductVO eBikeProductVO = new EBikeProductVO();
-                eBikeProductVO.setProductId(product.getId());
-                eBikeProductVO.setModel(product.getModel());
-                eBikeProductVO.setColor(product.getColor());
-                eBikeProductVO.setIconUrl(product.getIconUrl());
-                eBikeProductVO.setPrice(product.getPrice());
-                eBikeProductVO.setCurrency(product.getCurrency());
-                eBikeProductVO.setDesc(product.getDesc());
+                EBikeProductVO eBikeProductVO = mapper.map(product, EBikeProductVO.class);
                 long sellNum = paymentOrderService.countProductSellOrdersInShop(product.getId(), shopId);
                 long stockNum = logisticsService.countProductStockInShop(product, shopId);
                 eBikeProductVO.setSellNum(sellNum);
                 eBikeProductVO.setStockNum(stockNum);
                 ebikeProducts.add(eBikeProductVO);
             } else if (product.getType() == ProductType.BATTERY) {
-                BatteryProductVO batteryProductVO = new BatteryProductVO();
-                batteryProductVO.setProductId(product.getId());
-                batteryProductVO.setType(product.getModel());
-                batteryProductVO.setIconUrl(product.getIconUrl());
+                BatteryProductVO batteryProductVO = mapper.map(product, BatteryProductVO.class);
                 long stockNum = batteryService.countProductStockInShop(product, shopId);
                 batteryProductVO.setStockNum(stockNum);
                 batteryProducts.add(batteryProductVO);

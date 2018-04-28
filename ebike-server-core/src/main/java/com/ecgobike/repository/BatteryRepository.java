@@ -12,4 +12,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface BatteryRepository extends JpaRepository<Battery, Long> {
     Battery findOneBySn(String sn);
+    Battery findOneByEbikeSn(String ebikeSn);
 }
