@@ -66,8 +66,9 @@ public class ShopEBikeController {
         if (logistics == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
+        LogisticsVO logisticsVO = mapper.map(logistics, LogisticsVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("logistics", logistics);
+        data.put("logistics", logisticsVO);
         EBike eBike = eBikeService.findOneBySn(ebikeSn);
         if (eBike != null) {
             EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
@@ -129,9 +130,11 @@ public class ShopEBikeController {
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
 
+        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+        PaymentOrderVO paymentOrderVO = mapper.map(order, PaymentOrderVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("ebike", eBike);
-        data.put("order", order);
+        data.put("ebike", eBikeInfoVO);
+        data.put("order", paymentOrderVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -142,9 +145,11 @@ public class ShopEBikeController {
         EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
 
+        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+        PaymentOrderVO paymentOrderVO = mapper.map(order, PaymentOrderVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("ebike", eBike);
-        data.put("order", order);
+        data.put("ebike", eBikeInfoVO);
+        data.put("order", paymentOrderVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -163,8 +168,9 @@ public class ShopEBikeController {
         }
         Long shopId = staffService.findOneByUid(params.getUid()).getShop().getId();
         Page<PaymentOrder> sellList = paymentOrderService.findProductSellOrdersInShop(product, shopId, pageable);
+        Page<PaymentOrderVO> voList = sellList.map(paymentOrder -> mapper.map(paymentOrder, PaymentOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("sellList", sellList);
+        data.put("sellList", voList);
         return AppResponse.responseSuccess(data);
     }
 
@@ -183,7 +189,7 @@ public class ShopEBikeController {
         }
         Long shopId = staffService.findOneByUid(params.getUid()).getShop().getId();
         Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shopId, pageable);
-        Page<LogisticsVO> voList = stockList.map((Logistics logistics) -> mapper.map(logistics, LogisticsVO.class));
+        Page<LogisticsVO> voList = stockList.map(logistics -> mapper.map(logistics, LogisticsVO.class));
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", voList);
         return AppResponse.responseSuccess(data);

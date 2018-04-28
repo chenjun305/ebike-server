@@ -40,13 +40,14 @@ public class BatteryController {
     @PostMapping("/lend")
     @AuthRequire(Auth.USER)
     public AppResponse lend(LendBatteryParams params) throws GException {
-        EBike eBike = eBikeService.canLendBattery(params.getEbikeSn());
+        String ebikeSn = params.getEbikeSn();
+        EBike eBike = eBikeService.canLendBattery(ebikeSn);
         if (eBike.getUid() == null || !eBike.getUid().equals(params.getUid())) {
             throw new GException(ErrorConstants.NOT_YOUR_EBIKE);
         }
 
         // check for battery
-        Battery battery = batteryService.canLend(params.getBatterySn(), null);
+        Battery battery = batteryService.canLend(params.getBatterySn(), ebikeSn,null);
 
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, null);
         batteryService.lend(eBike, battery);

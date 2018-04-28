@@ -119,7 +119,7 @@ public class ShopBatteryController {
         }
         Long shopId = staffService.getShopIdByUid(params.getUid());
         Page<Battery> stockList = batteryService.findProductStockInShop(product, shopId, pageable);
-        Page<BatteryInfoVO> voList = stockList.map((Battery battery) -> mapper.map(battery, BatteryInfoVO.class));
+        Page<BatteryInfoVO> voList = stockList.map(battery -> mapper.map(battery, BatteryInfoVO.class));
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", voList);
         return AppResponse.responseSuccess(data);

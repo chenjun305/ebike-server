@@ -16,4 +16,7 @@ public class BatteryInfoVO {
     private Long shopId;
     private String ebikeSn;
     private BatteryStatus status;
+
+    //private String productId;
+    private ProductVO product;
 }

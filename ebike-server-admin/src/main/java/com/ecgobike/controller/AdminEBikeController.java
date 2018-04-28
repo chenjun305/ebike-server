@@ -11,6 +11,7 @@ import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.service.LogisticsService;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.ProductService;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,9 @@ public class AdminEBikeController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    Mapper mapper;
+
     @RequestMapping("/list")
     @AuthRequire(Auth.ADMIN)
     public AppResponse list(
@@ -58,13 +62,7 @@ public class AdminEBikeController {
         List<Product> productList = productService.findByType(ProductType.EBIKE);
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         for(Product product : productList) {
-            EBikeProductVO eBikeProductVO = new EBikeProductVO();
-            eBikeProductVO.setProductId(product.getId());
-            eBikeProductVO.setModel(product.getModel());
-            eBikeProductVO.setColor(product.getColor());
-            eBikeProductVO.setIconUrl(product.getIconUrl());
-            eBikeProductVO.setPrice(product.getPrice());
-            eBikeProductVO.setCurrency(product.getCurrency());
+            EBikeProductVO eBikeProductVO = mapper.map(product, EBikeProductVO.class);
             long sellNum = paymentOrderService.countProductSellOrders(product.getId());
             eBikeProductVO.setSellNum(sellNum);
             long stockNum = logisticsService.countProductStock(product);

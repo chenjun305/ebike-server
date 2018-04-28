@@ -19,7 +19,8 @@ public class LogisticsVO {
     private Long id;
     private String sn;
 
-    //private Product product;
+    //private String productId;
+    private ProductVO product;
 
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime storageInTime;

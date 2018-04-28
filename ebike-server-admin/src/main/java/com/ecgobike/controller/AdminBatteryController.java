@@ -53,26 +53,6 @@ public class AdminBatteryController {
         return AppResponse.responseSuccess(data);
     }
 
-    @RequestMapping("/product/list")
-    @AuthRequire(Auth.ADMIN)
-    public AppResponse productList() {
-        List<BatteryProductVO> batteryProducts = new ArrayList<>();
-        List<Product> productList = productService.findByType(ProductType.BATTERY);
-        for (Product product :
-                productList) {
-            BatteryProductVO batteryProductVO = new BatteryProductVO();
-            batteryProductVO.setProductId(product.getId());
-            batteryProductVO.setType(product.getModel());
-            batteryProductVO.setIconUrl(product.getIconUrl());
-            batteryProductVO.setStockNum(77);
-            batteryProducts.add(batteryProductVO);
-        }
-        Map<String, Object> data = new HashMap<>();
-        data.put("batteryProducts", batteryProducts);
-
-        return AppResponse.responseSuccess(data);
-    }
-
     @RequestMapping("/lend/list")
     @AuthRequire(Auth.ADMIN)
     public AppResponse lendList(

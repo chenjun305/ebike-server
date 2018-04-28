@@ -6,8 +6,10 @@ import com.ecgobike.common.enums.OrderType;
 import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.PaymentOrderVO;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.StaffService;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +37,9 @@ public class ShopFinanceController {
     @Autowired
     PaymentOrderService paymentOrderService;
 
+    @Autowired
+    Mapper mapper;
+
     @RequestMapping("/today")
     @AuthRequire(Auth.STAFF)
     public AppResponse today(AuthParams params) {
@@ -52,6 +57,7 @@ public class ShopFinanceController {
     ) {
         Long shopId = staffService.getShopIdByUid(params.getUid());
         Page<PaymentOrder> history = paymentOrderService.findAllInShop(shopId, pageable);
+        Page<PaymentOrderVO> historyVO = history.map(paymentOrder -> mapper.map(paymentOrder, PaymentOrderVO.class));
         Map<String, Object> data = new HashMap<>();
         data.put("history", history);
         return AppResponse.responseSuccess(data);

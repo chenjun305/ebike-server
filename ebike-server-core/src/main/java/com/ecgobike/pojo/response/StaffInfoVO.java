@@ -4,6 +4,7 @@ import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.entity.Shop;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by ChenJun on 2018/4/26.
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StaffInfoVO {
     private Long id;
     private String uid;

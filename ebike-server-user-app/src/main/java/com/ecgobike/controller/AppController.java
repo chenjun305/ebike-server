@@ -3,6 +3,7 @@ package com.ecgobike.controller;
 import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.MonthNumFee;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.AppSettingVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,12 +20,7 @@ public class AppController {
     @RequestMapping("/setting")
     public AppResponse setting() {
         Map<String, Object> data = new HashMap<>();
-        data.put("membershipFee", Constants.MEMBERSHIP_FEE);
-        //data.put("monthFee", Constants.MONTH_FEE);
-        data.put("currency", Constants.CURRENCY);
-        data.put("currencySymbol", Constants.CURRENCY_SYMBOL);
-        data.put("serviceAgreementUrl", "");
-        data.put("monthNumFeeRule", MonthNumFee.getRule());
-        return AppResponse.responseSuccess(data);
+        AppSettingVO settingVO = AppSettingVO.getDefault();
+        return AppResponse.responseSuccess(settingVO);
     }
 }

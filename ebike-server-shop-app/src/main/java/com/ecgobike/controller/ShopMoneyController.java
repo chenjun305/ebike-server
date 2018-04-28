@@ -8,11 +8,13 @@ import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.Money;
 import com.ecgobike.pojo.request.TopupParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.PaymentOrderVO;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserService;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.User;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,9 @@ public class ShopMoneyController {
     @Autowired
     PaymentOrderService paymentOrderService;
 
+    @Autowired
+    Mapper mapper;
+
     @PostMapping("/topup")
     @AuthRequire(Auth.STAFF)
     public AppResponse topup(TopupParams params) throws GException {
@@ -52,8 +57,9 @@ public class ShopMoneyController {
         user = userService.addMoney(user, money);
 
         PaymentOrder paymentOrder = paymentOrderService.createTopupOrder(staff, user, money);
+        PaymentOrderVO paymentOrderVO = mapper.map(paymentOrder, PaymentOrderVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("paymentOrder", paymentOrder);
+        data.put("paymentOrder", paymentOrderVO);
         return AppResponse.responseSuccess(data);
     }
 }

@@ -11,6 +11,7 @@ import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseTakeParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.LogisticsVO;
 import com.ecgobike.pojo.response.PurchaseOrderVO;
 import com.ecgobike.service.*;
 import org.dozer.Mapper;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by ChenJun on 2018/4/11.
@@ -58,8 +60,9 @@ public class ShopPurchaseController {
     ){
         Shop shop = staffService.findOneByUid(params.getUid()).getShop();
         Page<PurchaseOrder> list = purchaseOrderService.findAllByShop(shop, pageable);
+        Page<PurchaseOrderVO> voList = list.map(order -> mapper.map(order, PurchaseOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("list", list);
+        data.put("list", voList);
         return AppResponse.responseSuccess(data);
     }
 
@@ -74,9 +77,10 @@ public class ShopPurchaseController {
             batteryService.shopIn(list);
         }
         PurchaseOrderVO purchaseOrderVO = mapper.map(purchaseOrder, PurchaseOrderVO.class);
+        List<LogisticsVO> voList = list.stream().map(logistics -> mapper.map(logistics, LogisticsVO.class)).collect(Collectors.toList());
         Map<String, Object> data = new HashMap<>();
         data.put("purchaseOrder", purchaseOrderVO);
-        data.put("list", list);
+        data.put("list", voList);
         return AppResponse.responseSuccess(data);
     }
 }
