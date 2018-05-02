@@ -9,10 +9,13 @@ import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.LendBattery;
 import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.EBikeInfoVO;
+import com.ecgobike.pojo.response.LendBatteryVO;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;
 import com.ecgobike.service.LendBatteryService;
 import com.ecgobike.service.UserService;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +40,9 @@ public class BatteryController {
     @Autowired
     LendBatteryService lendBatteryService;
 
+    @Autowired
+    Mapper mapper;
+
     @PostMapping("/lend")
     @AuthRequire(Auth.USER)
     public AppResponse lend(LendBatteryParams params) throws GException {
@@ -52,10 +58,11 @@ public class BatteryController {
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, null);
         batteryService.lend(eBike, battery);
         eBike = eBikeService.lendBattery(eBike);
-
+        LendBatteryVO lendBatteryVO = mapper.map(lendBattery, LendBatteryVO.class);
+        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("lendBattery", lendBattery);
-        data.put("ebike", eBike);
+        data.put("lendBattery", lendBatteryVO);
+        data.put("ebike", eBikeInfoVO);
         return AppResponse.responseSuccess(data);
     }
 }

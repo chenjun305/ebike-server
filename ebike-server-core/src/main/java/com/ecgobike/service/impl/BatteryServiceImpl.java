@@ -53,6 +53,14 @@ public class BatteryServiceImpl implements BatteryService {
     }
 
     @Override
+    public long countStockInShop(Long shopId) {
+        Battery battery = new Battery();
+        battery.setShopId(shopId);
+        Example<Battery> example = Example.of(battery);
+        return batteryRepository.count(example);
+    }
+
+    @Override
     public List<Battery> shopIn(List<Logistics> logisticsList) {
         List<Battery> list = new ArrayList<>();
         for (Logistics logistics : logisticsList) {

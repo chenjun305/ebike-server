@@ -18,7 +18,7 @@ public class AppSettingVO {
     private BigDecimal membershipFee;
     private String currency;
     private String currencySymbol;
-    private String serviceAgreementUrl;
+    //private String serviceAgreementUrl;
     private Map<Integer, BigDecimal> monthNumFeeRule;
 
     public static AppSettingVO getDefault() {
@@ -26,7 +26,7 @@ public class AppSettingVO {
         settingVO.setMembershipFee(Constants.MEMBERSHIP_FEE);
         settingVO.setCurrency(Constants.CURRENCY);
         settingVO.setCurrencySymbol(Constants.CURRENCY_SYMBOL);
-        settingVO.setServiceAgreementUrl("");
+        //settingVO.setServiceAgreementUrl("");
         settingVO.setMonthNumFeeRule(MonthNumFee.getRule());
         return settingVO;
     }

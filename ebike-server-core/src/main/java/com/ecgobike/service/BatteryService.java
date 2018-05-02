@@ -15,6 +15,7 @@ public interface BatteryService {
     Page<Battery> findAll(Pageable pageable);
     Page<Battery> findProductStockInShop(Product product, Long shopId, Pageable pageable);
     long countProductStockInShop(Product product, Long shopId);
+    long countStockInShop(Long shopId);
     List<Battery> shopIn(List<Logistics> logisticsList);
     Battery canLend(String batterySn, String ebikeSn, Long staffShopId) throws GException;
     Battery lend(EBike eBike, Battery battery);
