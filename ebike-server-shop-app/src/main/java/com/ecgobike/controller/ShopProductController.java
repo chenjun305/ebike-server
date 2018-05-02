@@ -7,6 +7,7 @@ import com.ecgobike.common.enums.ProductType;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseParams;
@@ -56,7 +57,8 @@ public class ShopProductController {
     @RequestMapping("/list")
     @AuthRequire(Auth.STAFF)
     public AppResponse list(AuthParams params){
-        long shopId = staffService.getShopIdByUid(params.getUid());
+        Shop shop = staffService.getShopByUid(params.getUid());
+        long shopId = shop.getId();
         Map<String, Object> data = new HashMap<>();
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         List<BatteryProductVO> batteryProducts = new ArrayList<>();
@@ -65,7 +67,7 @@ public class ShopProductController {
             if (product.getType() == ProductType.EBIKE) {
                 EBikeProductVO eBikeProductVO = mapper.map(product, EBikeProductVO.class);
                 long sellNum = paymentOrderService.countProductSellOrdersInShop(product.getId(), shopId);
-                long stockNum = logisticsService.countProductStockInShop(product, shopId);
+                long stockNum = logisticsService.countProductStockInShop(product, shop);
                 eBikeProductVO.setSellNum(sellNum);
                 eBikeProductVO.setStockNum(stockNum);
                 ebikeProducts.add(eBikeProductVO);

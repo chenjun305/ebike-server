@@ -8,6 +8,8 @@ import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.Product;
 import com.ecgobike.pojo.response.EBikeProductVO;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.LogisticsVO;
+import com.ecgobike.pojo.response.PaymentOrderVO;
 import com.ecgobike.service.LogisticsService;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.ProductService;
@@ -50,9 +52,10 @@ public class AdminEBikeController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
-        Page<Logistics> ebikes = logisticsService.findAllByType(ProductType.EBIKE, pageable);
+        Page<Logistics> logisticsPage = logisticsService.findAllByType(ProductType.EBIKE, pageable);
+        Page<LogisticsVO> logisticsVOPage = logisticsPage.map(logistics -> mapper.map(logistics, LogisticsVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("ebikes", ebikes);
+        data.put("ebikes", logisticsVOPage);
         return AppResponse.responseSuccess(data);
     }
 
@@ -81,8 +84,9 @@ public class AdminEBikeController {
                     Pageable pageable
     ) {
         Page<PaymentOrder> saleList = paymentOrderService.findAllSall(pageable);
+        Page<PaymentOrderVO> paymentOrderVOPage = saleList.map(paymentOrder -> mapper.map(paymentOrder, PaymentOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("saleList", saleList);
+        data.put("saleList", paymentOrderVOPage);
         return AppResponse.responseSuccess(data);
     }
 }

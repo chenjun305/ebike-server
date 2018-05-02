@@ -1,9 +1,6 @@
 package com.ecgobike.entity;
 
-import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.LogisticsStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,25 +18,21 @@ public class Logistics implements Serializable {
     private Long id;
     private String sn;
 
-    //@JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
     private LocalDateTime storageInTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime storageOutTime;
     private String purchaseSn;
-    private Long shopId;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime shopInTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime shopOutTime;
     private LogisticsStatus status;
 
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

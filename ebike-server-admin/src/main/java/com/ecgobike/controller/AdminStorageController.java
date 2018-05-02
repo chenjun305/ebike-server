@@ -12,9 +12,13 @@ import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.pojo.request.StorageInParams;
 import com.ecgobike.pojo.request.StorageOutParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.LogisticsVO;
+import com.ecgobike.pojo.response.ProductVO;
+import com.ecgobike.pojo.response.ShopVO;
 import com.ecgobike.service.LogisticsService;
 import com.ecgobike.service.ProductService;
 import com.ecgobike.service.PurchaseOrderService;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +45,9 @@ public class AdminStorageController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    Mapper mapper;
 
     @PostMapping("/out")
     @AuthRequire(Auth.ADMIN)
@@ -75,8 +82,9 @@ public class AdminStorageController {
                                           Pageable pageable
     ) {
         Page<Logistics> list = logisticsService.findAllByStatus(LogisticsStatus.TRANSIT, pageable);
+        Page<LogisticsVO> logisticsVOPage = list.map(logistics -> mapper.map(logistics, LogisticsVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("list", list);
+        data.put("list", logisticsVOPage);
         return AppResponse.responseSuccess(data);
     }
 
@@ -98,8 +106,9 @@ public class AdminStorageController {
                     Pageable pageable
     ) {
         Page<Logistics> list = logisticsService.findAll(pageable);
+        Page<LogisticsVO> logisticsVOPage = list.map(logistics -> mapper.map(logistics, LogisticsVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("list", list);
+        data.put("list", logisticsVOPage);
         return AppResponse.responseSuccess(data);
     }
 }

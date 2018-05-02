@@ -10,6 +10,7 @@ import com.ecgobike.entity.Staff;
 import com.ecgobike.repository.LendBatteryRepository;
 import com.ecgobike.service.LendBatteryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,10 @@ public class LendBatteryServiceImpl implements LendBatteryService {
     }
 
     @Override
-    public Page<LendBattery> findAllLendHistory(Pageable pageable) {
-        return lendBatteryRepository.findAll(pageable);
+    public Page<LendBattery> findAllLendHistoryByBatterySn(String batterySn, Pageable pageable) {
+        LendBattery lendBattery = new LendBattery();
+        lendBattery.setBatterySn(batterySn);
+        Example<LendBattery> example = Example.of(lendBattery);
+        return lendBatteryRepository.findAll(example, pageable);
     }
 }

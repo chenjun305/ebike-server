@@ -5,8 +5,8 @@ import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.request.ProductParams;
 import com.ecgobike.pojo.request.ReturnBatteryParams;
-import com.ecgobike.pojo.response.BatteryInfoVO;
-import com.ecgobike.pojo.response.EBikeInfoVO;
+import com.ecgobike.pojo.response.BatteryVO;
+import com.ecgobike.pojo.response.EBikeVO;
 import com.ecgobike.pojo.response.LendBatteryVO;
 import com.ecgobike.service.*;
 import com.ecgobike.common.annotation.AuthRequire;
@@ -59,9 +59,9 @@ public class ShopBatteryController {
         if (battery == null) {
             throw new GException(ErrorConstants.NOT_EXIST_BATTERY);
         }
-        BatteryInfoVO batteryInfoVO = mapper.map(battery, BatteryInfoVO.class);
+        BatteryVO batteryVO = mapper.map(battery, BatteryVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("battery", batteryInfoVO);
+        data.put("battery", batteryVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -96,11 +96,11 @@ public class ShopBatteryController {
         eBike = eBikeService.lendBattery(eBike);
 
         LendBatteryVO lendBatteryVO = mapper.map(lendBattery, LendBatteryVO.class);
-        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+        EBikeVO eBikeVO = mapper.map(eBike, EBikeVO.class);
 
         Map<String, Object> data = new HashMap<>();
         data.put("lendBattery", lendBatteryVO);
-        data.put("ebike", eBikeInfoVO);
+        data.put("ebike", eBikeVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -119,7 +119,7 @@ public class ShopBatteryController {
         }
         Long shopId = staffService.getShopIdByUid(params.getUid());
         Page<Battery> stockList = batteryService.findProductStockInShop(product, shopId, pageable);
-        Page<BatteryInfoVO> voList = stockList.map(battery -> mapper.map(battery, BatteryInfoVO.class));
+        Page<BatteryVO> voList = stockList.map(battery -> mapper.map(battery, BatteryVO.class));
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", voList);
         return AppResponse.responseSuccess(data);

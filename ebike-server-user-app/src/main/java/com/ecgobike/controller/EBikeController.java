@@ -14,7 +14,7 @@ import com.ecgobike.entity.PaymentOrder;
 import com.ecgobike.entity.User;
 import com.ecgobike.pojo.request.RenewParams;
 import com.ecgobike.pojo.response.AppResponse;
-import com.ecgobike.pojo.response.EBikeInfoVO;
+import com.ecgobike.pojo.response.EBikeVO;
 import com.ecgobike.pojo.response.PaymentOrderVO;
 import com.ecgobike.pojo.response.ProductVO;
 import com.ecgobike.service.EBikeService;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +53,16 @@ public class EBikeController {
     @AuthRequire(Auth.USER)
     public AppResponse list(AuthParams authParams) {
         List<EBike> ebikes =  eBikeService.findAllByUid(authParams.getUid());
-        List<EBikeInfoVO> voList = ebikes.stream().map(ebike -> {
-            EBikeInfoVO eBikeInfoVO = mapper.map(ebike, EBikeInfoVO.class);
+        List<EBikeVO> voList = ebikes.stream().map(ebike -> {
+            EBikeVO eBikeVO = mapper.map(ebike, EBikeVO.class);
             ProductVO productVO = mapper.map(ebike.getProduct(), ProductVO.class);
-            eBikeInfoVO.setProduct(productVO);
-            return eBikeInfoVO;
+            eBikeVO.setProduct(productVO);
+            if (ebike.getExpireDate() != null && ebike.getExpireDate().isAfter(LocalDate.now())) {
+                eBikeVO.setIsExpire(false);
+            } else {
+                eBikeVO.setIsExpire(true);
+            }
+            return eBikeVO;
         }).collect(Collectors.toList());
         Map<String, Object> data = new HashMap<>();
         data.put("ebikes", voList);

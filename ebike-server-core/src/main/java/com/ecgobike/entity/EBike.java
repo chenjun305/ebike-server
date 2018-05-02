@@ -1,9 +1,5 @@
 package com.ecgobike.entity;
 
-import com.ecgobike.common.constant.Constants;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,9 +15,7 @@ public class EBike {
     private Long id;
     private String sn;
 
-    //@JsonIgnore
-    //@JsonSerialize
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -32,8 +26,6 @@ public class EBike {
     private LocalDate expireDate;
     private Byte status;
 
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

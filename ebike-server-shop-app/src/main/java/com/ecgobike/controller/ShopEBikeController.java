@@ -7,10 +7,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
 import com.ecgobike.helper.FileUrlHelper;
 import com.ecgobike.pojo.request.*;
-import com.ecgobike.pojo.response.AppResponse;
-import com.ecgobike.pojo.response.EBikeInfoVO;
-import com.ecgobike.pojo.response.LogisticsVO;
-import com.ecgobike.pojo.response.PaymentOrderVO;
+import com.ecgobike.pojo.response.*;
 import com.ecgobike.service.*;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,12 +64,27 @@ public class ShopEBikeController {
         if (logistics == null) {
             throw new GException(ErrorConstants.NOT_EXIST_PRODUCT);
         }
-        LogisticsVO logisticsVO = mapper.map(logistics, LogisticsVO.class);
+        if (logistics.getProduct().getType() != ProductType.EBIKE) {
+            throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
+        }
         Map<String, Object> data = new HashMap<>();
-        data.put("logistics", logisticsVO);
+
         EBike eBike = eBikeService.findOneBySn(ebikeSn);
         if (eBike != null) {
             EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+
+            if (eBike.getExpireDate().isBefore(LocalDate.now())) {
+                eBikeInfoVO.setIsExpire(true);
+            } else {
+                eBikeInfoVO.setIsExpire(false);
+            }
+            eBikeInfoVO.setLogisticsStatus(logistics.getStatus());
+            data.put("ebike", eBikeInfoVO);
+        } else {
+            EBikeInfoVO eBikeInfoVO = new EBikeInfoVO();
+            eBikeInfoVO.setSn(logistics.getSn());
+            eBikeInfoVO.setLogisticsStatus(logistics.getStatus());
+            eBikeInfoVO.setProduct(mapper.map(logistics.getProduct(), ProductVO.class));
             data.put("ebike", eBikeInfoVO);
         }
         return AppResponse.responseSuccess(data);
@@ -130,10 +143,10 @@ public class ShopEBikeController {
         EBike eBike = eBikeService.joinMembership(params.getEbikeSn());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_JOIN_MEMBERSHIP, eBike, staff, null);
 
-        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+        EBikeVO eBikeVO = mapper.map(eBike, EBikeVO.class);
         PaymentOrderVO paymentOrderVO = mapper.map(order, PaymentOrderVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("ebike", eBikeInfoVO);
+        data.put("ebike", eBikeVO);
         data.put("order", paymentOrderVO);
         return AppResponse.responseSuccess(data);
     }
@@ -145,10 +158,10 @@ public class ShopEBikeController {
         EBike eBike = eBikeService.renew(params.getEbikeSn(), params.getMonthNum());
         PaymentOrder order = paymentOrderService.createMembershipOrder(OrderType.STAFF_RENEW_MONTHLY, eBike, staff, params.getMonthNum());
 
-        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+        EBikeVO eBikeVO = mapper.map(eBike, EBikeVO.class);
         PaymentOrderVO paymentOrderVO = mapper.map(order, PaymentOrderVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("ebike", eBikeInfoVO);
+        data.put("ebike", eBikeVO);
         data.put("order", paymentOrderVO);
         return AppResponse.responseSuccess(data);
     }
@@ -187,8 +200,8 @@ public class ShopEBikeController {
         if (product.getType() != ProductType.EBIKE) {
             throw new GException(ErrorConstants.NOT_EBIKE_PRODUCT);
         }
-        Long shopId = staffService.findOneByUid(params.getUid()).getShop().getId();
-        Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shopId, pageable);
+        Shop shop = staffService.findOneByUid(params.getUid()).getShop();
+        Page<Logistics> stockList = logisticsService.findProductStockInShop(product, shop, pageable);
         Page<LogisticsVO> voList = stockList.map(logistics -> mapper.map(logistics, LogisticsVO.class));
         Map<String, Object> data = new HashMap<>();
         data.put("stockList", voList);

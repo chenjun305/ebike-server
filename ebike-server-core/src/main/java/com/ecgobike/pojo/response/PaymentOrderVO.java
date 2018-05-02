@@ -20,7 +20,10 @@ public class PaymentOrderVO {
     private BigDecimal price;
     private String currency;
     private String ebikeSn;
-    private Long productId;
+
+    //private Long productId;
+    private ProductVO product;
+
     private String uid;
     private String staffUid;
     private Long shopId;

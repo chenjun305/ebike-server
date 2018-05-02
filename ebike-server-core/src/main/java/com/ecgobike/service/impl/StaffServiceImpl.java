@@ -32,6 +32,12 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    public Shop getShopByUid(String uid) {
+        Staff staff = staffRepository.findOneByUid(uid);
+        return staff.getShop();
+    }
+
+    @Override
     public Staff create(String uid, Shop shop, String staffNum) {
         Staff staff = new Staff();
         staff.setUid(uid);

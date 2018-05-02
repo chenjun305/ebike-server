@@ -14,5 +14,5 @@ import org.springframework.data.domain.Pageable;
 public interface LendBatteryService {
     LendBattery lend(EBike eBike, Battery battery, String lendStaffUid);
     LendBattery returnBattery(Staff staff, String batterySn) throws GException;
-    Page<LendBattery> findAllLendHistory(Pageable pageable);
+    Page<LendBattery> findAllLendHistoryByBatterySn(String batterySn, Pageable pageable);
 }

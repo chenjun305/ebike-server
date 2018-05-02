@@ -1,9 +1,6 @@
 package com.ecgobike.entity;
 
-import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.BatteryStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,7 +19,6 @@ public class Battery {
 
     private String sn;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -31,8 +27,6 @@ public class Battery {
     private String ebikeSn;
     private Integer battery;
     private BatteryStatus status;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

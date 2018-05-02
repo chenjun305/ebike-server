@@ -4,8 +4,10 @@ import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.Shop;
 import com.ecgobike.pojo.request.ShopParams;
+import com.ecgobike.pojo.response.ShopVO;
 import com.ecgobike.service.ShopService;
 import com.ecgobike.pojo.response.AppResponse;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,9 @@ public class AdminShopController {
     @Autowired
     ShopService shopService;
 
+    @Autowired
+    Mapper mapper;
+
     @RequestMapping("/create")
     @AuthRequire(Auth.ADMIN)
     public AppResponse create(ShopParams params) {
@@ -42,8 +47,9 @@ public class AdminShopController {
         shop.setBatteryAvailable(0);
         shop.setStatus((byte)1);
         Shop newShop = shopService.create(shop);
+        ShopVO shopVO = mapper.map(shop, ShopVO.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("shop", newShop);
+        data.put("shop", shopVO);
         return AppResponse.responseSuccess(data);
     }
 
@@ -54,8 +60,9 @@ public class AdminShopController {
                     Pageable pageable
     ) {
         Page<Shop> shops = shopService.findAll(pageable);
+        Page<ShopVO> shopVOPage = shops.map(shop -> mapper.map(shop, ShopVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("shops", shops);
+        data.put("shops", shopVOPage);
         return AppResponse.responseSuccess(data);
     }
 }

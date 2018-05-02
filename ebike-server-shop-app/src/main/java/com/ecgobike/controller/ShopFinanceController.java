@@ -59,7 +59,7 @@ public class ShopFinanceController {
         Page<PaymentOrder> history = paymentOrderService.findAllInShop(shopId, pageable);
         Page<PaymentOrderVO> historyVO = history.map(paymentOrder -> mapper.map(paymentOrder, PaymentOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("history", history);
+        data.put("history", historyVO);
         return AppResponse.responseSuccess(data);
     }
 }

@@ -24,13 +24,12 @@ public class PurchaseOrderVO {
 
     private String sn;
 
-    private Product product;
+    private ProductVO product;
+    private ShopVO shop;
 
     private Integer requireNum;
     private Integer permitNum;
     private String staffUid;
-
-    private Shop shop;
 
     private String permitUid;
     private String departureUid;

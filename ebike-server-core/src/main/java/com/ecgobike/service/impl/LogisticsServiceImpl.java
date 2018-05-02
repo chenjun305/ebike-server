@@ -7,6 +7,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.repository.LogisticsRepository;
 import com.ecgobike.service.LogisticsService;
 import org.apache.tomcat.jni.Error;
@@ -59,10 +60,10 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
-    public Page<Logistics> findProductStockInShop(Product product, Long shopId, Pageable pageable) {
+    public Page<Logistics> findProductStockInShop(Product product, Shop shop, Pageable pageable) {
         Logistics logistics = new Logistics();
         logistics.setProduct(product);
-        logistics.setShopId(shopId);
+        logistics.setShop(shop);
         logistics.setStatus(LogisticsStatus.SHOP);
         Example<Logistics> example = Example.of(logistics);
 
@@ -70,10 +71,10 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
-    public long countProductStockInShop(Product product, Long shopId) {
+    public long countProductStockInShop(Product product, Shop shop) {
         Logistics logistics = new Logistics();
         logistics.setProduct(product);
-        logistics.setShopId(shopId);
+        logistics.setShop(shop);
         logistics.setStatus(LogisticsStatus.SHOP);
         Example<Logistics> example = Example.of(logistics);
         return logisticsRepository.count(example);
@@ -132,7 +133,7 @@ public class LogisticsServiceImpl implements LogisticsService {
     public List<Logistics> shopIn(PurchaseOrder purchaseOrder) {
         List<Logistics> list = logisticsRepository.findAllByPurchaseSn(purchaseOrder.getSn());
         for (Logistics logistics : list) {
-            logistics.setShopId(purchaseOrder.getShop().getId());
+            logistics.setShop(purchaseOrder.getShop());
             logistics.setShopInTime(LocalDateTime.now());
             logistics.setStatus(LogisticsStatus.SHOP);
             logistics.setUpdateTime(LocalDateTime.now());
@@ -149,7 +150,7 @@ public class LogisticsServiceImpl implements LogisticsService {
         if (logistics.getStatus() == LogisticsStatus.SELLED) {
             throw new GException(ErrorConstants.ALREADY_SELLED);
         } else if (logistics.getStatus() != LogisticsStatus.SHOP
-                || logistics.getShopId() != staffShopId) {
+                || logistics.getShop().getId() != staffShopId) {
             throw new GException(ErrorConstants.NOT_YOUR_SHOP_EBIKE);
         }
         logistics.setShopOutTime(LocalDateTime.now());

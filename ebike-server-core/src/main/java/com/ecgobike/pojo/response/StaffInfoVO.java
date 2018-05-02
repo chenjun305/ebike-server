@@ -37,7 +37,7 @@ public class StaffInfoVO {
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 
-    private Shop shop;
+    private ShopVO shop;
 
     private String staffNum;
 

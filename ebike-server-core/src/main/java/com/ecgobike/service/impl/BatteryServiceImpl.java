@@ -67,7 +67,7 @@ public class BatteryServiceImpl implements BatteryService {
             Battery battery = new Battery();
             battery.setSn(logistics.getSn());
             battery.setProduct(logistics.getProduct());
-            battery.setShopId(logistics.getShopId());
+            battery.setShopId(logistics.getShop().getId());
             battery.setBattery(100);
             battery.setStatus(BatteryStatus.IN_SHOP);
             battery.setCreateTime(LocalDateTime.now());

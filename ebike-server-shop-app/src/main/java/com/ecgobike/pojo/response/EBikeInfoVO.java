@@ -1,16 +1,14 @@
 package com.ecgobike.pojo.response;
 
-import com.ecgobike.entity.Product;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ecgobike.common.enums.LogisticsStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 /**
- * Created by ChenJun on 2018/4/25.
+ * Created by ChenJun on 2018/5/2.
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EBikeInfoVO {
     private String sn;
     private String uid;
@@ -18,7 +16,10 @@ public class EBikeInfoVO {
     private Integer monthLeft;
     private Integer monthTotal;
     private LocalDate expireDate;
-    private Byte status;
+
+    private LogisticsStatus logisticsStatus;
 
     private ProductVO product;
+
+    private Boolean isExpire;
 }

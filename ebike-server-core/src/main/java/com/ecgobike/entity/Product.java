@@ -1,9 +1,6 @@
 package com.ecgobike.entity;
 
-import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.enums.ProductType;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -33,8 +30,6 @@ public class Product implements Serializable {
     private String desc;
     private Byte status;
 
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 }

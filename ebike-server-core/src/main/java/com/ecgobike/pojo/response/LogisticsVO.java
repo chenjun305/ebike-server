@@ -21,13 +21,14 @@ public class LogisticsVO {
 
     //private String productId;
     private ProductVO product;
+    //private Long shopId;
+    private ShopVO shop;
 
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime storageInTime;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime storageOutTime;
     private String purchaseSn;
-    private Long shopId;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime shopInTime;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)

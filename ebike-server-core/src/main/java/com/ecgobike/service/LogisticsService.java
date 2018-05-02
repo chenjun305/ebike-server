@@ -6,6 +6,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Logistics;
 import com.ecgobike.entity.Product;
 import com.ecgobike.entity.PurchaseOrder;
+import com.ecgobike.entity.Shop;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,8 +20,8 @@ public interface LogisticsService {
     Page<Logistics> findAll(Pageable pageable);
     Page<Logistics> findAllByType(ProductType type, Pageable pageable);
     Page<Logistics> findAllByStatus(LogisticsStatus status, Pageable pageable);
-    Page<Logistics> findProductStockInShop(Product product, Long shopId, Pageable pageable);
-    long countProductStockInShop(Product product, Long shopId);
+    Page<Logistics> findProductStockInShop(Product product, Shop shop, Pageable pageable);
+    long countProductStockInShop(Product product, Shop shop);
     long countProductStock(Product product);
     List<Logistics> in(Product product, List<String> snList) throws GException;
     List<Logistics> out(PurchaseOrder purchaseOrder, List<String> snList) throws GException;

@@ -6,7 +6,9 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.PurchaseOrder;
 import com.ecgobike.pojo.request.PurchasePermitParams;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.ProductVO;
 import com.ecgobike.pojo.response.PurchaseOrderVO;
+import com.ecgobike.pojo.response.ShopVO;
 import com.ecgobike.service.PurchaseOrderService;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +45,10 @@ public class AdminPurchaseController {
                     Pageable pageable
     ) {
         Page<PurchaseOrder> purchaseRequireOrders = purchaseOrderService.findAllRequire(pageable);
+        Page<PurchaseOrderVO> purchaseOrderVOPage = purchaseRequireOrders.map(
+                purchaseOrder -> mapper.map(purchaseOrder, PurchaseOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("purchaseRequireOrders", purchaseRequireOrders);
+        data.put("purchaseRequireOrders", purchaseOrderVOPage);
         return AppResponse.responseSuccess(data);
     }
 
@@ -55,8 +59,10 @@ public class AdminPurchaseController {
                     Pageable pageable
     ) {
         Page<PurchaseOrder> purchasePermitOrders = purchaseOrderService.findAllPermit(pageable);
+        Page<PurchaseOrderVO> purchaseOrderVOPage = purchasePermitOrders.map(
+                purchaseOrder -> mapper.map(purchaseOrder, PurchaseOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("purchasePermitOrders", purchasePermitOrders);
+        data.put("purchasePermitOrders", purchaseOrderVOPage);
         return AppResponse.responseSuccess(data);
     }
 

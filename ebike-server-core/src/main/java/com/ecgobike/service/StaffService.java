@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface StaffService {
     Staff findOneByUid(String uid);
+    Shop getShopByUid(String uid);
     Long getShopIdByUid(String uid);
     Staff create(String uid, Shop shop, String staffNum);
     Page<Staff> findAll(Pageable pageable);

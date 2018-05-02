@@ -12,6 +12,7 @@ import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.PurchaseTakeParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.LogisticsVO;
+import com.ecgobike.pojo.response.ProductVO;
 import com.ecgobike.pojo.response.PurchaseOrderVO;
 import com.ecgobike.service.*;
 import org.dozer.Mapper;

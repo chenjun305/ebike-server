@@ -7,6 +7,7 @@ import com.ecgobike.entity.Staff;
 import com.ecgobike.entity.User;
 import com.ecgobike.entity.UserRole;
 import com.ecgobike.pojo.response.AppResponse;
+import com.ecgobike.pojo.response.ShopVO;
 import com.ecgobike.pojo.response.StaffInfoVO;
 import com.ecgobike.service.StaffService;
 import com.ecgobike.service.UserRoleService;
@@ -93,7 +94,7 @@ public class ShopStaffController {
         String token = AuthUtil.buildToken(uid, signMat);
         StaffInfoVO staffInfoVO = mapper.map(user, StaffInfoVO.class);
         staffInfoVO.setStaffNum(staff.getStaffNum());
-        staffInfoVO.setShop(staff.getShop());
+        staffInfoVO.setShop(mapper.map(staff.getShop(), ShopVO.class));
 
         List<StaffRole> roles = roleList.stream().map(UserRole::getRole).collect(toList());
         staffInfoVO.setRoles(roles);

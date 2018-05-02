@@ -9,7 +9,7 @@ import com.ecgobike.entity.EBike;
 import com.ecgobike.entity.LendBattery;
 import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.response.AppResponse;
-import com.ecgobike.pojo.response.EBikeInfoVO;
+import com.ecgobike.pojo.response.EBikeVO;
 import com.ecgobike.pojo.response.LendBatteryVO;
 import com.ecgobike.service.BatteryService;
 import com.ecgobike.service.EBikeService;
@@ -59,10 +59,10 @@ public class BatteryController {
         batteryService.lend(eBike, battery);
         eBike = eBikeService.lendBattery(eBike);
         LendBatteryVO lendBatteryVO = mapper.map(lendBattery, LendBatteryVO.class);
-        EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
+        EBikeVO eBikeVO = mapper.map(eBike, EBikeVO.class);
         Map<String, Object> data = new HashMap<>();
         data.put("lendBattery", lendBatteryVO);
-        data.put("ebike", eBikeInfoVO);
+        data.put("ebike", eBikeVO);
         return AppResponse.responseSuccess(data);
     }
 }

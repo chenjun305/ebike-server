@@ -1,8 +1,5 @@
 package com.ecgobike.entity;
 
-import com.ecgobike.common.constant.Constants;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,17 +20,14 @@ public class Staff implements Serializable {
     private Long id;
     private String uid;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
     private String staffNum;
     private Integer status;
 
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
-    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
 
 

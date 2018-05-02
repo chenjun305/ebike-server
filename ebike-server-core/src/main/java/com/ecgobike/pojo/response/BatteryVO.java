@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BatteryInfoVO {
+public class BatteryVO {
     private String sn;
     private Long shopId;
     private String ebikeSn;
