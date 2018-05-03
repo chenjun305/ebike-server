@@ -3,8 +3,6 @@ server:
   servlet:
     context-path: ${context_path:/admin}
 spring:
-  jmx:
-    enabled: false
   servlet:
       multipart:
         max-file-size: 10MB
