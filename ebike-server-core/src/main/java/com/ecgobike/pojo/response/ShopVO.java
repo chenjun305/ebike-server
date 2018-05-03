@@ -25,7 +25,7 @@ public class ShopVO {
     private String geohash;
     private Byte status;
 
-    private Long batteryAvailable;
+    private Integer batteryAvailable;
 
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;

@@ -12,6 +12,9 @@ import java.util.List;
 public interface ShopService {
     List<Shop> near(Double latitude, Double longitude);
     Page<Shop> findAll(Pageable pageable);
+    List<Shop> findAll();
     Shop create(Shop shop);
     Shop getShopById(Long id);
+
+    List<Shop> saveAll(List<Shop> shopList);
 }

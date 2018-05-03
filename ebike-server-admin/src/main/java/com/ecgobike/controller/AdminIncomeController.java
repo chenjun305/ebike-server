@@ -39,7 +39,7 @@ public class AdminIncomeController {
         Page<PaymentOrder> list = paymentOrderService.findAllShopIncome(pageable);
         Page<PaymentOrderVO> paymentOrderVOPage = list.map(paymentOrder -> mapper.map(paymentOrder, PaymentOrderVO.class));
         Map<String, Object> data = new HashMap<>();
-        data.put("list", list);
+        data.put("list", paymentOrderVOPage);
         return AppResponse.responseSuccess(data);
     }
 }

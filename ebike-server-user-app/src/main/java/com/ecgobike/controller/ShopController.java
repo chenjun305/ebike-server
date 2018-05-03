@@ -32,12 +32,9 @@ public class ShopController {
     @PostMapping("/near")
     public AppResponse list(Double latitude, Double longitude) {
         List<Shop> shops = shopService.near(latitude, longitude);
-        List<ShopVO> shopVOList = shops.stream().map(shop -> {
-            ShopVO shopVO = mapper.map(shop, ShopVO.class);
-            long batteryAvailable = batteryService.countStockInShop(shop.getId());
-            shopVO.setBatteryAvailable(batteryAvailable);
-            return shopVO;
-        }).collect(Collectors.toList()
+        List<ShopVO> shopVOList = shops.stream()
+                .map(shop -> mapper.map(shop, ShopVO.class))
+                .collect(Collectors.toList()
         );
         Map<String, Object> data = new HashMap<>();
         data.put("shops", shopVOList);

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,6 +27,16 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Page<Shop> findAll(Pageable pageable) {
         return shopRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Shop> findAll() {
+        return shopRepository.findAll();
+    }
+
+    @Override
+    public List<Shop> saveAll(List<Shop> shopList) {
+        return shopRepository.saveAll(shopList);
     }
 
     @Override
