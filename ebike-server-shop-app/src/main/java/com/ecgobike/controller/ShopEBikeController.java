@@ -73,10 +73,10 @@ public class ShopEBikeController {
         if (eBike != null) {
             EBikeInfoVO eBikeInfoVO = mapper.map(eBike, EBikeInfoVO.class);
 
-            if (eBike.getExpireDate().isBefore(LocalDate.now())) {
-                eBikeInfoVO.setIsExpire(true);
-            } else {
+            if (eBike.getExpireDate() != null && eBike.getExpireDate().isAfter(LocalDate.now())) {
                 eBikeInfoVO.setIsExpire(false);
+            } else {
+                eBikeInfoVO.setIsExpire(true);
             }
             eBikeInfoVO.setLogisticsStatus(logistics.getStatus());
             data.put("ebike", eBikeInfoVO);

@@ -120,7 +120,9 @@ public class AdminStaffController {
             User user = userService.getUserByUid(staff.getUid());
             StaffInfoVO staffInfoVO = mapper.map(user, StaffInfoVO.class);
             staffInfoVO.setStaffNum(staff.getStaffNum());
-            staffInfoVO.setShop(mapper.map(staff.getShop(), ShopVO.class));
+            if (staff.getShop() != null) {
+                staffInfoVO.setShop(mapper.map(staff.getShop(), ShopVO.class));
+            }
             List<UserRole> roleList = userRoleService.findAllByUid(staff.getUid());
             List<StaffRole> roles = roleList.stream().map(UserRole::getRole).collect(toList());
             staffInfoVO.setRoles(roles);

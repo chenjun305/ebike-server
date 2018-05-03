@@ -1,7 +1,11 @@
 package com.ecgobike.pojo.response;
 
+import com.ecgobike.common.constant.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by ChenJun on 2018/4/28.
@@ -22,4 +26,9 @@ public class ShopVO {
     private Byte status;
 
     private Long batteryAvailable;
+
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    private LocalDateTime createTime;
+    @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
+    private LocalDateTime updateTime;
 }
