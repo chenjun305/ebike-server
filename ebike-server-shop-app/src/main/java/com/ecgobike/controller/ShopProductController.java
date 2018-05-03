@@ -66,7 +66,7 @@ public class ShopProductController {
         for (Product product : productList) {
             if (product.getType() == ProductType.EBIKE) {
                 EBikeProductVO eBikeProductVO = mapper.map(product, EBikeProductVO.class);
-                long sellNum = paymentOrderService.countProductSellOrdersInShop(product.getId(), shopId);
+                long sellNum = paymentOrderService.countProductSellOrdersInShop(product, shopId);
                 long stockNum = logisticsService.countProductStockInShop(product, shop);
                 eBikeProductVO.setSellNum(sellNum);
                 eBikeProductVO.setStockNum(stockNum);

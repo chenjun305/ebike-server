@@ -66,7 +66,7 @@ public class AdminEBikeController {
         List<EBikeProductVO> ebikeProducts = new ArrayList<>();
         for(Product product : productList) {
             EBikeProductVO eBikeProductVO = mapper.map(product, EBikeProductVO.class);
-            long sellNum = paymentOrderService.countProductSellOrders(product.getId());
+            long sellNum = paymentOrderService.countProductSellOrders(product);
             eBikeProductVO.setSellNum(sellNum);
             long stockNum = logisticsService.countProductStock(product);
             eBikeProductVO.setStockNum(stockNum);

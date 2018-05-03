@@ -23,7 +23,7 @@ public interface PaymentOrderService {
     Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable);
     Page<PaymentOrder> findAllInShop(Long shopId, Pageable pageable);
     Page<PaymentOrder> findAllShopIncome(Pageable pageable);
-    long countProductSellOrdersInShop(Long productId, Long shopId);
-    long countProductSellOrders(Long productId);
+    long countProductSellOrdersInShop(Product product, Long shopId);
+    long countProductSellOrders(Product product);
     List<Map<OrderType, BigDecimal>> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day);
 }

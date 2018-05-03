@@ -21,10 +21,10 @@ public class PaymentOrderVO {
     private String currency;
     private String ebikeSn;
 
-    //private Long productId;
     private ProductVO product;
 
     private String uid;
+    private String tel;
     private String staffUid;
     private Long shopId;
     private LocalDate payDate;
@@ -32,6 +32,7 @@ public class PaymentOrderVO {
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer status;
+
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime createTime;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)

@@ -39,6 +39,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setPrice(money.getAmount());
         paymentOrder.setCurrency(money.getCurrency());
         paymentOrder.setUid(user.getUid());
+        paymentOrder.setTel(user.getTel());
         paymentOrder.setStaffUid(staff.getUid());
         paymentOrder.setShopId(staff.getShop().getId());
         paymentOrder.setPayDate(LocalDate.now());
@@ -67,7 +68,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         }
         paymentOrder.setCurrency(Constants.CURRENCY);
         paymentOrder.setEbikeSn(eBike.getSn());
-        paymentOrder.setProductId(eBike.getProduct().getId());
+        paymentOrder.setProduct(eBike.getProduct());
         paymentOrder.setUid(eBike.getUid());
         if (type == OrderType.STAFF_JOIN_MEMBERSHIP || type == OrderType.STAFF_RENEW_MONTHLY) {
             paymentOrder.setStaffUid(staff.getUid());
@@ -88,8 +89,9 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
         paymentOrder.setPrice(eBike.getProduct().getPrice());
         paymentOrder.setCurrency(eBike.getProduct().getCurrency());
         paymentOrder.setEbikeSn(eBike.getSn());
-        paymentOrder.setProductId(eBike.getProduct().getId());
+        paymentOrder.setProduct(eBike.getProduct());
         paymentOrder.setUid(user.getUid());
+        paymentOrder.setTel(user.getTel());
         paymentOrder.setStaffUid(staff.getUid());
         paymentOrder.setShopId(staff.getShop().getId());
         paymentOrder.setPayDate(LocalDate.now());
@@ -112,7 +114,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     @Override
     public Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable) {
         PaymentOrder paymentOrder = new PaymentOrder();
-        paymentOrder.setProductId(product.getId());
+        paymentOrder.setProduct(product);
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
         paymentOrder.setShopId(shopId);
 
@@ -136,20 +138,20 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
-    public long countProductSellOrdersInShop(Long productId, Long shopId) {
-        return countSellOrdersBy(productId, shopId);
+    public long countProductSellOrdersInShop(Product product, Long shopId) {
+        return countSellOrdersBy(product, shopId);
     }
 
     @Override
-    public long countProductSellOrders(Long productId) {
-        return countSellOrdersBy(productId, null);
+    public long countProductSellOrders(Product product) {
+        return countSellOrdersBy(product, null);
     }
 
-    protected long countSellOrdersBy(Long productId, Long shopId) {
+    protected long countSellOrdersBy(Product product, Long shopId) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setType(OrderType.SELL_EBIKE.get());
-        if (productId != null) {
-            paymentOrder.setProductId(productId);
+        if (product != null) {
+            paymentOrder.setProduct(product);
         }
         if (shopId != null) {
             paymentOrder.setShopId(shopId);
