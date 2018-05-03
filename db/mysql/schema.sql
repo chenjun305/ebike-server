@@ -139,6 +139,7 @@ CREATE TABLE `payment_order` (
   `ebike_sn` VARCHAR(64) DEFAULT NULL COMMENT '电单车sn',
   `product_id` INT(11) UNSIGNED COMMENT '产品ID',
   `uid` varchar(32) DEFAULT NULL COMMENT '用户uid',
+  `tel` varchar(12) COMMENT '手机号',
   `staff_uid` varchar(32) DEFAULT NULL COMMENT '店员uid，店员帮用户操作时有值',
   `shop_id` INT(11) DEFAULT NULL COMMENT '门店ID',
   `pay_date` date comment '付款日期',
