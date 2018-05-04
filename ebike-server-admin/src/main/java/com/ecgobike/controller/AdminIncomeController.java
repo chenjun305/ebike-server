@@ -3,9 +3,12 @@ package com.ecgobike.controller;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.enums.Auth;
 import com.ecgobike.entity.PaymentOrder;
+import com.ecgobike.entity.ShopIncomeDaily;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.PaymentOrderVO;
+import com.ecgobike.pojo.response.ShopIncomeDailyVO;
 import com.ecgobike.service.PaymentOrderService;
+import com.ecgobike.service.ShopIncomeDailyService;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +32,9 @@ public class AdminIncomeController {
     PaymentOrderService paymentOrderService;
 
     @Autowired
+    ShopIncomeDailyService shopIncomeDailyService;
+
+    @Autowired
     Mapper mapper;
 
     @RequestMapping("/list")
@@ -40,6 +46,18 @@ public class AdminIncomeController {
         Page<PaymentOrderVO> paymentOrderVOPage = list.map(paymentOrder -> mapper.map(paymentOrder, PaymentOrderVO.class));
         Map<String, Object> data = new HashMap<>();
         data.put("list", paymentOrderVOPage);
+        return AppResponse.responseSuccess(data);
+    }
+
+    @RequestMapping("/daily/list")
+    @AuthRequire(Auth.ADMIN)
+    public AppResponse dailyList(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Page<ShopIncomeDaily> page = shopIncomeDailyService.findAll(pageable);
+        Page<ShopIncomeDailyVO> voPage = page.map(shopIncomeDaily -> mapper.map(shopIncomeDaily, ShopIncomeDailyVO.class));
+        Map<String, Object> data = new HashMap<>();
+        data.put("list", voPage);
         return AppResponse.responseSuccess(data);
     }
 }

@@ -1,9 +1,11 @@
 package com.ecgobike.task;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.ShopIncomeDaily;
 import com.ecgobike.service.PaymentOrderService;
 import com.ecgobike.service.ShopIncomeDailyService;
+import com.ecgobike.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,9 +29,12 @@ public class IncomeStatisticsTask {
     @Autowired
     ShopIncomeDailyService shopIncomeDailyService;
 
+    @Autowired
+    ShopService shopService;
+
     // 每小时的55分统计一次
-    //@Scheduled(cron = "0 55 * * * ?")
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 55 * * * ?")
+    //@Scheduled(cron = "0 * * * * ?")
     public void shopIncomeDailyStatistics() {
         LocalDate today = LocalDate.now();
         List<Map> list = paymentOrderService.sumDailyIncomeGroupByShop(today);
@@ -38,10 +43,14 @@ public class IncomeStatisticsTask {
             System.out.println("shopId = " + map.get("shop_id") + " , money = " + map.get("money"));
             Long shopId = Long.valueOf("" + map.get("shop_id"));
             BigDecimal money = (BigDecimal)map.get("money");
+            Shop shop = shopService.getShopById(shopId);
+            if (shop == null) {
+                continue;
+            }
             ShopIncomeDaily shopIncomeDaily = shopIncomeDailyService.findOneByShopIdAndPayDate(shopId, today);
             if (shopIncomeDaily == null) {
                 shopIncomeDaily = new ShopIncomeDaily();
-                shopIncomeDaily.setShopId(shopId);
+                shopIncomeDaily.setShop(shop);
                 shopIncomeDaily.setPayDate(today);
                 shopIncomeDaily.setCurrency(Constants.CURRENCY);
                 shopIncomeDaily.setStatus(1);

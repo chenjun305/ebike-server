@@ -4,6 +4,8 @@ import com.ecgobike.entity.ShopIncomeDaily;
 import com.ecgobike.repository.ShopIncomeDailyRepository;
 import com.ecgobike.service.ShopIncomeDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,5 +27,10 @@ public class ShopIncomeDailyServiceImpl implements ShopIncomeDailyService {
     @Override
     public List<ShopIncomeDaily> saveAll(List<ShopIncomeDaily> list) {
         return shopIncomeDailyRepository.saveAll(list);
+    }
+
+    @Override
+    public Page<ShopIncomeDaily> findAll(Pageable pageable) {
+        return shopIncomeDailyRepository.findAll(pageable);
     }
 }
