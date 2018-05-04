@@ -207,3 +207,17 @@ CREATE TABLE `purchase_order` (
   KEY `product_id_idx` (`product_id`),
   KEY `shop_id_idx` (`shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='进货订单';
+
+CREATE TABLE `shop_income_daily` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `shop_id` INT(11) UNSIGNED NOT NULL COMMENT '门店ID',
+  `pay_date` date NOT NULL COMMENT '日期',
+  `price` DECIMAL(8, 2) NOT NULL DEFAULT '0' COMMENT '金额',
+  `currency` varchar(8) NOT NULL DEFAULT 'USD' COMMENT '货币类型',
+  `status` TINYINT NOT NULL DEFAULT '0' COMMENT '状态 0无效 1正常',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `shop_pay_date_idx` (`shop_id`, `pay_date`),
+  KEY `pay_date_idx` (`pay_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='收入日统计';
