@@ -1,6 +1,7 @@
 package com.ecgobike.pojo.response;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.common.enums.OrderType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentOrderVO {
     private String sn;
-    private Integer type;
+    private OrderType type;
     private BigDecimal price;
     private String currency;
     private String ebikeSn;

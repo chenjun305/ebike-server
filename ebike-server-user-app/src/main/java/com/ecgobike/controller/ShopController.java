@@ -34,8 +34,7 @@ public class ShopController {
         List<Shop> shops = shopService.near(latitude, longitude);
         List<ShopVO> shopVOList = shops.stream()
                 .map(shop -> mapper.map(shop, ShopVO.class))
-                .collect(Collectors.toList()
-        );
+                .collect(Collectors.toList());
         Map<String, Object> data = new HashMap<>();
         data.put("shops", shopVOList);
         return AppResponse.responseSuccess(data);

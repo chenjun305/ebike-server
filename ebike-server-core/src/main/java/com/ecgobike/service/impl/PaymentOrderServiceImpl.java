@@ -35,7 +35,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     public PaymentOrder createTopupOrder(Staff staff, User user, Money money) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
-        paymentOrder.setType(OrderType.STAFF_TOPUP_USER.get());
+        paymentOrder.setType(OrderType.STAFF_TOPUP_USER);
         paymentOrder.setPrice(money.getAmount());
         paymentOrder.setCurrency(money.getCurrency());
         paymentOrder.setUid(user.getUid());
@@ -53,7 +53,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     public PaymentOrder createMembershipOrder(OrderType type, EBike eBike, Staff staff, Integer monthNum) throws GException {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
-        paymentOrder.setType(type.get());
+        paymentOrder.setType(type);
         if (type == OrderType.USER_JOIN_MEMBERSHIP || type == OrderType.STAFF_JOIN_MEMBERSHIP) {
             paymentOrder.setPrice(Constants.MEMBERSHIP_FEE);
         } else if (type == OrderType.USER_RENEW_MONTHLY || type == OrderType.STAFF_RENEW_MONTHLY) {
@@ -85,7 +85,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     public PaymentOrder createSellOrder(Staff staff, User user, EBike eBike) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setSn(IdGen.genOrderSn());
-        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        paymentOrder.setType(OrderType.SELL_EBIKE);
         paymentOrder.setPrice(eBike.getProduct().getPrice());
         paymentOrder.setCurrency(eBike.getProduct().getCurrency());
         paymentOrder.setEbikeSn(eBike.getSn());
@@ -105,7 +105,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     @Override
     public Page<PaymentOrder> findAllSall(Pageable pageable) {
         PaymentOrder paymentOrder = new PaymentOrder();
-        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        paymentOrder.setType(OrderType.SELL_EBIKE);
         Example<PaymentOrder> example = Example.of(paymentOrder);
 
         return paymentOrderRepository.findAll(example, pageable);
@@ -115,7 +115,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     public Page<PaymentOrder> findProductSellOrdersInShop(Product product, Long shopId, Pageable pageable) {
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setProduct(product);
-        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        paymentOrder.setType(OrderType.SELL_EBIKE);
         paymentOrder.setShopId(shopId);
 
         Example<PaymentOrder> example = Example.of(paymentOrder);
@@ -149,7 +149,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
 
     protected long countSellOrdersBy(Product product, Long shopId) {
         PaymentOrder paymentOrder = new PaymentOrder();
-        paymentOrder.setType(OrderType.SELL_EBIKE.get());
+        paymentOrder.setType(OrderType.SELL_EBIKE);
         if (product != null) {
             paymentOrder.setProduct(product);
         }

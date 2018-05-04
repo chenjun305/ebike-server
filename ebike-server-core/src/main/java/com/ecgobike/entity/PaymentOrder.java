@@ -1,5 +1,6 @@
 package com.ecgobike.entity;
 
+import com.ecgobike.common.enums.OrderType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class PaymentOrder implements Serializable {
     private Long id;
 
     private String sn;
-    private Integer type;
+    private OrderType type;
     private BigDecimal price;
     private String currency;
     private String ebikeSn;
