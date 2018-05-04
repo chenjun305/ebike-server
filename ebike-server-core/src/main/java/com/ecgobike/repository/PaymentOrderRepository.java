@@ -18,7 +18,17 @@ import java.util.Map;
 @Repository
 @Transactional
 public interface PaymentOrderRepository extends JpaRepository<PaymentOrder, Long> {
-    @Query(value = "select type, sum(price) as money from payment_order where shop_id=?1 and pay_date=?2 group by type",
+    @Query(value = "select type, sum(price) as money " +
+            "from payment_order " +
+            "where shop_id=?1 and pay_date=?2 " +
+            "group by type",
             nativeQuery = true)
-    List<Map<OrderType, BigDecimal>> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day);
+    List<Map> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day);
+
+    @Query(value = "select shop_id,sum(price) as money " +
+            "from payment_order " +
+            "where pay_date=?1 and shop_id is not NULL " +
+            "group by shop_id",
+        nativeQuery = true)
+    List<Map> sumDailyIncomeGroupByShop(LocalDate day);
 }

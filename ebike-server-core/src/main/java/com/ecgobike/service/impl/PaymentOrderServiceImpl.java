@@ -162,7 +162,12 @@ public class PaymentOrderServiceImpl implements PaymentOrderService {
     }
 
     @Override
-    public List<Map<OrderType, BigDecimal>> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day) {
+    public List<Map> sumDailyShopIncomeGroupByType(Long shopId, LocalDate day) {
         return paymentOrderRepository.sumDailyShopIncomeGroupByType(shopId, day);
+    }
+
+    @Override
+    public List<Map> sumDailyIncomeGroupByShop(LocalDate day) {
+        return paymentOrderRepository.sumDailyIncomeGroupByShop(day);
     }
 }

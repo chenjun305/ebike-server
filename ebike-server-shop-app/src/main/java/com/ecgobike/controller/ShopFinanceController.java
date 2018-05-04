@@ -44,7 +44,7 @@ public class ShopFinanceController {
     @AuthRequire(Auth.STAFF)
     public AppResponse today(AuthParams params) {
         Long shopId = staffService.getShopIdByUid(params.getUid());
-        List<Map<OrderType, BigDecimal>> finance = paymentOrderService.sumDailyShopIncomeGroupByType(shopId, LocalDate.now());
+        List<Map> finance = paymentOrderService.sumDailyShopIncomeGroupByType(shopId, LocalDate.now());
         Map<String, Object> data = new HashMap<>();
         data.put("financeToday", finance);
         return AppResponse.responseSuccess(data);
