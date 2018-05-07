@@ -12,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class AOPConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new RepeateRequestInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new VersionInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(new ParamInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/**");
     }

@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Random;
 
 public interface Constants {
+    String SERVER_VERSION = "1.0.0";
+
     Random random = new Random();
     String cache_prefix_sms_pin = "sms_pin_";
 
