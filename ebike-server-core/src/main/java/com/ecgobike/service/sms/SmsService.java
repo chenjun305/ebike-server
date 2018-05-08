@@ -1,7 +1,9 @@
 package com.ecgobike.service.sms;
 
-public interface SmsService {
-    boolean sendPin(String phoneNumber);
+import com.ecgobike.common.enums.SmsType;
 
-    boolean isPinValid(String phoneNumber, String pin);
+public interface SmsService {
+    boolean sendPin(String phoneNumber, SmsType type);
+
+    boolean isPinValid(String phoneNumber, String pin, SmsType type);
 }

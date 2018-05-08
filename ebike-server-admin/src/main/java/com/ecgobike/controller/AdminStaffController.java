@@ -3,6 +3,7 @@ package com.ecgobike.controller;
 import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.Auth;
+import com.ecgobike.common.enums.SmsType;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.common.util.AuthUtil;
@@ -73,7 +74,7 @@ public class AdminStaffController {
             throw new GException(ErrorConstants.NOT_ADMIN);
         }
 
-        boolean result = smsService.sendPin(tel);
+        boolean result = smsService.sendPin(tel, SmsType.ADMIN_LOGIN);
         if (result) {
             return AppResponse.responseSuccess();
         } else {
@@ -93,7 +94,7 @@ public class AdminStaffController {
             throw new GException(ErrorConstants.NOT_ADMIN);
         }
 
-        if (! smsService.isPinValid(tel, pin)) {
+        if (! smsService.isPinValid(tel, pin, SmsType.ADMIN_LOGIN)) {
             throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
 

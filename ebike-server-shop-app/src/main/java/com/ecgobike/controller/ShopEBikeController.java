@@ -9,6 +9,7 @@ import com.ecgobike.helper.FileUrlHelper;
 import com.ecgobike.pojo.request.*;
 import com.ecgobike.pojo.response.*;
 import com.ecgobike.service.*;
+import com.ecgobike.service.sms.SmsService;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,9 @@ public class ShopEBikeController {
     FileService fileService;
 
     @Autowired
+    SmsService smsService;
+
+    @Autowired
     Mapper mapper;
 
     @RequestMapping("/info")
@@ -90,6 +94,17 @@ public class ShopEBikeController {
         return AppResponse.responseSuccess(data);
     }
 
+    @PostMapping("/sell/pin")
+    @AuthRequire(Auth.STAFF)
+    public AppResponse sellPin(SellBikePinParams params) throws GException {
+        boolean result = smsService.sendPin(params.getPhoneNum(), SmsType.SELL_EBIKE);
+        if (result) {
+            return AppResponse.responseSuccess();
+        } else {
+            throw new GException(ErrorConstants.SEND_PIN_FAILED);
+        }
+    }
+
     @PostMapping("/sell")
     @AuthRequire(Auth.STAFF)
     public AppResponse sell(
@@ -103,6 +118,10 @@ public class ShopEBikeController {
         EBike eBike = eBikeService.findOneBySn(params.getEbikeSn());
         if (eBike != null && eBike.getUid() != null) {
             throw  new GException(ErrorConstants.ALREADY_SELLED);
+        }
+
+        if (! smsService.isPinValid(params.getPhoneNum(), params.getPin(), SmsType.SELL_EBIKE)) {
+            throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
 
         Logistics logistics = logisticsService.sell(params.getEbikeSn(), staff.getShop().getId());

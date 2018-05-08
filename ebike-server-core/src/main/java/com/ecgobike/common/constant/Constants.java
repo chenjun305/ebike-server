@@ -9,7 +9,11 @@ public interface Constants {
     String SERVER_VERSION = "1.0.0";
 
     Random random = new Random();
-    String cache_prefix_sms_pin = "sms_pin_";
+
+    String cache_prefix_sms_user_login_pin = "sms_user_login_pin_";
+    String cache_prefix_sms_staff_login_pin = "sms_staff_login_pin_";
+    String cache_prefix_sms_admin_login_pin = "sms_admin_login_pin_";
+    String cache_prefix_sms_sell_ebike_pin = "sms_sell_ebike_pin_";
 
     /**生成sign添加的盐*/
     String SIGN_SALT = "6ee06a782b794b7989d758475f7d5ad9";

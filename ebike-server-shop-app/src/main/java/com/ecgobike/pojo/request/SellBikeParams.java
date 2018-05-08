@@ -1,6 +1,7 @@
 package com.ecgobike.pojo.request;
 
 import com.ecgobike.common.annotation.NotNull;
+import com.ecgobike.common.annotation.StringLength;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,8 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class SellBikeParams extends AuthParams {
     @NotNull
     private String ebikeSn;
-    @NotNull
+
+    @StringLength(Min = 10, Max = 11)
     private String phoneNum;
+
+    @StringLength(Min = 4, Max = 4)
+    private String pin;
+
     @NotNull
     private String realName;
     @NotNull

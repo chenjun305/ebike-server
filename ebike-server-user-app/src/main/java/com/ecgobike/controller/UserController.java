@@ -5,6 +5,7 @@ import com.ecgobike.common.constant.Constants;
 import com.ecgobike.common.constant.ErrorConstants;
 import com.ecgobike.common.enums.FileType;
 import com.ecgobike.common.enums.Gender;
+import com.ecgobike.common.enums.SmsType;
 import com.ecgobike.helper.FileUrlHelper;
 import com.ecgobike.helper.UserHelper;
 import com.ecgobike.pojo.request.AuthParams;
@@ -43,7 +44,7 @@ public class UserController {
 
     @PostMapping("/pin")
     public AppResponse pin(String tel) throws GException {
-        boolean result = smsService.sendPin(tel);
+        boolean result = smsService.sendPin(tel, SmsType.USER_LOGIN);
         if (result) {
             return AppResponse.responseSuccess();
         } else {
@@ -54,7 +55,7 @@ public class UserController {
     @PostMapping("/login")
     public AppResponse login(String tel, String pin) throws GException {
 
-        if (! smsService.isPinValid(tel, pin)) {
+        if (! smsService.isPinValid(tel, pin, SmsType.USER_LOGIN)) {
             throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
         User user = userService.getOrCreate(tel);

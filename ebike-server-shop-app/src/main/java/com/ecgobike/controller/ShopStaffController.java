@@ -1,6 +1,7 @@
 package com.ecgobike.controller;
 
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.SmsType;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Staff;
@@ -59,7 +60,7 @@ public class ShopStaffController {
         if (staff == null) {
             throw new GException(ErrorConstants.NOT_EXIST_STAFF);
         }
-        boolean result = smsService.sendPin(tel);
+        boolean result = smsService.sendPin(tel, SmsType.STAFF_LOGIN);
         if (result) {
             return AppResponse.responseSuccess();
         } else {
@@ -85,7 +86,7 @@ public class ShopStaffController {
         }
 
 
-        if (! smsService.isPinValid(tel, pin)) {
+        if (! smsService.isPinValid(tel, pin, SmsType.STAFF_LOGIN)) {
             throw new GException(ErrorConstants.SMS_PIN_INVALID);
         }
 
