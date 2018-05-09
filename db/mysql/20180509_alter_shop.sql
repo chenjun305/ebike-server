@@ -1,0 +1,1 @@
+ALTER TABLE `shop` ADD COLUMN `battery_booked` SMALLINT NOT NULL DEFAULT '0' COMMENT '被预约电池数' AFTER `battery_available`;

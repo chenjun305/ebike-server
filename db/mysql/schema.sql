@@ -56,6 +56,7 @@ CREATE TABLE `shop` (
   `geohash` varchar(20) DEFAULT NULL COMMENT 'geohash算法计算附近的车',
   `open_time` VARCHAR(64) DEFAULT NULL COMMENT '营业时间',
   `battery_available` SMALLINT NOT NULL DEFAULT '0' COMMENT '可供换电电池数',
+  `battery_booked` SMALLINT NOT NULL DEFAULT '0' COMMENT '被预约电池数',
   `status` tinyint(1) DEFAULT '1' COMMENT '门店状态:0禁用 1正常',
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -184,6 +185,7 @@ CREATE TABLE `lend_battery` (
   KEY `return_shop_id_idx` (`return_shop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='电池借用记录';
 
+
 CREATE TABLE `purchase_order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
   `sn` varchar(64) NOT NULL COMMENT '订单编号 唯一',
@@ -221,3 +223,22 @@ CREATE TABLE `shop_income_daily` (
   UNIQUE KEY `shop_pay_date_idx` (`shop_id`, `pay_date`),
   KEY `pay_date_idx` (`pay_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='收入日统计';
+
+CREATE TABLE `book_battery` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `uid` varchar(32) NOT NULL COMMENT '用户uid',
+  `ebike_sn` VARCHAR(64) NOT NULL COMMENT '电单车sn',
+  `shop_id` INT(11) UNSIGNED NOT NULL COMMENT '门店ID',
+  `book_time` DATETIME NOT NULL COMMENT '预订时间',
+  `expire_time` DATETIME NOT NULL COMMENT '过期时间',
+  `battery_sn` VARCHAR(64) DEFAULT NULL COMMENT '电池sn',
+  `lend_time` DATETIME DEFAULT NULL COMMENT '借出时间',
+  `cancel_time` DATETIME DEFAULT NULL COMMENT '取消时间',
+  `status` TINYINT NOT NULL DEFAULT '1' COMMENT '状态 0 已过期 1 正常 2 已借 3 已取消',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '状态更新时间',
+  PRIMARY KEY (`id`),
+  KEY `uid_status_expire_time_idx` (`uid`, `status`, `expire_time`),
+  KEY `shop_id_status_expire_time_idx` (`shop_id`, `status`, `expire_time`),
+  KEY `ebike_sn_status_expire_time_idx` (`ebike_sn`, `status`, `expire_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='预约电池';
