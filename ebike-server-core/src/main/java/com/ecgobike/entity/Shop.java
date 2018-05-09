@@ -23,6 +23,7 @@ public class Shop implements Serializable {
     private String longitude;
     private String geohash;
     private Integer batteryAvailable;
+    private Integer batteryBooked;
     private Byte status;
 
     private LocalDateTime createTime;

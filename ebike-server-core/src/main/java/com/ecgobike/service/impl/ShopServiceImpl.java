@@ -40,7 +40,11 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop create(Shop shop) {
+    public Shop save(Shop shop) {
+        if (shop.getCreateTime() == null) {
+            shop.setCreateTime(LocalDateTime.now());
+        }
+        shop.setUpdateTime(LocalDateTime.now());
         return shopRepository.save(shop);
     }
 

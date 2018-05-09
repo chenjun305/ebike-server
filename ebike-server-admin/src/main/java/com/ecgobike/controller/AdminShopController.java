@@ -46,8 +46,8 @@ public class AdminShopController {
         shop.setOpenTime(params.getOpenTime());
         shop.setBatteryAvailable(0);
         shop.setStatus((byte)1);
-        Shop newShop = shopService.create(shop);
-        ShopVO shopVO = mapper.map(shop, ShopVO.class);
+        Shop newShop = shopService.save(shop);
+        ShopVO shopVO = mapper.map(newShop, ShopVO.class);
         Map<String, Object> data = new HashMap<>();
         data.put("shop", shopVO);
         return AppResponse.responseSuccess(data);
