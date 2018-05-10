@@ -44,6 +44,9 @@ public class ShopBatteryController {
     LendBatteryService lendBatteryService;
 
     @Autowired
+    BookBatteryService bookBatteryService;
+
+    @Autowired
     EBikeService eBikeService;
 
     @Autowired
@@ -82,14 +85,18 @@ public class ShopBatteryController {
     @PostMapping("/lend")
     @AuthRequire(Auth.STAFF)
     public AppResponse lend(LendBatteryParams params) throws GException {
-        EBike eBike = eBikeService.canLendBattery(params.getEbikeSn());
+        String ebikeSn = params.getEbikeSn();
+        EBike eBike = eBikeService.canLendBattery(ebikeSn);
         if (eBike.getUid() == null) {
             throw new GException(ErrorConstants.NOT_YOUR_EBIKE);
         }
 
         // check for battery
         Long shopId = staffService.getShopIdByUid(params.getUid());
-        Battery battery = batteryService.canLend(params.getBatterySn(), params.getEbikeSn(), shopId);
+        Battery battery = batteryService.canLend(params.getBatterySn(), ebikeSn, shopId);
+
+        // check booking
+        bookBatteryService.lendIfHasBooking(ebikeSn, battery.getSn());
 
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, params.getUid());
         batteryService.lend(eBike, battery);

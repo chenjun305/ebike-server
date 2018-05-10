@@ -69,6 +69,11 @@ public class ErrorConstants {
 	public static final int NOT_YOUR_SHOP_BATTERY = 303;//Not Your Shop Battery！
 	public static final int NO_BATTERY_TO_BOOK = 304;//The Shop Has No Available Battery To Book！
 	public static final int EBIKE_ALREADY_BOOKED = 305;//EBike Already Booked！
+	public static final int NOT_EXIST_BOOKING = 306;//Not Exist Booking！
+	public static final int BOOKING_ALREADY_CANCELED = 307;//Booking Already Canceled！
+	public static final int BOOKING_ALREADY_EXPIRED = 308;//Booking Already Expired！
+	public static final int BOOKING_ALREADY_LEND = 309;//Booking Already Lend！
+	public static final int NOT_YOUR_BOOKING = 310;//Not Your Booking！
 	public static final int NOT_EXIST_STAFF = 401;//Not Exist Staff！
 	public static final int ALREADY_EXIST_STAFF = 402;//Already Exist Staff！
 	public static final int NOT_ADMIN = 403;//Not Admin！

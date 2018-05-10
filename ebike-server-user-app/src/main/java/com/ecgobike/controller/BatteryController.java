@@ -7,6 +7,7 @@ import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.*;
 import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.request.BookBatteryParams;
+import com.ecgobike.pojo.request.BookCancelParams;
 import com.ecgobike.pojo.request.LendBatteryParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.BookBatteryVO;
@@ -62,6 +63,9 @@ public class BatteryController {
         // check for battery
         Battery battery = batteryService.canLend(params.getBatterySn(), ebikeSn,null);
 
+        // check booking
+        bookBatteryService.lendIfHasBooking(ebikeSn, battery.getSn());
+
         LendBattery lendBattery = lendBatteryService.lend(eBike, battery, null);
         batteryService.lend(eBike, battery);
         eBike = eBikeService.lendBattery(eBike);
@@ -107,7 +111,7 @@ public class BatteryController {
 
     @RequestMapping("/book/list")
     @AuthRequire(Auth.USER)
-    public AppResponse book(AuthParams params) throws GException {
+    public AppResponse bookList(AuthParams params) throws GException {
         List<BookBattery> bookBatteryList = bookBatteryService.getByUid(params.getUid());
         List<BookBatteryVO> list = bookBatteryList.stream()
                 .map(bookBattery -> mapper.map(bookBattery, BookBatteryVO.class))
@@ -115,5 +119,18 @@ public class BatteryController {
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
         return AppResponse.responseSuccess(data);
+    }
+
+    @RequestMapping("/book/cancel")
+    @AuthRequire(Auth.USER)
+    public AppResponse bookCancel(BookCancelParams params) throws GException {
+        BookBattery bookBattery = bookBatteryService.cancelBy(params.getBookId(), params.getUid());
+        Shop shop = bookBattery.getShop();
+        Long batteryAvailable = batteryService.countStockInShop(shop.getId());
+        Long batteryBooked = bookBatteryService.countBookNumInShop(shop.getId());
+        shop.setBatteryAvailable(batteryAvailable.intValue());
+        shop.setBatteryBooked(batteryBooked.intValue());
+        shopService.save(shop);
+        return AppResponse.responseSuccess();
     }
 }

@@ -1,5 +1,6 @@
 package com.ecgobike.service;
 
+import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.BookBattery;
 import com.ecgobike.entity.Shop;
 import com.ecgobike.entity.User;
@@ -14,4 +15,7 @@ public interface BookBatteryService {
     List<BookBattery> getByEbikeSn(String ebikeSn);
     List<BookBattery> getByUid(String uid);
     BookBattery book(User user, String ebikeSn, Shop shop);
+    BookBattery cancelBy(Long bookId, String uid) throws GException;
+    List<BookBattery> lendIfHasBooking(String ebikeSn, String batterySn);
+    List<BookBattery> adjustStatus();
 }

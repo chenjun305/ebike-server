@@ -61,6 +61,11 @@
 	<err id="303" description="Not Your Shop Battery！" name="NOT_YOUR_SHOP_BATTERY"/>
 	<err id="304" description="The Shop Has No Available Battery To Book！" name="NO_BATTERY_TO_BOOK"/>
 	<err id="305" description="EBike Already Booked！" name="EBIKE_ALREADY_BOOKED"/>
+	<err id="306" description="Not Exist Booking！" name="NOT_EXIST_BOOKING"/>
+	<err id="307" description="Booking Already Canceled！" name="BOOKING_ALREADY_CANCELED"/>
+	<err id="308" description="Booking Already Expired！" name="BOOKING_ALREADY_EXPIRED"/>
+	<err id="309" description="Booking Already Lend！" name="BOOKING_ALREADY_LEND"/>
+	<err id="310" description="Not Your Booking！" name="NOT_YOUR_BOOKING"/>
 
 	<!--staff-->
 	<err id="401" description="Not Exist Staff！" name="NOT_EXIST_STAFF"/>

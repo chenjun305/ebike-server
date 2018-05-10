@@ -1,11 +1,13 @@
 package com.ecgobike.repository;
 
+import com.ecgobike.common.enums.BookBatteryStatus;
 import com.ecgobike.entity.BookBattery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,4 +33,6 @@ public interface BookBatteryRepository extends JpaRepository<BookBattery, Long> 
             "where uid = ?1 and status = 1 and expire_time > CURRENT_TIMESTAMP",
             nativeQuery = true)
     List<BookBattery> getByUid(String uid);
+
+    List<BookBattery> findAllByStatusAndExpireTimeBefore(BookBatteryStatus status, LocalDateTime time);
 }
