@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +104,8 @@ public class BatteryController {
         shopService.save(shop);
         BookBattery bookBattery = bookBatteryService.book(user, ebikeSn, shop);
         BookBatteryVO bookBatteryVO = mapper.map(bookBattery, BookBatteryVO.class);
+        Duration duration = Duration.between(LocalDateTime.now(), bookBattery.getExpireTime());
+        bookBatteryVO.setLeftSeconds(duration.getSeconds());
         Map<String, Object> data = new HashMap<>();
         data.put("bookBattery", bookBatteryVO);
         return AppResponse.responseSuccess(data);
@@ -113,9 +115,12 @@ public class BatteryController {
     @AuthRequire(Auth.USER)
     public AppResponse bookList(AuthParams params) throws GException {
         List<BookBattery> bookBatteryList = bookBatteryService.getByUid(params.getUid());
-        List<BookBatteryVO> list = bookBatteryList.stream()
-                .map(bookBattery -> mapper.map(bookBattery, BookBatteryVO.class))
-                .collect(Collectors.toList());
+        List<BookBatteryVO> list = bookBatteryList.stream().map(bookBattery -> {
+            BookBatteryVO vo = mapper.map(bookBattery, BookBatteryVO.class);
+            Duration duration = Duration.between(LocalDateTime.now(), bookBattery.getExpireTime());
+            vo.setLeftSeconds(duration.getSeconds());
+            return vo;
+        }).collect(Collectors.toList());
         Map<String, Object> data = new HashMap<>();
         data.put("list", list);
         return AppResponse.responseSuccess(data);

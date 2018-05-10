@@ -43,4 +43,9 @@ public class BookBatteryVO {
     private LocalDateTime createTime;
     @JsonFormat(pattern= Constants.JSON_FORMAT_PATTERN)
     private LocalDateTime updateTime;
+
+
+    // extra
+    private Long leftSeconds;
+
 }
