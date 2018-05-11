@@ -28,7 +28,7 @@ public class RepeateRequestInterceptor extends BaseInterceptor {
         String md5 = Utils.getMD5(uri + remoteAddr);
         String check = StringCacheService.get(db_prefix + md5);
         if (Strings.isNullOrEmpty(check)) {//可以正常访问
-            int checkTime = 3; // 默认3秒中防御检测
+            int checkTime = 1; // 默认1秒防御检测
             if (contains(uri, oneMinuteCheckUri)) {// 1分钟防御检测
                 checkTime = 60;
             }
