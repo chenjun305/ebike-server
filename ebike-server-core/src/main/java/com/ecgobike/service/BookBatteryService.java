@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface BookBatteryService {
     Long countBookNumInShop(Long shopId);
+    List<BookBattery> getByShopId(Long shopId);
     List<BookBattery> getByEbikeSn(String ebikeSn);
     List<BookBattery> getByUid(String uid);
     BookBattery book(User user, String ebikeSn, Shop shop);

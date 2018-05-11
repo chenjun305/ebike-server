@@ -24,6 +24,12 @@ public interface BookBatteryRepository extends JpaRepository<BookBattery, Long> 
 
     @Query(value = "select * " +
             "from book_battery " +
+            "where shop_id = ?1 and status = 1 and expire_time > CURRENT_TIMESTAMP",
+            nativeQuery = true)
+    List<BookBattery> getByShopId(Long shopId);
+
+    @Query(value = "select * " +
+            "from book_battery " +
             "where ebike_sn = ?1 and status = 1 and expire_time > CURRENT_TIMESTAMP",
             nativeQuery = true)
     List<BookBattery> getByEbikeSn(String ebikeSn);

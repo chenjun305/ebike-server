@@ -28,8 +28,12 @@ public class BookBatteryServiceImpl implements BookBatteryService {
     @Override
     public Long countBookNumInShop(Long shopId) {
         Long num  = bookBatteryRepository.countBookNumInShop(shopId);
-        System.out.print("num=" + num);
         return num;
+    }
+
+    @Override
+    public List<BookBattery> getByShopId(Long shopId) {
+        return bookBatteryRepository.getByShopId(shopId);
     }
 
     @Override
