@@ -17,7 +17,6 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StaffInfoVO {
-    private Long id;
     private String uid;
     private String tel;
     private String avatar;

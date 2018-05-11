@@ -1,8 +1,11 @@
 package com.ecgobike.pojo.response;
 
 import com.ecgobike.common.constant.Constants;
+import com.ecgobike.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,7 +15,6 @@ import java.time.LocalDateTime;
  */
 @Data
 public class UserVO {
-    private Long id;
     private String uid;
     private String tel;
     private String avatar;

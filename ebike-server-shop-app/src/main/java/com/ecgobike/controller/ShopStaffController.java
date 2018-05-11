@@ -1,12 +1,16 @@
 package com.ecgobike.controller;
 
+import com.ecgobike.common.annotation.AuthRequire;
 import com.ecgobike.common.constant.ErrorConstants;
+import com.ecgobike.common.enums.Auth;
 import com.ecgobike.common.enums.SmsType;
 import com.ecgobike.common.enums.StaffRole;
 import com.ecgobike.common.exception.GException;
 import com.ecgobike.entity.Staff;
 import com.ecgobike.entity.User;
 import com.ecgobike.entity.UserRole;
+import com.ecgobike.helper.FileUrlHelper;
+import com.ecgobike.pojo.request.AuthParams;
 import com.ecgobike.pojo.response.AppResponse;
 import com.ecgobike.pojo.response.ShopVO;
 import com.ecgobike.pojo.response.StaffInfoVO;
@@ -93,7 +97,7 @@ public class ShopStaffController {
 
         String signMat = AuthUtil.buildSignMaterial(uid);
         String token = AuthUtil.buildToken(uid, signMat);
-        StaffInfoVO staffInfoVO = mapper.map(user, StaffInfoVO.class);
+        StaffInfoVO staffInfoVO = mapper.map(FileUrlHelper.dealUser(user), StaffInfoVO.class);
         staffInfoVO.setStaffNum(staff.getStaffNum());
         staffInfoVO.setShop(mapper.map(staff.getShop(), ShopVO.class));
 
@@ -107,6 +111,36 @@ public class ShopStaffController {
         data.put("uid", uid);
         data.put("signMat",signMat);
         data.put("token", token);
+        return AppResponse.responseSuccess(data);
+    }
+
+    @PostMapping("/get")
+    @AuthRequire(Auth.STAFF)
+    public AppResponse get(AuthParams params) throws GException {
+        String uid = params.getUid();
+        User user = userService.getUserByUid(uid);
+        if (user == null) {
+            throw new GException(ErrorConstants.USER_NOT_FOUND);
+        }
+        Staff staff = staffService.findOneByUid(uid);
+        if (staff == null) {
+            throw new GException(ErrorConstants.NOT_EXIST_STAFF);
+        }
+
+        List<UserRole> roleList = userRoleService.findAllByUid(uid);
+        if (roleList.size() == 0) {
+            throw new GException(ErrorConstants.AUTHENTICATION_FAIL);
+        }
+        StaffInfoVO staffInfoVO = mapper.map(FileUrlHelper.dealUser(user), StaffInfoVO.class);
+        staffInfoVO.setStaffNum(staff.getStaffNum());
+        staffInfoVO.setShop(mapper.map(staff.getShop(), ShopVO.class));
+
+        List<StaffRole> roles = roleList.stream().map(UserRole::getRole).collect(toList());
+        staffInfoVO.setRoles(roles);
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("staff", staffInfoVO);
         return AppResponse.responseSuccess(data);
     }
 
