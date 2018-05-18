@@ -242,3 +242,18 @@ CREATE TABLE `book_battery` (
   KEY `shop_id_status_expire_time_idx` (`shop_id`, `status`, `expire_time`),
   KEY `ebike_sn_status_expire_time_idx` (`ebike_sn`, `status`, `expire_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='预约电池';
+
+CREATE TABLE `user_token` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `uid` varchar(32) NOT NULL COMMENT '用户uid',
+  `app_type` tinyint not null default '1' comment '1 用户端 2 员工端',
+  `fcm_token` varchar(512) not null comment 'Firebase Cloud Messaging Token',
+  `os_type` tinyint not null default '1' comment '1 Android 2 iOS',
+  `apns_token` varchar(512) default null comment 'Apple APNS Token, iOS特有',
+  `status` TINYINT NOT NULL DEFAULT '1' COMMENT '状态 1 正常',
+  `refresh_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '刷新时间',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '状态更新时间',
+  PRIMARY KEY (`id`),
+  KEY `uid_app_type_idx` (`uid`, `app_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='推送Token';
