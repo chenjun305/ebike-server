@@ -1,16 +1,16 @@
 package com.ecgobike.common.enums;
 
 /**
- * Created by ChenJun on 2018/4/18.
+ * Created by ChenJun on 2018/5/18.
  */
-public enum FileType {
+public enum OsType {
     UNKNOWN(0),
-    USER_AVATAR(1),
-    USER_IDCARD(2);
+    ANDROID(1),
+    IOS(2);
 
     private int type;
 
-    FileType(int type) {
+    OsType(int type) {
         this.type = type;
     }
 
@@ -18,9 +18,9 @@ public enum FileType {
         return type;
     }
 
-    public static FileType getType(int type) {
-        FileType[] types = FileType.values();
-        for (FileType t : types) {
+    public static OsType getType(int type) {
+        OsType[] types = OsType.values();
+        for (OsType t : types) {
             if (t.get() == type) {
                 return t;
             }

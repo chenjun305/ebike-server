@@ -45,7 +45,7 @@ public class ErrorConstants {
 	public static final int SEND_PIN_FAILED = 26;//Send Pin Failed！
 	public static final int USER_NOT_FOUND = 100;//User Not Found！
 	public static final int USER_CREATE_FAIL = 101;//User Creation Failed！
-	public static final int NOT_SUPPORT_MONEY_DET_TYPE = 102;//Not Support Money Det Type！
+	public static final int LACK_PARAM_APNS_TOKEN = 102;//Lack Param APNS Token！
 	public static final int LACK_MONEY = 103;//Lack Money！
 	public static final int UPDATE_USER_INFO_FAIL = 104;//Update User Info Fail！
 	public static final int ILLEGAL_AVATAR_FORMAT = 105;//Illegal Avatar Image Format！
