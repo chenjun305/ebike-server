@@ -11,7 +11,8 @@
 		<module>ebike-server-user-app</module>
 		<module>ebike-server-shop-app</module>
 		<module>ebike-server-admin</module>
-	</modules>
+        <module>ebike-server-charger</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<name>ebike-server</name>

@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by ChenJun on 2018/5/7.
  */
 public class VersionInterceptor extends BaseInterceptor {
-    List<String> excludes = Arrays.asList(new String[] {"/admin/"});
+    List<String> excludes = Arrays.asList(new String[] {"/admin/", "/charger/"});
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
