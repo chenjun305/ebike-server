@@ -28,7 +28,7 @@
     </dependencies>
 
     <build>
-        <finalName>ebike-server-user-app</finalName>
+        <finalName>ebike-server-charger</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
