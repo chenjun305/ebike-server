@@ -4,6 +4,7 @@ import com.ecgobike.pojo.ChargerDeviceParams;
 import com.ecgobike.pojo.ChargerFullListParams;
 import com.ecgobike.pojo.MsgResponse;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class ChargerController {
     }
 
     @PostMapping("/Device.xhtml")
-    public MsgResponse deviceXhtml(ChargerDeviceParams params) {
+    public MsgResponse deviceXhtml(@RequestBody ChargerDeviceParams params) {
         System.out.println("/charger/Device.xhtml:" + params.toString());
         return MsgResponse.responseSuccess();
     }
@@ -35,7 +36,7 @@ public class ChargerController {
     }
 
     @PostMapping("/FullList.xhtml")
-    public MsgResponse fullListXhtml(ChargerFullListParams params) {
+    public MsgResponse fullListXhtml(@RequestBody ChargerFullListParams params) {
         System.out.println("/charger/FullList.xhtml:" + params.toString());
         return MsgResponse.responseSuccess();
     }

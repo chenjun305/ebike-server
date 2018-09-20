@@ -9,7 +9,7 @@ import java.util.List;
  */
 @Data
 public class ChargerInfo {
-    private String id;
+    private String id;  // 设备编号
     private String chargerName;
     private String warehouse;
     private double lng;
@@ -18,7 +18,7 @@ public class ChargerInfo {
     private String city;
     private String block;
     private String street;
-    private int status;
+    private int status;  // 状态 0 启用 1 禁用
     private int isOnline;
-    private List<PileInfo> PileList;
+    private List<PileInfo> pileList;  // 格口列表
 }

@@ -1,6 +1,8 @@
 package com.ecgobike.aop;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -33,6 +35,23 @@ public class AuthInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        Map<String, String[]> map = request.getParameterMap();
+//        System.out.println("=======request parameters=========");
+//        for (Map.Entry<String, String[]> entry : map.entrySet()) {
+//            String key = entry.getKey();
+//            String value = entry.getValue()[0];
+//            System.out.println(key + ":" + value);
+//        }
+//        System.out.println("=======end=========");
+        // 读取请求内容
+//        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"utf-8"));
+//        String line = null;
+//        StringBuilder sb = new StringBuilder();
+//        while ((line = br.readLine()) != null) {
+//            sb.append(line);
+//        }
+//        System.out.println("request:" + sb.toString());
+
         if (handler instanceof HandlerMethod) {
             HandlerMethod method = ((HandlerMethod) handler);
             AuthRequire classAuthRequire = method.getBeanType().getAnnotation(AuthRequire.class);

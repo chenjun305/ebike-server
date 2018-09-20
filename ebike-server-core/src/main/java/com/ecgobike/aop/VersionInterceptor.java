@@ -24,7 +24,7 @@ public class VersionInterceptor extends BaseInterceptor {
             throws Exception {
         if (handler instanceof HandlerMethod) {
             String uri = request.getRequestURI();
-            System.out.println("VersionInterceptor:" + uri);
+            //System.out.println("VersionInterceptor:" + uri);
             if (contains(uri, excludes)) {
                 return true;
             }

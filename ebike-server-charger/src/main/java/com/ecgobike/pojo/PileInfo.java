@@ -7,8 +7,10 @@ import lombok.Data;
  */
 @Data
 public class PileInfo {
-    private int num;
-    private int status;
+    private int num; // 格口编号
+    private int boxStatus; // 箱子状态 1 空闲 2 满箱
+    private int chargerStatus; // 0：未充电 1:充电中 2:电池充满
     private String batteryId;
-    private int batteryVolume;
+    private int batteryVolume; // 电池电量:-1代表无电池，
+
 }
