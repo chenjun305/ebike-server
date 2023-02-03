@@ -34,9 +34,9 @@ public interface Constants {
     String JSON_FORAMT_TIMEZONE = "GMT+8";
 
     // Tencent COS File storage
-    String COS_APP_ID = "1251198400";
-    String COS_SECRET_ID = "AKID8EE3jE50KUhjkatmwdVJ1YJJEzeAYlq7";
-    String COS_SECRET_KEY = "Nl4QbbnwLdkkZDmBOQaZPSO9ILDuPo37";
+    String COS_APP_ID = "";
+    String COS_SECRET_ID = "";
+    String COS_SECRET_KEY = "";
     // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
     String BUCKET_USER_AVATAR = "ebike-user-avatar" + "-" + COS_APP_ID;
     String BUCKET_USER_IDCARD = "ebike-user-idcard" + "-" + COS_APP_ID;
